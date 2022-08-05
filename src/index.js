@@ -1,27 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
+import { Register,
+         Login,
+         InputGames,
+         Games
+} from './components';
+
+const API_URL = 'https://floating-stream-77094.herokuapp.com/api'
+
 
 const App = () => {
+    const [games, setGames] = useState([]);
+    const [token, setToken] = useState([]);
 
-    useEffect(() => {
-        const fetchAllUsers = async () => {
-            try {
-                const response = await fetch('https://floating-stream-77094.herokuapp.com/api/users');
-
-                const data = await response.json();
-
-                console.log("this is your data: ", data);
-
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-        fetchAllUsers();
-    }, [])
     return (
         <div>
             <h1>Welcome to Waldo Sports Co!</h1>
+            <Login setToken={setToken} />
+            <Register />
+            <InputGames token={token}/>
+            <Games games={games} setGames={setGames} token={token}/>
         </div>
     )
 }
