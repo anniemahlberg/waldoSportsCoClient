@@ -1,6 +1,7 @@
 const API_URL = 'https://floating-stream-77094.herokuapp.com/api'
 
-const Register = () => {   
+const Register = (props) => {   
+    const { setAlertMessage } = props;
     const postUser = async (userData) => {
         const { username, password, firstname, lastname, email, venmo } = userData;
         await fetch(`${API_URL}/users/register`, {
@@ -20,9 +21,9 @@ const Register = () => {
         .then(result => {
             if (!result.name) {
                 console.log(result)
-                alert('You have registered!')
+                setAlertMessage('You have registered!')
             } else {
-                alert(result.message);
+                setAlertMessage(result.message);
             }
         })
         .catch(console.error)
@@ -41,9 +42,9 @@ const Register = () => {
         event.preventDefault();
         
         if (usernameInput === "" || password1Input === "" || password2Input === "" || firstnameInput === "" || lastnameInput === "" || emailInput === "" || venmoInput === "") {
-            alert("Make sure to fill out each field.");
+            setAlertMessage("Make sure to fill out each field.");
         } else if (usernameInput.length < 6 || password1Input.length < 6) {
-            alert("Username and password must be at least 6 characters long.")
+            setAlertMessage("Username and password must be at least 6 characters long.")
         } else if (password1Input === password2Input) {
             userData = {
                 username: usernameInput,
@@ -56,7 +57,7 @@ const Register = () => {
             
             await postUser(userData);
         } else {
-            alert("The passwords you entered do not match, try again!")
+            setAlertMessage("The passwords you entered do not match, try again!")
         } 
     }
     

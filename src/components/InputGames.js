@@ -1,43 +1,31 @@
 const API_URL = 'https://floating-stream-77094.herokuapp.com/api'
 
-const InputGames = () => {   
+const InputGames = (props) => {   
+    const { setAlertMessage, token } = props;
     const postGame = async (gameData) => {
         const { hometeam, awayteam, level, date, time, primetime, value, duration, over, under, chalk, dog, totalpoints, favoredteam, line } = gameData;
         await fetch(`${API_URL}/games/add`, {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
-                    hometeam,
-                    awayteam,
-                    level,
-                    date,
-                    time,
-                    primetime,
-                    value,
-                    duration,
-                    over,
-                    under,
-                    chalk,
-                    dog,
-                    totalpoints,
-                    favoredteam,
-                    line
+                    hometeam, awayteam, level, date, time, primetime, value, duration, over, under, chalk, dog, totalpoints, favoredteam, line
             })
         }).then(response => response.json())
         .then(result => {
             if (!result.name) {
                 console.log(result)
-                alert('You have added a new game!')
+                setAlertMessage('You have added a new game!')
             } else {
-                alert(result.message);
+                setAlertMessage(result.message);
             }
         })
         .catch(console.error)
     }
 
-    const submitGame = async (event) => {
+    const submitGame = async () => {
         const hometeamInput = document.getElementById('input-game-hometeam').value;
         const awayteamInput = document.getElementById('input-game-awayteam').value;
         const levelInput = document.getElementById('input-game-level').value;

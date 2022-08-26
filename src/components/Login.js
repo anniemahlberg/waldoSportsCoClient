@@ -1,7 +1,9 @@
 const API_URL = 'https://floating-stream-77094.herokuapp.com/api'
+import { fetchAllUsers } from "../axios-services";
+import React, { useEffect } from 'react';
 
 const Login = (props) => {
-    const { setToken } = props;
+    const { setToken, setAlertMessage, setUser } = props;
     const submitLogin = async (event) => {
         const userNameInput = document.getElementById('login-username').value;
         const password1Input = document.getElementById('login-password').value;
@@ -16,8 +18,7 @@ const Login = (props) => {
     }
     
     const getUserToken = async (userData) => {
-
-        const user = await fetch(`${API_URL}/users/login`, {
+        await fetch(`${API_URL}/users/login`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -30,9 +31,10 @@ const Login = (props) => {
         .then(result => {
             if (!result.name) {
                 setToken(result.token)
-                alert("You have logged in!")
+                setUser(result.user)
+                setAlertMessage("You have logged in!")
             } else {
-                alert(result.message);
+                setAlertMessage(result.message);
             }
         })
         .catch(console.error)
