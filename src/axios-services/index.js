@@ -11,7 +11,7 @@ export async function fetchAllUsers() {
 
 export async function fetchAllGames() {
     try {
-        const { data } = await axios.get("https://floating-stream-77094.herokuapp.com/api/games/active")
+        const { data } = await axios.get(`https://floating-stream-77094.herokuapp.com/api/games/active`)
         return data.games
     } catch (err) {
         throw err;
@@ -33,5 +33,14 @@ export async function fetchAllWeeklyPicks() {
         return data.weeklypicks;
     } catch (err) {
         throw err;
+    }
+}
+
+export async function fetchUserStats() {
+    try {
+        const { data } = await axios.get("https://floating-stream-77094.herokuapp.com/api/users/stats")
+        return data.usersStats
+    } catch (err) {
+        throw err
     }
 }

@@ -1,7 +1,8 @@
+import { showAlert } from "./Alert";
 const API_URL = 'https://floating-stream-77094.herokuapp.com/api'
 
 const Register = (props) => {   
-    const { setAlertMessage } = props;
+    const { setAlertMessage, setUpdate, update } = props;
     const postUser = async (userData) => {
         const { username, password, firstname, lastname, email, venmo } = userData;
         await fetch(`${API_URL}/users/register`, {
@@ -20,10 +21,12 @@ const Register = (props) => {
         }).then(response => response.json())
         .then(result => {
             if (!result.name) {
-                console.log(result)
+                setUpdate(!update)
                 setAlertMessage('You have registered!')
+                showAlert()
             } else {
                 setAlertMessage(result.message);
+                showAlert()
             }
         })
         .catch(console.error)

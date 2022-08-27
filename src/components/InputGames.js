@@ -1,9 +1,10 @@
+import { showAlert } from "./Alert";
 const API_URL = 'https://floating-stream-77094.herokuapp.com/api'
 
 const InputGames = (props) => {   
-    const { setAlertMessage, token } = props;
+    const { setAlertMessage, token, setUpdate, update } = props;
     const postGame = async (gameData) => {
-        const { hometeam, awayteam, level, date, time, primetime, value, duration, over, under, chalk, dog, totalpoints, favoredteam, line } = gameData;
+        const { week, hometeam, awayteam, level, date, time, primetime, value, duration, over, under, chalk, dog, totalpoints, favoredteam, line } = gameData;
         await fetch(`${API_URL}/games/add`, {
             method: "POST",
             headers: {
@@ -11,21 +12,24 @@ const InputGames = (props) => {
                 'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
-                    hometeam, awayteam, level, date, time, primetime, value, duration, over, under, chalk, dog, totalpoints, favoredteam, line
+                    week, hometeam, awayteam, level, date, time, primetime, value, duration, over, under, chalk, dog, totalpoints, favoredteam, line
             })
         }).then(response => response.json())
         .then(result => {
             if (!result.name) {
-                console.log(result)
                 setAlertMessage('You have added a new game!')
+                showAlert()
+                setUpdate(!update)
             } else {
                 setAlertMessage(result.message);
+                showAlert()
             }
         })
         .catch(console.error)
     }
 
     const submitGame = async () => {
+        const weekInput = document.getElementById('input-game-week').value;
         const hometeamInput = document.getElementById('input-game-hometeam').value;
         const awayteamInput = document.getElementById('input-game-awayteam').value;
         const levelInput = document.getElementById('input-game-level').value;
@@ -57,6 +61,7 @@ const InputGames = (props) => {
         let gameData = {};
         
         gameData = {
+            week: weekInput,
             hometeam: hometeamInput,
             awayteam: awayteamInput,
             level: levelInput,
@@ -83,6 +88,28 @@ const InputGames = (props) => {
             <div id="form-container">
                 <form id='input-game-form'>
                     <div className="inputs">
+                        <label>Week:</label>
+                        <select id='input-game-week'>
+                            <option value='1'>1</option>
+                            <option value='2'>2</option>
+                            <option value='3'>3</option>
+                            <option value='1'>4</option>
+                            <option value='1'>5</option>
+                            <option value='1'>6</option>
+                            <option value='1'>7</option>
+                            <option value='1'>8</option>
+                            <option value='1'>9</option>
+                            <option value='1'>10</option>
+                            <option value='1'>11</option>
+                            <option value='1'>12</option>
+                            <option value='1'>13</option>
+                            <option value='1'>14</option>
+                            <option value='1'>15</option>
+                            <option value='1'>16</option>
+                            <option value='1'>17</option>
+                            <option value='1'>18</option>
+                        </select>
+                        <br />
                         <label>Home Team:</label>
                         <input id='input-game-hometeam' type='text' placeholder="Home Team"></input>
                         <br />

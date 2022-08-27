@@ -1,5 +1,6 @@
 import dateFormat from "dateformat";
 import convertTime from 'convert-time';
+import { showAlert } from "./Alert";
 
 const API_URL = 'https://floating-stream-77094.herokuapp.com/api'
 
@@ -12,7 +13,7 @@ function onlyOne(checkboxId, pick) {
 }
 
 const Games = (props) => {
-    const { games, token, setAlertMessage } = props;
+    const { games, token, setAlertMessage, update, setUpdate } = props;
 
     const postPick = async (pickData) => {
         const { picks } = pickData
@@ -45,7 +46,10 @@ const Games = (props) => {
         if (!alert) {
             alert = "You have made your picks!!"
         }
+
         setAlertMessage(alert)
+        showAlert();
+        setUpdate(!update)
     }
 
     const submitPick = () => {
@@ -190,7 +194,7 @@ const Games = (props) => {
                                 <h3 className="matchup">{game.awayteam} @ {game.hometeam}</h3>
                                 : <h3 className="singleteam">{game.hometeam}</h3>}
                                 <h5 className="level">{game.level}</h5>
-                                {game.date ? <h5 className="date">Date: {dateFormat(Date(game.date), 'fullDate')}</h5> : null}
+                                {game.date ? <h5 className="date">Date: {dateFormat(game.date, 'fullDate')}</h5> : null}
                                 {game.time ? <h5 className="time">Time: {convertTime(game.time)} CT</h5> : null}
                                 {game.primetime ? <h5>PRIMETIME</h5> : null}
                             </div>

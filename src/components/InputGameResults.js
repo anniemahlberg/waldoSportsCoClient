@@ -1,7 +1,8 @@
+import { showAlert } from "./Alert";
 const API_URL = 'https://floating-stream-77094.herokuapp.com/api'
 
 const InputGameResults = (props) => {
-    const { token, games, setAlertMessage } = props;
+    const { token, games, setAlertMessage, setUpdate, update } = props;
 
     const postResults = async (resultsArr) => {
         let alert = "";
@@ -33,6 +34,8 @@ const InputGameResults = (props) => {
         }
 
         setAlertMessage(alert)
+        showAlert()
+        setUpdate(!update)
     }
 
     const submitResults = async () => {
@@ -45,13 +48,13 @@ const InputGameResults = (props) => {
             if (game.totalpoints && (game.over || game.under)) {
                 let totalpoints = document.getElementById(`input-results-totalpoints-${index}`)
                 outcome.totalpointsoutcome = totalpoints.value
-                outcome.totalpointsoutcometext = `${game.awayteam} vs. ${game.hometeam} ${totalpoints.innerText}`
+                outcome.totalpointsoutcometext = `${game.awayteam} vs. ${game.hometeam} ${totalpoints.options[totalpoints.selectedIndex].text}`
             }
 
             if (game.line && (game.chalk || game.dog)) {
                 let line = document.getElementById(`input-results-line-${index}`)
                 outcome.lineoutcome = line.value
-                outcome.lineoutcometext = line.innerText
+                outcome.lineoutcometext = line.options[line.selectedIndex].text
             }
 
             outcomesArr.push(outcome)
