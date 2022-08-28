@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { fetchAllPicks } from "../axios-services";
+import "../style/profile.css"
 
-const MyPicks = (props) => {
+const Profile = (props) => {
     const {myPicks, setMyPicks, myWeekly, setMyWeekly, setPicks, user, weeklyPicks, update } = props;
     let total = 0;
 
@@ -23,9 +24,31 @@ const MyPicks = (props) => {
         getMyPicks();
     }, [update])
 
+    function showContainers(event) {
+        let target = event.target.id
+        let statsContainer = document.getElementById("mystats");
+        let picksContainer = document.getElementById("mypicks");
+
+        if (target === "stats") {
+            statsContainer.style.display = "initial";
+            picksContainer.style.display = "none";    
+        }
+    
+        if (target === "picks") {
+            statsContainer.style.display = "none";
+            picksContainer.style.display = "initial";    
+        }
+      }
+
     return (
-        <div className="allpicks">
+        <div id="profile-container">
+            <h1>PROFILE</h1>
             <div>
+                <span className="buttons" id="stats" onClick={showContainers}>MY STATS</span>
+                <span className="buttons" id="picks" onClick={showContainers}>MY PICKS</span>
+            </div>
+            <br />
+            <div id='mystats'>
                 <table>
                     <caption>MY STATS</caption>
                     <thead>
@@ -45,6 +68,8 @@ const MyPicks = (props) => {
                         : user.username ? <tr><td>You do not have any stats yet to show</td></tr> : <tr><td>You must be logged in to see your stats</td></tr>}
                     </tbody>
                 </table>
+            </div>
+            <div id='mypicks'>
                 <table>
                     <caption>MY PICKS</caption>
                     <thead>
@@ -83,4 +108,4 @@ const MyPicks = (props) => {
     )
 }
 
-export default MyPicks;
+export default Profile;

@@ -65,7 +65,7 @@ const Register = (props) => {
     }
     
     return (
-        <div className="register">
+        <div id="register-container">
             <h1>REGISTER</h1>
             <div id="form-container">
                 <form id='register-form'>

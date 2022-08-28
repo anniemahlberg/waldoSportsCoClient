@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { Register, Login, InputGames, Games, Alert, League, MyPicks, InputGameResults } from './components';
+import { Register, Login, Picks, Alert, League, Profile, Admin, Home } from './components';
 import { fetchAllGames, fetchAllWeeklyPicks, fetchAllPicks, fetchUserStats } from "./axios-services";
+import { showAlert } from './components/Alert';
+import "./style/index.css";
 
 
 const App = () => {
@@ -45,6 +47,8 @@ const App = () => {
         setUser({})
         setToken("")
         setUpdate(!update)
+        setAlertMessage("You have logged out")
+        showAlert()
     }
 
     return (
@@ -54,7 +58,8 @@ const App = () => {
             </div>
             <nav>
                 <Link to="/" onClick={() => {setUpdate(!update)}}>HOME</Link>
-                <Link to="/login" onClick={() => {setUpdate(!update)}}>LOGIN</Link>
+                <Link to="/picks" onClick={() => {setUpdate(!update)}}>PICKS</Link>
+                { !user.username ? <Link to="/login" onClick={() => {setUpdate(!update)}}>LOGIN</Link> : null }
                 <Link to='/league' onClick={() => {setUpdate(!update)}}>LEAGUE</Link>
                 { user.username ? <Link to="/profile" onClick={() => {setUpdate(!update)}}>PROFILE</Link> : null }
                 { user.admin === "true" ? <Link to="/admin" onClick={() => {setUpdate(!update)}}>ADMIN</Link> : null }
@@ -63,7 +68,10 @@ const App = () => {
             <h1>Welcome to Waldo Sports Co!</h1>
             <Routes>
                 <Route exact path="/" element={
-                    <Games games={games} token={token} update={update} setUpdate={setUpdate} setAlertMessage={setAlertMessage} />
+                    <Home />
+                } />
+                <Route exact path="/picks" element={
+                    <Picks games={games} token={token} update={update} setUpdate={setUpdate} setAlertMessage={setAlertMessage} />
                 } />
                 <Route exact path="/login" element={
                     <Login setToken={setToken} update={update} setUpdate={setUpdate} setAlertMessage={setAlertMessage} setUser={setUser} />
@@ -72,14 +80,13 @@ const App = () => {
                     <Register update={update} setUpdate={setUpdate} setAlertMessage={setAlertMessage} />
                 } />
                 <Route exact path="/admin" element={<>
-                    <InputGames update={update} setUpdate={setUpdate} token={token} setAlertMessage={setAlertMessage} />
-                    <InputGameResults update={update} setUpdate={setUpdate} token={token} setAlertMessage={setAlertMessage} games={games} />
+                    <Admin update={update} setUpdate={setUpdate} token={token} setAlertMessage={setAlertMessage} games={games} />
                 </>} />
                 <Route exact path="/league" element={<>
                     <League update={update} setUpdate={setUpdate} weeklyPicks={weeklyPicks} picks={picks} setPicks={setPicks} setWeeklyPicks={setWeeklyPicks} userStats={userStats}/>
                 </>} />
                 <Route exact path="/profile" element={<>
-                    <MyPicks update={update} setUpdate={setUpdate} myPicks={myPicks} setMyPicks={setMyPicks} setMyWeekly={setMyWeekly} myWeekly={myWeekly} setPicks={setPicks} weeklyPicks={weeklyPicks} user={user} setAlertMessage={setAlertMessage} />
+                    <Profile update={update} setUpdate={setUpdate} myPicks={myPicks} setMyPicks={setMyPicks} setMyWeekly={setMyWeekly} myWeekly={myWeekly} setPicks={setPicks} weeklyPicks={weeklyPicks} user={user} setAlertMessage={setAlertMessage} />
                 </>} />
             </Routes>
         </div>

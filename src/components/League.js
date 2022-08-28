@@ -1,14 +1,43 @@
+import "../style/league.css"
+
 const League = (props) => {
     const { weeklyPicks, picks, userStats } = props;
 
+    function showContainers(event) {
+        let target = event.target.id
+        let statsContainer = document.getElementById("seasonstats");
+        let leaderboardContainer = document.getElementById("weeklyleaderboard");
+        let picksContainer = document.getElementById("weeklypicks");
+
+        if (target === "stats") {
+            statsContainer.style.display = "initial";
+            leaderboardContainer.style.display = "none";
+            picksContainer.style.display = "none";    
+        }
+    
+        if (target === "leaderboard") {
+            statsContainer.style.display = "none";
+            leaderboardContainer.style.display = "initial";
+            picksContainer.style.display = "none";    
+    
+        }
+    
+        if (target === "picks") {
+            statsContainer.style.display = "none";
+            leaderboardContainer.style.display = "none";
+            picksContainer.style.display = "initial";    
+        }
+      }
+
     return (
-        <div className="league">
+        <div id="league-container">
             <h1>LEAGUE</h1>
             <div>
-                <span>SEASON STATS</span>
-                <span>WEEKLY LEADERBOARD</span>
-                <span>WEEKLY PICKS</span>
+                <span className="buttons" id="stats" onClick={showContainers}>SEASON STATS</span>
+                <span className="buttons" id="leaderboard" onClick={showContainers}>WEEKLY LEADERBOARD</span>
+                <span className="buttons" id="picks" onClick={showContainers}>WEEKLY PICKS</span>
             </div>
+            <br />
             <div id="seasonstats">
                 <table>
                     <caption>Season Stats</caption>

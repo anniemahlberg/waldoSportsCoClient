@@ -46,7 +46,7 @@ const Login = (props) => {
     }
 
     return (
-        <div className="login">
+        <div id="login-container">
             <h1>LOGIN</h1>
             <div id='login-container'>
                 <form id='login-form'>
