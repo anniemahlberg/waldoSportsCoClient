@@ -384,30 +384,39 @@ const Picks = (props) => {
 
         if (target === "picks") {
             picksContainer.style.display = "initial";
-            parlaysContainer.style.display = "none";    
+            parlaysContainer.style.display = "none";
+            searchGames()
         }
     
         if (target === "parlays") {
             picksContainer.style.display = "none";
-            parlaysContainer.style.display = "initial";    
+            parlaysContainer.style.display = "initial";
+            searchParlayGames()    
         }
 
         if (target === 'parlay1') {
             parlay1Container.style.display = "initial";
             parlay2Container.style.display = "none";
+            searchParlayGames()
         }
 
         if (target === 'parlay2') {
             parlay1Container.style.display = "none";
             parlay2Container.style.display = "initial";
+            searchParlayGames()
         }
       }
 
       function searchGames(event) {
-        let input = event.target.id
+        let input = undefined;
+        if (!event) {
+            input = "all"
+        } else {
+            input = event.target.id
+        }
+
         let games = document.getElementsByClassName("game")
-        let parlays1 = document.getElementsByClassName("parlay1game")
-        let parlays2 = document.getElementsByClassName("parlay2game")
+
         for (let i = 0; i < games.length; i++) {
             if (input === "all") {
                 games[i].style.display = "initial"
@@ -418,7 +427,22 @@ const Picks = (props) => {
                     games[i].style.display = "initial"
                 }
             }
+        }
+      }
 
+      function searchParlayGames(event) {
+        let input = undefined;
+        if (!event) {
+            input = "parlay-all"
+        } else {
+            input = event.target.id
+        }
+
+        let games = document.getElementsByClassName("game")
+        let parlays1 = document.getElementsByClassName("parlay1game")
+        let parlays2 = document.getElementsByClassName("parlay2game")
+
+        for (let i = 0; i < games.length; i++) {
             if (input === "parlay-all") {
                 parlays1[i].style.display = "initial"
                 parlays2[i].style.display = "initial"
@@ -514,12 +538,12 @@ const Picks = (props) => {
                 <br />
                 <br />
                 <div>
-                    <span className="buttons" id="parlay-all" onClick={searchGames}>ALL</span>
-                    <span className="buttons" id="parlay-NFL" onClick={searchGames}>NFL</span>
-                    <span className="buttons" id="parlay-NCAA" onClick={searchGames}>NCAA</span>
-                    <span className="buttons" id="parlay-MLB" onClick={searchGames}>MLB</span>
-                    <span className="buttons" id="parlay-NBA" onClick={searchGames}>NBA</span>
-                    <span className="buttons" id="parlay-NHL" onClick={searchGames}>NHL</span>
+                    <span className="buttons" id="parlay-all" onClick={searchParlayGames}>ALL</span>
+                    <span className="buttons" id="parlay-NFL" onClick={searchParlayGames}>NFL</span>
+                    <span className="buttons" id="parlay-NCAA" onClick={searchParlayGames}>NCAA</span>
+                    <span className="buttons" id="parlay-MLB" onClick={searchParlayGames}>MLB</span>
+                    <span className="buttons" id="parlay-NBA" onClick={searchParlayGames}>NBA</span>
+                    <span className="buttons" id="parlay-NHL" onClick={searchParlayGames}>NHL</span>
                 </div>
                 <br />
                 <div id='parlay1-container'>

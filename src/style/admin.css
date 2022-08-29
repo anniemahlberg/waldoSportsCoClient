@@ -1,7 +1,3 @@
-#input-game {
-    display: none;
-}
-
-#input-game-results {
+#admin-input-game, #admin-input-results, #admin-deactivate, #admin-edit-game {
     display: none;
 }

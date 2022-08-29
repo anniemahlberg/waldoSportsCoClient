@@ -59,8 +59,8 @@ const App = () => {
             <nav>
                 <Link to="/" onClick={() => {setUpdate(!update)}}>HOME</Link>
                 <Link to="/picks" onClick={() => {setUpdate(!update)}}>PICKS</Link>
-                { !user.username ? <Link to="/login" onClick={() => {setUpdate(!update)}}>LOGIN</Link> : null }
                 <Link to='/league' onClick={() => {setUpdate(!update)}}>LEAGUE</Link>
+                { !user.username ? <Link to="/login" onClick={() => {setUpdate(!update)}}>LOGIN</Link> : null }
                 { user.username ? <Link to="/profile" onClick={() => {setUpdate(!update)}}>PROFILE</Link> : null }
                 { user.admin === "true" ? <Link to="/admin" onClick={() => {setUpdate(!update)}}>ADMIN</Link> : null }
                 { user.username ? <Link to="/" onClick={logout}>LOGOUT</Link> : null }
