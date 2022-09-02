@@ -22,7 +22,7 @@ const Register = (props) => {
         .then(result => {
             if (!result.name) {
                 setUpdate(!update)
-                setAlertMessage('You have registered!')
+                setAlertMessage('You have registered! Now log in!')
                 showAlert()
             } else {
                 setAlertMessage(result.message);

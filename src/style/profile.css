@@ -1,7 +1,3 @@
-#mystats {
-    display: none;
-}
-
-#mypicks {
+#myweeklystats, #myseasonstats, #mypicks, #editmypicks, #editmyparlays {
     display: none;
 }

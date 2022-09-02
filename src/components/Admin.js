@@ -1,10 +1,10 @@
 import { showAlert } from "./Alert";
-import convertTime from 'convert-time';
+import convertTime from "convert-time";
 import "../style/admin.css";
 const API_URL = 'https://floating-stream-77094.herokuapp.com/api'
 
 const Admin = (props) => {
-    const { token, games, setAlertMessage, setUpdate, update } = props;
+    const { token, games, setAlertMessage, setUpdate, update, users } = props;
 
     const postResults = async (resultsArr) => {
         let alert = "";
@@ -31,6 +31,30 @@ const Admin = (props) => {
             .catch(console.error)
         }
 
+        await fetch(`${API_URL}/parlays/updateResults/parlay1`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                week: resultsArr[0].week
+            })
+        }).then(response => response.json())
+        .catch(console.error)
+
+        await fetch(`${API_URL}/parlays/updateResults/parlay2`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                week: resultsArr[0].week
+            })
+        }).then(response => response.json())
+        .catch(console.error)
+
         if (!alert) {
             alert = "Outcome(s) successfully added!"
         }
@@ -44,7 +68,8 @@ const Admin = (props) => {
         let outcomesArr = [];
         games.map((game, index) => {
             let outcome = {
-                gameId: game.id
+                gameId: game.id,
+                week: game.week
             }
 
             if (game.totalpoints && (game.over || game.under)) {
@@ -192,7 +217,7 @@ const Admin = (props) => {
         const newweek = document.getElementById(`edit-week-${index}`).value
         const newlevel = document.getElementById(`edit-level-${index}`).value
         const newdate = document.getElementById(`edit-date-${index}`).value
-        const newtime = document.getElementById(`edit-time-${index}`).innerText
+        const newtime = document.getElementById(`edit-time-${index}`).value
         const newduration = document.getElementById(`edit-duration-${index}`).value
         let newprimetime = document.getElementById(`edit-primetime-${index}`).checked
         let newchalk = document.getElementById(`edit-chalk-${index}`).checked
@@ -242,8 +267,6 @@ const Admin = (props) => {
             line: newline
         }
 
-        console.log(data)
-
         await editGameNow(data)
     }
 
@@ -269,25 +292,53 @@ const Admin = (props) => {
         .catch(console.error)
     }
 
+    async function makeAdmin() {
+        const userId = document.getElementById('admin-user-id').value
+        await fetch(`${API_URL}/users/${userId}`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                admin: true
+            })
+        }).then(response => response.json())
+        .then(result => {
+            if (!result.name) {
+                setAlertMessage(`You have made the user with user id: ${userId} an admin!`)
+                showAlert()
+                setUpdate(!update)
+            } else {
+                setAlertMessage(result.message);
+                showAlert()
+            }
+        })
+        .catch(console.error)
+    }
+
     function showContainers(event) {
         let target = event.target.id
         let gameContainer = document.getElementById("admin-input-game");
         let resultsContainer = document.getElementById("admin-input-results");
         let deactivateContainer = document.getElementById("admin-deactivate");
         let editContainer = document.getElementById('admin-edit-game')
+        let makeAdminContainer = document.getElementById('add-admin')
 
         if (target === "game") {
             gameContainer.style.display = "initial";
             resultsContainer.style.display = "none";    
             deactivateContainer.style.display = "none";
             editContainer.style.display = "none";
+            makeAdminContainer.style.display = "none";
         }
     
         if (target === "results") {
             gameContainer.style.display = "none";
             resultsContainer.style.display = "initial";
             deactivateContainer.style.display = "none"   
-            editContainer.style.display = "none"; 
+            editContainer.style.display = "none";
+            makeAdminContainer.style.display = "none";
         }
 
         if (target === "deactivate") {
@@ -295,6 +346,7 @@ const Admin = (props) => {
             resultsContainer.style.display = "none";
             deactivateContainer.style.display = "initial"   
             editContainer.style.display = "none"; 
+            makeAdminContainer.style.display = "none";
         }
 
         if (target === "edit") {
@@ -302,6 +354,15 @@ const Admin = (props) => {
             resultsContainer.style.display = "none";
             deactivateContainer.style.display = "none"   
             editContainer.style.display = "initial"; 
+            makeAdminContainer.style.display = "none";
+        }
+
+        if (target === "makeadmin") {
+            gameContainer.style.display = "none";
+            resultsContainer.style.display = "none";
+            deactivateContainer.style.display = "none"   
+            editContainer.style.display = "none"; 
+            makeAdminContainer.style.display = "initial";
         }
       }
 
@@ -312,6 +373,7 @@ const Admin = (props) => {
                 <span className="buttons" id="edit" onClick={showContainers}>EDIT GAMES</span>
                 <span className="buttons" id="results" onClick={showContainers}>ADD RESULTS</span>
                 <span className="buttons" id="deactivate" onClick={showContainers}>START NEW WEEK</span>
+                <span className="buttons" id="makeadmin" onClick={showContainers}>ADD ADMIN</span>
             </div>  
             <div id="admin-input-game">
                 <h1>INPUT GAME</h1>
@@ -340,14 +402,20 @@ const Admin = (props) => {
                                 <option value='18'>18</option>
                             </select>
                             <br />
-                            <label>Home Team:</label>
-                            <input id='input-game-hometeam' type='text' placeholder="Home Team"></input>
-                            <br />
                             <label>Away Team:</label>
                             <input id='input-game-awayteam' type='text' placeholder="Away Team"></input>
                             <br />
+                            <label>Home Team:</label>
+                            <input id='input-game-hometeam' type='text' placeholder="Home Team"></input>
+                            <br />
                             <label>Level:</label>
-                            <input id='input-game-level' type='text' placeholder="Level"></input>
+                            <select id='input-game-level'>
+                                <option value="NFL">NFL</option>
+                                <option value="NCAA">NCAA</option>
+                                <option value="MLB">MLB</option>
+                                <option value="NBA">NBA</option>
+                                <option value="NHL">NHL</option>
+                            </select>
                             <br />
                             <label>Date:</label>
                             <input id='input-game-date' type='date' placeholder="Date"></input>
@@ -365,15 +433,16 @@ const Admin = (props) => {
                                 <option value="second-half">Second Half</option>
                             </select>
                             <br />
-                            <label>Options:</label>
-                            <label>over</label>
+                            <label>Betting Options:</label>
+                            <br />
                             <input id='option1' type='checkbox' name='option' value='over'></input>
-                            <label>under</label>
+                            <label>over</label><br />
                             <input id='option2' type='checkbox' name='option' value='under'></input>
-                            <label>chalk</label>
+                            <label>under</label><br />
                             <input id='option3' type='checkbox' name='option' value='chalk'></input>
-                            <label>dog</label>
+                            <label>chalk</label><br />
                             <input id='option4' type='checkbox' name='option' value='dog'></input>
+                            <label>dog</label>
                             <br />
                             <label>Total Points:</label>
                             <input id='input-game-totalpoints' type='number' step='0.1' placeholder="Total Points"></input>
@@ -422,7 +491,7 @@ const Admin = (props) => {
                             <tr key={index}>
                                 <td id={`edit-awayteam-${index}`} contentEditable="true" suppressContentEditableWarning={true}>{game.awayteam}</td>
                                 <td id={`edit-hometeam-${index}`} contentEditable="true" suppressContentEditableWarning={true}>{game.hometeam}</td>
-                                <td contentEditable="true" suppressContentEditableWarning={true}>
+                                <td>
                                     <select id={`edit-level-${index}`}>
                                         <option value={game.level}>{game.level}</option>
                                         { game.level !== "NFL" ? <option value="NFL">NFL</option> : null}
@@ -432,7 +501,7 @@ const Admin = (props) => {
                                         { game.level !== "NHL" ? <option value="NHL">NHL</option> : null}
                                     </select>
                                 </td>
-                                <td contentEditable="true" suppressContentEditableWarning={true}>
+                                <td>
                                     <select id={`edit-week-${index}`}>
                                         <option value={game.week}>{game.week}</option>
                                         { game.week !== 1 ? <option value='1'>1</option> : null}
@@ -455,13 +524,13 @@ const Admin = (props) => {
                                         { game.week !== 18 ? <option value='18'>18</option> : null}
                                     </select>
                                 </td>
-                                <td  contentEditable="true" suppressContentEditableWarning={true}>
+                                <td>
                                     <input type='date' id={`edit-date-${index}`} defaultValue={game.date}></input>
                                 </td>
-                                <td id={`edit-time-${index}`} contentEditable="true" suppressContentEditableWarning={true}>
-                                    {convertTime(game.time)}
+                                <td>
+                                    <input type='time' id={`edit-time-${index}`} defaultValue={game.time}></input>
                                 </td>
-                                <td contentEditable="true" suppressContentEditableWarning={true}>
+                                <td>
                                     <select id={`edit-duration-${index}`}>
                                         <option value={game.duration}>{game.duration}</option>
                                         { game.duration !== "full-game" ? <option value="full-game">full-game</option> : null}
@@ -469,23 +538,23 @@ const Admin = (props) => {
                                         { game.duration !== "second-half" ? <option value="second-half">second-half</option> : null}
                                     </select>
                                 </td>
-                                <td  contentEditable="true" suppressContentEditableWarning={true}>
+                                <td>
                                     <input type='checkbox' defaultChecked={game.primetime ? true : false} id={`edit-primetime-${index}`}></input>
                                 </td>
-                                <td contentEditable="true" suppressContentEditableWarning={true}>
+                                <td>
                                     <input type='checkbox' defaultChecked={game.over ? true : false} id={`edit-over-${index}`}></input>
                                 </td>
-                                <td contentEditable="true" suppressContentEditableWarning={true}>
+                                <td>
                                     <input type='checkbox' defaultChecked={game.under ? true : false} id={`edit-under-${index}`}></input>
                                 </td>
-                                <td contentEditable="true" suppressContentEditableWarning={true}>
+                                <td>
                                     <input type='checkbox' defaultChecked={game.chalk ? true : false} id={`edit-chalk-${index}`}></input>
                                 </td>
-                                <td  contentEditable="true" suppressContentEditableWarning={true}>
+                                <td>
                                     <input type='checkbox' defaultChecked={game.dog ? true : false} id={`edit-dog-${index}`}></input>
                                 </td>
                                 <td id={`edit-totalpoints-${index}`} contentEditable="true" suppressContentEditableWarning={true}>{game.totalpoints}</td>
-                                <td contentEditable="true" suppressContentEditableWarning={true}>
+                                <td>
                                     <select id={`edit-favoredteam-${index}`}>
                                         <option value={game.favoredteam}>{game.favoredteam}</option>
                                         { game.favoredteam !== "home" ? <option value="home">home</option> : null}
@@ -559,6 +628,44 @@ const Admin = (props) => {
                 <label>What week number would you like to deactivate all of the games? </label>
                 <input id='weeknumber' placeholder="Week Number"></input>
                 <button type="button" onClick={deactivateWeek}>DEACTIVATE</button>
+            </div>
+            <div id='add-admin'>
+                <h2>MAKE SOMEONE ADMIN</h2>
+                <label>User Id:</label>
+                <input type="text" id="admin-user-id"></input>
+                <button type="button" onClick={makeAdmin}>MAKE ADMIN</button>
+                <br />
+                <br />
+                <table>
+                    <caption>ALL USERS</caption>
+                    <thead>
+                        <tr>
+                            <th>User Id</th>
+                            <th>Username</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Venmo</th>
+                            <th>Admin Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        { users.length ? users.map((user, index) => {
+                            return (
+                                <tr key={index}>
+                                    <td>{user.id}</td>
+                                    <td>{user.username}</td>
+                                    <td>{user.firstname}</td>
+                                    <td>{user.lastname}</td>
+                                    <td>{user.email}</td>
+                                    <td>{user.venmo}</td>
+                                    <td>{user.admin ? "True" : "False"}</td>
+                                </tr>
+                            )
+                        })
+                        : <tr><td>No users to display</td></tr>}
+                    </tbody>
+                </table>
             </div>
         </div>
     )

@@ -14,7 +14,6 @@ const Login = (props) => {
             username: userNameInput,
             password: password1Input
         };
-        
         await getUserToken(userData)
     }
     
@@ -63,7 +62,8 @@ const Login = (props) => {
                     </div>
                 </form>
             </div>
-            <Link to="/register" onClick={() => {setUpdate(!update)}}>REGISTER</Link>
+            <br />
+            <Link to="/register" onClick={() => {setUpdate(!update)}}>Don't have a log in? Click here to register!</Link>
         </div>
     )
 }

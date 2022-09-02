@@ -27,6 +27,15 @@ export async function fetchAllPicks() {
     }
 }
 
+export async function fetchAllParlays() {
+    try {
+        const { data } = await axios.get("https://floating-stream-77094.herokuapp.com/api/parlays")
+        return data.parlayPicks;
+    } catch (err) {
+        throw err;
+    }
+}
+
 export async function fetchAllWeeklyPicks() {
     try {
         const { data } = await axios.get("https://floating-stream-77094.herokuapp.com/api/picks/weeklyPicks")
@@ -40,6 +49,15 @@ export async function fetchUserStats() {
     try {
         const { data } = await axios.get("https://floating-stream-77094.herokuapp.com/api/users/stats")
         return data.usersStats
+    } catch (err) {
+        throw err
+    }
+}
+
+export async function getGameById(gameId) {
+    try {
+        const { data } = await axios.get(`https://floating-stream-77094.herokuapp.com/api/games/${gameId}`)
+        return data.game
     } catch (err) {
         throw err
     }
