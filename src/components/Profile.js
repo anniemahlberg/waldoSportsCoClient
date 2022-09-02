@@ -166,6 +166,22 @@ const Profile = (props) => {
         .catch(console.error)         
     }
 
+    async function deleteParlay(parlayId) {
+        await fetch(`${API_URL}/parlays/deleteParlay/${parlayId}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.json())
+        .then(result => {
+            setAlertMessage(result.message)
+            showAlert()
+            setUpdate(!update)
+        })
+        .catch(console.error)         
+    }
+
     async function checkTime(gameid, index) {
         const game = await getGameById(gameid);
         const currentDate = new Date()
@@ -344,7 +360,10 @@ const Profile = (props) => {
                                 </tr>
                             </tbody>
                         </table>
-                        <button id="parlay1-button">DELETE PARLAY</button>
+                        <button id="parlay1-button" onClick={() => {
+                            const parlay1 = myParlays.filter(parlay => parlay.parlaynumber === 1)
+                            parlay1.forEach((parlay => deleteParlay(parlay.id)))
+                            }}>DELETE PARLAY</button>
                     </> : null}
                     { myParlays.filter(parlay => parlay.parlaynumber === 2).length ? <>
                         <table>
@@ -367,7 +386,10 @@ const Profile = (props) => {
                                 </tr>
                             </tbody>
                         </table>
-                        <button>DELETE PARLAY</button>
+                        <button id="parlay2-button" onClick={() => {
+                            const parlay2 = myParlays.filter(parlay => parlay.parlaynumber === 2)
+                            parlay2.forEach((parlay => deleteParlay(parlay.id)))
+                            }}>DELETE PARLAY</button>
                     </> : null}
                 </> : <p>You have not made any parlays!</p> }
             </div>
