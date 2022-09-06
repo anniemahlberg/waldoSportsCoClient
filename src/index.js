@@ -153,6 +153,7 @@ const App = () => {
                         myParlays={myParlays}
                         setMyParlays={setMyParlays}
                         token={token}
+                        users={users}
                     />
                 </>} />
             </Routes>

@@ -292,9 +292,8 @@ const Admin = (props) => {
         .catch(console.error)
     }
 
-    async function makeAdmin() {
-        const userId = document.getElementById('admin-user-id').value
-        await fetch(`${API_URL}/users/${userId}`, {
+    async function makeAdmin(userid) {
+        await fetch(`${API_URL}/users/${userid}`, {
             method: "PATCH",
             headers: {
                 'Content-Type': 'application/json',
@@ -306,7 +305,29 @@ const Admin = (props) => {
         }).then(response => response.json())
         .then(result => {
             if (!result.name) {
-                setAlertMessage(`You have made the user with user id: ${userId} an admin!`)
+                setAlertMessage(`You have made the user with user id: ${userid} an admin!`)
+                showAlert()
+                setUpdate(!update)
+            } else {
+                setAlertMessage(result.message);
+                showAlert()
+            }
+        })
+        .catch(console.error)
+    }
+
+    async function deleteUser(userid) {
+        await fetch(`${API_URL}/users/${userid}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.json())
+        .then(result => {
+            console.log(result)
+            if (!result.name) {
+                setAlertMessage(result.message)
                 showAlert()
                 setUpdate(!update)
             } else {
@@ -373,7 +394,7 @@ const Admin = (props) => {
                 <span className="buttons" id="edit" onClick={showContainers}>EDIT GAMES</span>
                 <span className="buttons" id="results" onClick={showContainers}>ADD RESULTS</span>
                 <span className="buttons" id="deactivate" onClick={showContainers}>START NEW WEEK</span>
-                <span className="buttons" id="makeadmin" onClick={showContainers}>ADD ADMIN</span>
+                <span className="buttons" id="makeadmin" onClick={showContainers}>EDIT USERS</span>
             </div>  
             <div id="admin-input-game">
                 <h1>INPUT GAME</h1>
@@ -435,13 +456,13 @@ const Admin = (props) => {
                             <br />
                             <label>Betting Options:</label>
                             <br />
-                            <input id='option1' type='checkbox' name='option' value='over'></input>
+                            <input id='option1' type='checkbox' name='option' value='over' defaultChecked={true}></input>
                             <label>over</label><br />
-                            <input id='option2' type='checkbox' name='option' value='under'></input>
+                            <input id='option2' type='checkbox' name='option' value='under' defaultChecked={true}></input>
                             <label>under</label><br />
-                            <input id='option3' type='checkbox' name='option' value='chalk'></input>
+                            <input id='option3' type='checkbox' name='option' value='chalk' defaultChecked={true}></input>
                             <label>chalk</label><br />
-                            <input id='option4' type='checkbox' name='option' value='dog'></input>
+                            <input id='option4' type='checkbox' name='option' value='dog' defaultChecked={true}></input>
                             <label>dog</label>
                             <br />
                             <label>Total Points:</label>
@@ -630,12 +651,7 @@ const Admin = (props) => {
                 <button type="button" onClick={deactivateWeek}>DEACTIVATE</button>
             </div>
             <div id='add-admin'>
-                <h2>MAKE SOMEONE ADMIN</h2>
-                <label>User Id:</label>
-                <input type="text" id="admin-user-id"></input>
-                <button type="button" onClick={makeAdmin}>MAKE ADMIN</button>
-                <br />
-                <br />
+                <h2>EDIT USERS</h2>
                 <table>
                     <caption>ALL USERS</caption>
                     <thead>
@@ -660,6 +676,8 @@ const Admin = (props) => {
                                     <td>{user.email}</td>
                                     <td>{user.venmo}</td>
                                     <td>{user.admin ? "True" : "False"}</td>
+                                    <td><button type="button" onClick={() => {makeAdmin(user.id)}}>MAKE ADMIN</button></td>
+                                    <td><button type="button" onClick={() => {deleteUser(user.id)}}>DELETE</button></td>
                                 </tr>
                             )
                         })

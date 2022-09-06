@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { fetchAllParlays, fetchAllPicks, fetchUserStats, getGameById } from "../axios-services";
 import "../style/profile.css"
 import { showAlert } from "./Alert";
@@ -6,8 +6,11 @@ import { showAlert } from "./Alert";
 const API_URL = 'https://floating-stream-77094.herokuapp.com/api'
 
 const Profile = (props) => {
-    const {myPicks, setMyPicks, myWeekly, setMyWeekly, setPicks, user, weeklyPicks, update, setUserStats, myStats, setMyStats, setParlays, myParlays, setMyParlays, token, setUpdate, setAlertMessage } = props;
+    const {myPicks, setMyPicks, myWeekly, setMyWeekly, setPicks, user, weeklyPicks, update, setUserStats, myStats, setMyStats, setParlays, myParlays, setMyParlays, token, setUpdate, setAlertMessage, users } = props;
     let total = 0;
+    let parlay1total = 0;
+    let parlay2total = 0;
+    const me = users.find(thisuser => thisuser.username === user.username)
 
     useEffect(() => {
         const getMyPicks = async () => {
@@ -65,6 +68,7 @@ const Profile = (props) => {
         let picksContainer = document.getElementById("mypicks");
         let editPicksContainer = document.getElementById("editmypicks");
         let editParlaysContainer = document.getElementById("editmyparlays");
+        let editInfoContainer = document.getElementById("editmyinfo")
 
         if (target === "season-stats") {
             statsContainer.style.display = "none";
@@ -72,6 +76,7 @@ const Profile = (props) => {
             seasonStatsContainer.style.display = "initial";  
             editPicksContainer.style.display = "none";
             editParlaysContainer.style.display = "none";
+            editInfoContainer.style.display = "none"
         }
 
         if (target === "stats") {
@@ -80,7 +85,7 @@ const Profile = (props) => {
             seasonStatsContainer.style.display = "none";  
             editPicksContainer.style.display = "none";
             editParlaysContainer.style.display = "none";
-
+            editInfoContainer.style.display = "none"
         }
     
         if (target === "picks") {
@@ -89,7 +94,7 @@ const Profile = (props) => {
             seasonStatsContainer.style.display = "none";
             editPicksContainer.style.display = "none";    
             editParlaysContainer.style.display = "none";
-
+            editInfoContainer.style.display = "none"
         }
 
         if (target === "edit-mypicks") {
@@ -97,17 +102,17 @@ const Profile = (props) => {
             picksContainer.style.display = "none";  
             seasonStatsContainer.style.display = "none";
             editPicksContainer.style.display = "initial";  
-            editParlaysContainer.style.display = "none";
-  
+            editParlaysContainer.style.display = "initial";
+            editInfoContainer.style.display = "none"
         }
 
-        if (target === "edit-myparlays") {
+        if (target === "edit-myinfo") {
             statsContainer.style.display = "none";
             picksContainer.style.display = "none";  
             seasonStatsContainer.style.display = "none";
             editPicksContainer.style.display = "none";  
-            editParlaysContainer.style.display = "initial";
-  
+            editParlaysContainer.style.display = "none";
+            editInfoContainer.style.display = "initial"
         }
     }
 
@@ -189,7 +194,7 @@ const Profile = (props) => {
             timeZone: 'America/Chicago'
         }))        
         const parlay1button = document.getElementById("parlay1-button")
-        const parlay2button = document.getElementById("parlays2-button")
+        const parlay2button = document.getElementById("parlay2-button")
 
         if (index !== undefined && currentDate > comparedDate) {
             if (document.getElementById(`edit-button-${index}`)) {
@@ -207,6 +212,97 @@ const Profile = (props) => {
         }
     }
 
+    function updateParlayTotal() {
+        const parlay1 = myParlays.filter(parlay => parlay.parlaynumber === 1)
+        let onepointswon = 0;
+        let onepointslost = 0;
+        let oneparlayshit = 0;
+        let onetbd = false
+
+        if (parlay1.length === 2) {
+            onepointswon = 4
+            onepointslost = -2
+        } else if (parlay1.length === 3) {
+            onepointswon = 10
+            onepointslost = -3
+        } else if (parlay1.length === 4) {
+            onepointswon = 20
+            onepointslost = -4
+        }
+
+        parlay1.forEach((parlay) => {
+            if (!parlay.statsupdated) {
+                onetbd = true
+                return
+            } else if (parlay.result === "HIT") {
+                oneparlayshit++
+            }
+        })
+
+        if (oneparlayshit === parlay1.length && !onetbd) {
+            parlay1total = onepointswon
+        } else if (!onetbd) {
+            parlay1total = onepointslost
+        } else {
+            parlay1total = 0;
+        }
+
+        const parlay2 = myParlays.filter(parlay => parlay.parlaynumber === 2)
+        let twopointswon = 4;
+        let twopointslost = -2;
+        let twoparlayshit = 0;
+        let twotbd = false
+
+        parlay2.forEach((parlay) => {
+            if (!parlay.statsupdated) {
+                twotbd = true
+                return
+            } else if (parlay.result === "HIT") {
+                twoparlayshit++
+            }
+        })
+
+        if (twoparlayshit === parlay2.length && !twotbd) {
+            parlay2total = twopointswon
+        } else if (!twotbd) {
+            parlay2total = twopointslost
+        } else {
+            parlay2total = 0
+        }
+        
+    }
+
+    async function editMe() {
+        const username = document.getElementById("me-username").innerText
+        const firstname = document.getElementById("me-firstname").innerText
+        const lastname = document.getElementById("me-lastname").innerText
+        const email = document.getElementById("me-email").innerText
+        const venmo = document.getElementById("me-venmo").innerText
+
+        await fetch(`${API_URL}/users/${me.id}`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                username, firstname, lastname, email, venmo
+            })
+        }).then(response => response.json())
+        .then(result => {
+            console.log(result)
+            if (!result.name) {
+                setAlertMessage("You have updated your user information!")
+                sessionStorage.setItem('username', result.user.username)
+                showAlert()
+                setUpdate(!update)
+            } else {
+                setAlertMessage(result.message);
+                showAlert()
+            }
+        })
+        .catch(console.error)
+    }
 
     return (
         <div id="profile-container">
@@ -216,7 +312,7 @@ const Profile = (props) => {
                 <span className="buttons" id="stats" onClick={showContainers}>MY WEEKS STATS</span>
                 <span className="buttons" id="picks" onClick={showContainers}>MY PICKS</span>
                 <span className="buttons" id="edit-mypicks" onClick={showContainers}>EDIT MY PICKS</span>
-                <span className="buttons" id="edit-myparlays" onClick={showContainers}>EDIT MY PARLAYS</span>
+                <span className="buttons" id="edit-myinfo" onClick={showContainers}>EDIT MY INFO</span>
             </div>
             <br />
             <div id='myseasonstats'>
@@ -227,6 +323,7 @@ const Profile = (props) => {
                         <tr>
                             <th>Bet Record</th>
                             <th>Lock Record</th>
+                            <th>Parlay Record</th>
                             <th>Total Points</th>
                         </tr>
                     </thead>
@@ -235,6 +332,7 @@ const Profile = (props) => {
                             <tr>
                                 <td>{myStats.betscorrect}-{myStats.totalbets}</td>
                                 <td>{myStats.lockscorrect}-{myStats.totallocks}</td>
+                                <td>{myStats.parlayscorrect}-{myStats.totalparlays}</td>
                                 <td>{myStats.totalpoints}</td>
                             </tr>
                         : <tr><td>No stats to display</td></tr>}
@@ -249,6 +347,7 @@ const Profile = (props) => {
                         <tr>
                             <th>Bet Record</th>
                             <th>Lock Record</th>
+                            <th>Parlay Record</th>
                             <th>Total Points</th>
                         </tr>
                     </thead>
@@ -257,6 +356,7 @@ const Profile = (props) => {
                                 <tr>
                                     <td>{myWeekly.betscorrect}-{myWeekly.totalbets}</td>
                                     <td>{myWeekly.lockscorrect}-{myWeekly.totallocks}</td>
+                                    <td>{myWeekly.parlayscorrect}-{myWeekly.totalparlays}</td>
                                     <td>{myWeekly.totalpoints}</td>
                                 </tr>
                         : user.username ? <tr><td>You do not have any stats yet to show</td></tr> : <tr><td>You must be logged in to see your stats</td></tr>}
@@ -300,6 +400,50 @@ const Profile = (props) => {
                         </tbody>
                     </table>
                 </> : <p>You have not made any picks yet!</p>}
+                <h2>MY PARLAYS</h2>
+                { myParlays.length ?
+                <table>
+                    <caption>MY PARLAYS</caption>
+                    <tbody>
+                        { myParlays.filter(parlay => parlay.parlaynumber === 1).length ? 
+                            <tr>
+                                <th>Parlay 1</th>
+                                {myParlays.map((parlay, index) => {
+                                    updateParlayTotal()
+                                    if (parlay.parlaynumber === 1) {
+                                        return (
+                                            <React.Fragment key={index}>
+                                                <td>{parlay.text}</td>
+                                                <td>{parlay.result}</td>
+                                            </React.Fragment>
+                                        )
+                                    }
+                                })}
+                                <th>Points Awarded</th>
+                                <td>{parlay1total}</td>
+                            </tr>
+                        : null}
+                        { myParlays.filter(parlay => parlay.parlaynumber === 2).length ? 
+                            <tr>
+                                <th>Parlay 2</th>
+                                {myParlays.map((parlay, index) => {
+                                    if (parlay.parlaynumber === 2) {
+                                        updateParlayTotal()
+                                        return (
+                                            <React.Fragment key={index}>
+                                                <td>{parlay.text}</td>
+                                                <td>{parlay.result}</td>
+                                            </React.Fragment>
+                                        )
+                                    }
+                                })}
+                                <th>Points Awarded</th>
+                                <td>{parlay2total}</td>
+                            </tr>
+                        : null}
+                    </tbody>
+                </table>
+                : <p>You have not made any parlays yet!</p>}
             </div>
             <div id="editmypicks">
                 <h2>EDIT MY PICKS</h2>
@@ -377,6 +521,7 @@ const Profile = (props) => {
                             <tbody>
                                 <tr>
                                 { user.username && myParlays.length ? myParlays.map((parlay, idx3) => {
+                                    checkTime(parlay.gameid)
                                     if (parlay.parlaynumber === 2) {
                                         return (
                                                 <td key={idx3}>{parlay.text}</td>
@@ -392,6 +537,33 @@ const Profile = (props) => {
                             }}>DELETE PARLAY</button>
                     </> : null}
                 </> : <p>You have not made any parlays!</p> }
+            </div>
+            <div id="editmyinfo">
+                <h2>EDIT MY INFO</h2>
+                {me ? 
+                <table>
+                    <caption>My Info</caption>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Venmo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="me-username" contentEditable="true" suppressContentEditableWarning={true}>{me.username}</td>
+                            <td id="me-firstname" contentEditable="true" suppressContentEditableWarning={true}>{me.firstname}</td>
+                            <td id="me-lastname" contentEditable="true" suppressContentEditableWarning={true}>{me.lastname}</td>
+                            <td id="me-email" contentEditable="true" suppressContentEditableWarning={true}>{me.email}</td>
+                            <td id="me-venmo" contentEditable="true" suppressContentEditableWarning={true}>{me.venmo}</td>
+                            <td><button type="button" onClick={editMe}>EDIT</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                : <div>No user to display</div>}
             </div>
         </div>
     )

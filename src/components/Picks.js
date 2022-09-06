@@ -501,7 +501,7 @@ const Picks = (props) => {
                                 <h3 className="matchup">{game.awayteam} @ {game.hometeam}</h3>
                                 : <h3 className="singleteam">{game.hometeam}</h3>}
                                 <h5 className="level" id={`level-${idx}`}>{game.level}</h5>
-                                {game.date ? <h5 className="date">Date: {dateFormat(`${game.date} ${game.time}`, 'fullDate')}</h5> : null}
+                                {game.date ? <h5 className="date">Date: {dateFormat(new Date(`${game.date} ${game.time}`), 'fullDate')}</h5> : null}
                                 {game.time ? <h5 className="time">Time: {convertTime(game.time)} CT</h5> : null}
                                 {game.primetime ? <h5>PRIMETIME</h5> : null}
                                 {checkTime(game.date, game.time) === true ? <h5>GAME DISABLED</h5> : null }
@@ -509,17 +509,17 @@ const Picks = (props) => {
                             <div className="spread">
                                 { game.awayteam && game.hometeam && game.favoredteam === 'home' ? <>
                                     { game.dog ? <><input type='checkbox' id={`dog-${idx}`} name={`spread-${idx}`} onChange={() => onlyOne(`dog-${idx}`, `spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
-                                    <label id={`label-dog-${idx}`}>{game.awayteam} +{game.line}</label></> : null}
+                                    <label id={`label-dog-${idx}`}>+{game.line}</label></> : null}
                                     { game.chalk ? <><input type='checkbox' id={`chalk-${idx}`} name={`spread-${idx}`} onChange={() => onlyOne(`chalk-${idx}`, `spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
-                                    <label id={`label-chalk-${idx}`}>{game.hometeam} -{game.line}</label></> : null}
+                                    <label id={`label-chalk-${idx}`}>-{game.line}</label></> : null}
                                     { game.dog || game.chalk ? <><input type='checkbox' id={`spreadlock-${idx}`} name={`spreadlock-${idx}`} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
                                     <label id={`label-spreadlock-${idx}`}>LOCK</label> </> : null}
                                     </> : null}
                                 { game.awayteam && game.hometeam && game.favoredteam === 'away' ? <>
                                     { game.chalk ? <><input type='checkbox' id={`chalk-${idx}`} name={`spread-${idx}`} onChange={() => onlyOne(`chalk-${idx}`, `spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
-                                    <label id={`label-chalk-${idx}`}>{game.awayteam} -{game.line}</label></> : null}
+                                    <label id={`label-chalk-${idx}`}>-{game.line}</label></> : null}
                                     { game.dog ? <><input type='checkbox' id={`dog-${idx}`} name={`spread-${idx}`} onChange={() => onlyOne(`dog-${idx}`, `spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
-                                    <label id={`label-dog-${idx}`}>{game.hometeam} +{game.line}</label></> : null}
+                                    <label id={`label-dog-${idx}`}>+{game.line}</label></> : null}
                                     { game.dog || game.chalk ? <><input type='checkbox' id={`spreadlock-${idx}`} name={`spreadlock-${idx}`} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
                                     <label id={`label-spreadlock-${idx}`}>LOCK</label> </> :null}
                                     </> : null}
@@ -570,7 +570,7 @@ const Picks = (props) => {
                                     <h3 className="matchup">{game.awayteam} @ {game.hometeam}</h3>
                                     : <h3 className="singleteam">{game.hometeam}</h3>}
                                     <h5 className="level" id={`level-${idx}`}>{game.level}</h5>
-                                    {game.date ? <h5 className="date">Date: {dateFormat(`${game.date} ${game.time}`, 'fullDate')}</h5> : null}
+                                    {game.date ? <h5 className="date">Date: {dateFormat(new Date(`${game.date} ${game.time}`), 'fullDate')}</h5> : null}
                                     {game.time ? <h5 className="time">Time: {convertTime(game.time)} CT</h5> : null}
                                     {game.primetime ? <h5>PRIMETIME</h5> : null}
                                     {checkTime(game.date, game.time) === true ? <h5>GAME DISABLED</h5> : null }
@@ -616,7 +616,7 @@ const Picks = (props) => {
                                     <h3 className="matchup">{game.awayteam} @ {game.hometeam}</h3>
                                     : <h3 className="singleteam">{game.hometeam}</h3>}
                                     <h5 className="level">{game.level}</h5>
-                                    {game.date ? <h5 className="date">Date: {dateFormat(`${game.date} ${game.time}`, 'fullDate')}</h5> : null}
+                                    {game.date ? <h5 className="date">Date: {dateFormat(new Date(`${game.date} ${game.time}`), 'fullDate')}</h5> : null}
                                     {game.time ? <h5 className="time">Time: {convertTime(game.time)} CT</h5> : null}
                                     {game.primetime ? <h5>PRIMETIME</h5> : null}
                                     {checkTime(game.date, game.time) === true ? <h5>GAME DISABLED</h5> : null }

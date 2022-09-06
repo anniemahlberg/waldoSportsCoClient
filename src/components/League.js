@@ -100,10 +100,74 @@ const League = (props) => {
             </div>
             <div id="weeklypicks">
                 { weeklyPicks.length ? weeklyPicks.map((weeklyPick, idx) => {
-                    let total = 0;
+                    let parlay1total = 0;
+                    let parlay2total = 0;
+
+                    function updateParlayTotal(weeklyid) {
+                        const parlay1 = parlays.filter(parlay => parlay.parlaynumber === 1 && parlay.weeklyid === weeklyid)
+                        let onepointswon = 0;
+                        let onepointslost = 0;
+                        let oneparlayshit = 0;
+                        let onetbd = false
+                
+                        if (parlay1.length === 2) {
+                            onepointswon = 4
+                            onepointslost = -2
+                        } else if (parlay1.length === 3) {
+                            onepointswon = 10
+                            onepointslost = -3
+                        } else if (parlay1.length === 4) {
+                            onepointswon = 20
+                            onepointslost = -4
+                        }
+                
+                        parlay1.forEach((parlay) => {
+                            if (!parlay.statsupdated) {
+                                onetbd = true
+                                return
+                            } else if (parlay.result === "HIT") {
+                                oneparlayshit++
+                            }
+                        })
+                
+                        if (oneparlayshit === parlay1.length && !onetbd) {
+                            parlay1total = onepointswon
+                        } else if (!onetbd) {
+                            parlay1total = onepointslost
+                        } else {
+                            parlay1total = 0;
+                        }
+                
+                        const parlay2 = parlays.filter(parlay => parlay.parlaynumber === 2 && parlay.weeklyid === weeklyid)
+                        let twopointswon = 4;
+                        let twopointslost = -2;
+                        let twoparlayshit = 0;
+                        let twotbd = false
+
+                        parlay2.forEach((parlay) => {
+                            if (!parlay.statsupdated) {
+                                twotbd = true
+                                return
+                            } else if (parlay.result === "HIT") {
+                                twoparlayshit++
+                            }
+                        })
+                
+                        if (twoparlayshit === parlay2.length && !twotbd) {
+                            parlay2total = twopointswon
+                        } else if (!twotbd) {
+                            parlay2total = twopointslost
+                        } else {
+                            parlay2total = 0
+                        }
+                        
+                    }
+
+                    updateParlayTotal(weeklyPick.id)
+
                     return (
                     <React.Fragment key={idx}>
-                    <button type="button" className="collapsible" onClick={() => collapsible(idx)}>{weeklyPick.username}'s Picks</button>
+                    <button type="button" className="collapsible" onClick={() => collapsible(idx)}>{weeklyPick.username}'s Picks --- Total Points: {weeklyPick.totalpoints}</button>
                     <div key={idx} className="weeklyPick-content" id={`content-${idx}`}>
                         { picks.filter(pick => pick.weeklyid === weeklyPick.id).length ? <>
                             <table>
@@ -120,7 +184,6 @@ const League = (props) => {
                                 <tbody>
                                     { picks ? picks.map((pick, index) => {
                                         if (pick.weeklyid === weeklyPick.id) {
-                                            total+=pick.pointsawarded
                                             return (
                                                 <tr key={index}>
                                                     <td key={'pick' + index}>{pick.text}</td>
@@ -134,13 +197,6 @@ const League = (props) => {
                                             return null
                                         }
                                     }): <tr><td>{weeklyPick.username} has not made any picks yet.</td></tr>}
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <th>Total Points</th>
-                                        <td>{total}</td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </> : null }
@@ -162,6 +218,8 @@ const League = (props) => {
                                                     return null
                                                 }
                                             }): <td>{weeklyPick.username} has not made any picks yet.</td>}
+                                        <th>Points Awarded</th>
+                                        <td>{parlay1total}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -182,10 +240,13 @@ const League = (props) => {
                                                     return null
                                                 }
                                             }): <td>{weeklyPick.username} has not made any picks yet.</td>}
+                                        <th>Points Awarded</th>
+                                        <td>{parlay2total}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </> : null}
+                        <h2>TOTAL POINTS: {weeklyPick.totalpoints}</h2>
                     </div>
                     </React.Fragment>)
                 }) : <div>No picks to display</div> }
