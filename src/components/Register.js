@@ -46,8 +46,8 @@ const Register = (props) => {
         
         if (usernameInput === "" || password1Input === "" || password2Input === "" || firstnameInput === "" || lastnameInput === "" || emailInput === "" || venmoInput === "") {
             setAlertMessage("Make sure to fill out each field.");
-        } else if (usernameInput.length < 6 || password1Input.length < 6) {
-            setAlertMessage("Username and password must be at least 6 characters long.")
+        } else if (password1Input.length < 6) {
+            setAlertMessage("Password must be at least 6 characters long.")
         } else if (password1Input === password2Input) {
             userData = {
                 username: usernameInput,

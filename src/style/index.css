@@ -1,7 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;600&display=swap');
 #alert-container {
     padding: 20px;
     background-color: black;
-    color: white;
+    color: rgb(227, 166, 239);
     display: none;
     width: fit-content;
     margin: auto;
@@ -11,6 +12,131 @@
     right: 0;
 }
 
+body {
+    font-family: 'Quicksand', sans-serif;
+}
+
+.header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.header-link {
+    color: black;
+    text-decoration: none;
+}
+
 nav > * {
     padding: 10px;
+}
+
+#logo {
+    width: 300px;
+}
+
+/* ALL NAVIGATION BARS */
+
+#hamburger, .mobilenav {
+    display: none;
+}
+
+
+.buttons-div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: black;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+.secondary-buttons-div {
+    border-top: 1.5px solid rgba(255, 255, 255, 0.381);
+    display: flex;
+    background-color: black;
+    margin: 0px;
+}
+
+.buttons {
+    color: white;
+    margin: 10px;
+    border: solid white 1px;
+    padding: 5px;
+}
+
+/* ALL TABLES */
+table {
+    margin: 10px auto;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+table caption {
+    background-color: rgb(114, 28, 168);
+    color: white;
+    font-size: 30px;
+    padding: 8px;
+}
+
+table th, td {
+    border-top: 1px solid rgb(114, 28, 168);
+    padding: 8px;
+}
+
+table th {
+    text-align: left;
+    font-weight: 600;
+}
+
+table td {
+    text-align: center;
+}
+
+.mobiletable {
+    display: none;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+    .nav {
+        display: none;
+    }
+
+    #myLinks {
+        text-align: right;
+        overflow: hidden;
+        background-color: rgba(155, 148, 148, 0.893);
+        position: absolute;
+        right: 0;
+        top: 90px;
+        display: none;
+        margin: auto;
+        font-size: 25px;
+        z-index: 1;
+        padding: 5px;
+    }
+
+    #myLinks > * {
+        padding: 8px;
+    }
+
+    #hamburger {
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 5px;
+        width: 80px;
+    }
+
+    .computertable {
+        display: none
+    }
+
+    .mobiletable {
+        display: initial;
+    }
+
+    .table {
+        overflow-x: auto;
+    }
 }

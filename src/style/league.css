@@ -1,14 +1,3 @@
-.buttons {
-    border: 1px solid black;
-    border-radius: 15px;
-    padding: 10px;
-    margin: 10px;
-}
-
-.buttons:hover {
-    cursor: pointer;
-}
-
 #seasonstats, #weeklyleaderboard, #weeklypicks {
     display: none;
 }

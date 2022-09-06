@@ -1,0 +1,33 @@
+#home {
+    background-color: black;
+    color: white;
+    width: 75%;
+    padding: 90px;
+    margin: 25px auto;
+}
+
+#quote {
+    font-size: 70px;
+    text-align: right;
+}
+
+#author {
+    font-size: 30px;
+    text-align: right;
+    color: rgb(227, 166, 239);
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+    #home {
+        margin: 15px auto;
+        padding: 45px;
+    }
+    
+    #quote {
+        font-size: 50px;
+    }
+
+    #author {
+        font-size: 20px;
+    }
+}

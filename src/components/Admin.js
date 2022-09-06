@@ -389,15 +389,15 @@ const Admin = (props) => {
 
     return (
         <div id='admin-container'> 
-            <div>
-                <span className="buttons" id="game" onClick={showContainers}>ADD GAME</span>
-                <span className="buttons" id="edit" onClick={showContainers}>EDIT GAMES</span>
-                <span className="buttons" id="results" onClick={showContainers}>ADD RESULTS</span>
-                <span className="buttons" id="deactivate" onClick={showContainers}>START NEW WEEK</span>
-                <span className="buttons" id="makeadmin" onClick={showContainers}>EDIT USERS</span>
+            <div className="buttons-div">
+                <span className="buttons" id="game" onClick={showContainers}>ADD</span>
+                <span className="buttons" id="edit" onClick={showContainers}>EDIT</span>
+                <span className="buttons" id="results" onClick={showContainers}>RESULTS</span>
+                <span className="buttons" id="deactivate" onClick={showContainers}>NEW WEEK</span>
+                <span className="buttons" id="makeadmin" onClick={showContainers}>USERS</span>
             </div>  
             <div id="admin-input-game">
-                <h1>INPUT GAME</h1>
+                <h1>ADD GAME</h1>
                 <div id="form-container">
                     <form id='input-game-form'>
                         <div className="inputs">
@@ -485,111 +485,113 @@ const Admin = (props) => {
                 </div>
             </div> 
             <div id="admin-edit-game">
-                <h1>EDIT GAMES</h1>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>AWAY TEAM</th>
-                            <th>HOME TEAM</th>
-                            <th>LEVEL</th>
-                            <th>WEEK</th>
-                            <th>DATE</th>
-                            <th>TIME</th>
-                            <th>DURATION</th>
-                            <th>PRIMETIME</th>
-                            <th>OVER</th>
-                            <th>UNDER</th>
-                            <th>CHALK</th>
-                            <th>DOG</th>
-                            <th>TOTAL POINTS</th>
-                            <th>FAVORED TEAM</th>
-                            <th>LINE</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {games ? games.map((game, index) => {
-                        return (
-                            <tr key={index}>
-                                <td id={`edit-awayteam-${index}`} contentEditable="true" suppressContentEditableWarning={true}>{game.awayteam}</td>
-                                <td id={`edit-hometeam-${index}`} contentEditable="true" suppressContentEditableWarning={true}>{game.hometeam}</td>
-                                <td>
-                                    <select id={`edit-level-${index}`}>
-                                        <option value={game.level}>{game.level}</option>
-                                        { game.level !== "NFL" ? <option value="NFL">NFL</option> : null}
-                                        { game.level !== "NCAA" ? <option value="NCAA">NCAA</option> : null}
-                                        { game.level !== "MLB" ? <option value="MLB">MLB</option> : null}
-                                        { game.level !== "NBA" ? <option value="NBA">NBA</option> : null}
-                                        { game.level !== "NHL" ? <option value="NHL">NHL</option> : null}
-                                    </select>
-                                </td>
-                                <td>
-                                    <select id={`edit-week-${index}`}>
-                                        <option value={game.week}>{game.week}</option>
-                                        { game.week !== 1 ? <option value='1'>1</option> : null}
-                                        { game.week !== 2 ? <option value='2'>2</option> : null}
-                                        { game.week !== 3 ? <option value='3'>3</option> : null}
-                                        { game.week !== 4 ? <option value='4'>4</option> : null}
-                                        { game.week !== 5 ? <option value='5'>5</option> : null}
-                                        { game.week !== 6 ? <option value='6'>6</option> : null}
-                                        { game.week !== 7 ? <option value='7'>7</option> : null}
-                                        { game.week !== 8 ? <option value='8'>8</option> : null}
-                                        { game.week !== 9 ? <option value='9'>9</option> : null}
-                                        { game.week !== 10 ? <option value='10'>10</option> : null}
-                                        { game.week !== 11 ? <option value='11'>11</option> : null}
-                                        { game.week !== 12 ? <option value='12'>12</option> : null}
-                                        { game.week !== 13 ? <option value='13'>13</option> : null}
-                                        { game.week !== 14 ? <option value='14'>14</option> : null}
-                                        { game.week !== 15 ? <option value='15'>15</option> : null}
-                                        { game.week !== 16 ? <option value='16'>16</option> : null}
-                                        { game.week !== 17 ? <option value='17'>17</option> : null}
-                                        { game.week !== 18 ? <option value='18'>18</option> : null}
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type='date' id={`edit-date-${index}`} defaultValue={game.date}></input>
-                                </td>
-                                <td>
-                                    <input type='time' id={`edit-time-${index}`} defaultValue={game.time}></input>
-                                </td>
-                                <td>
-                                    <select id={`edit-duration-${index}`}>
-                                        <option value={game.duration}>{game.duration}</option>
-                                        { game.duration !== "full-game" ? <option value="full-game">full-game</option> : null}
-                                        { game.duration !== "first-half" ? <option value="first-half">first-half</option> : null}
-                                        { game.duration !== "second-half" ? <option value="second-half">second-half</option> : null}
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type='checkbox' defaultChecked={game.primetime ? true : false} id={`edit-primetime-${index}`}></input>
-                                </td>
-                                <td>
-                                    <input type='checkbox' defaultChecked={game.over ? true : false} id={`edit-over-${index}`}></input>
-                                </td>
-                                <td>
-                                    <input type='checkbox' defaultChecked={game.under ? true : false} id={`edit-under-${index}`}></input>
-                                </td>
-                                <td>
-                                    <input type='checkbox' defaultChecked={game.chalk ? true : false} id={`edit-chalk-${index}`}></input>
-                                </td>
-                                <td>
-                                    <input type='checkbox' defaultChecked={game.dog ? true : false} id={`edit-dog-${index}`}></input>
-                                </td>
-                                <td id={`edit-totalpoints-${index}`} contentEditable="true" suppressContentEditableWarning={true}>{game.totalpoints}</td>
-                                <td>
-                                    <select id={`edit-favoredteam-${index}`}>
-                                        <option value={game.favoredteam}>{game.favoredteam}</option>
-                                        { game.favoredteam !== "home" ? <option value="home">home</option> : null}
-                                        { game.favoredteam !== "away" ? <option value="away">away</option> : null}
-                                    </select>
-                                </td>
-                                <td id={`edit-line-${index}`} contentEditable="true" suppressContentEditableWarning={true}>{game.line}</td>
-                                <td><button onClick={(event) => {editGame(event, index, game.id)}}>EDIT</button></td>
-                                <td><button onClick={(event) => {deleteGame(event, game.id)}}>DELETE</button></td>
+                <div className="table">
+                    <table>
+                        <caption>EDIT GAMES</caption>
+                        <thead>
+                            <tr>
+                                <th>AWAY TEAM</th>
+                                <th>HOME TEAM</th>
+                                <th>LEVEL</th>
+                                <th>WEEK</th>
+                                <th>DATE</th>
+                                <th>TIME</th>
+                                <th>DURATION</th>
+                                <th>PRIMETIME</th>
+                                <th>OVER</th>
+                                <th>UNDER</th>
+                                <th>CHALK</th>
+                                <th>DOG</th>
+                                <th>TOTAL POINTS</th>
+                                <th>FAVORED TEAM</th>
+                                <th>LINE</th>
                             </tr>
-                        )
-                    }) : <span>No games to display</span>}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {games ? games.map((game, index) => {
+                            return (
+                                <tr key={index}>
+                                    <td id={`edit-awayteam-${index}`} contentEditable="true" suppressContentEditableWarning={true}>{game.awayteam}</td>
+                                    <td id={`edit-hometeam-${index}`} contentEditable="true" suppressContentEditableWarning={true}>{game.hometeam}</td>
+                                    <td>
+                                        <select id={`edit-level-${index}`}>
+                                            <option value={game.level}>{game.level}</option>
+                                            { game.level !== "NFL" ? <option value="NFL">NFL</option> : null}
+                                            { game.level !== "NCAA" ? <option value="NCAA">NCAA</option> : null}
+                                            { game.level !== "MLB" ? <option value="MLB">MLB</option> : null}
+                                            { game.level !== "NBA" ? <option value="NBA">NBA</option> : null}
+                                            { game.level !== "NHL" ? <option value="NHL">NHL</option> : null}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id={`edit-week-${index}`}>
+                                            <option value={game.week}>{game.week}</option>
+                                            { game.week !== 1 ? <option value='1'>1</option> : null}
+                                            { game.week !== 2 ? <option value='2'>2</option> : null}
+                                            { game.week !== 3 ? <option value='3'>3</option> : null}
+                                            { game.week !== 4 ? <option value='4'>4</option> : null}
+                                            { game.week !== 5 ? <option value='5'>5</option> : null}
+                                            { game.week !== 6 ? <option value='6'>6</option> : null}
+                                            { game.week !== 7 ? <option value='7'>7</option> : null}
+                                            { game.week !== 8 ? <option value='8'>8</option> : null}
+                                            { game.week !== 9 ? <option value='9'>9</option> : null}
+                                            { game.week !== 10 ? <option value='10'>10</option> : null}
+                                            { game.week !== 11 ? <option value='11'>11</option> : null}
+                                            { game.week !== 12 ? <option value='12'>12</option> : null}
+                                            { game.week !== 13 ? <option value='13'>13</option> : null}
+                                            { game.week !== 14 ? <option value='14'>14</option> : null}
+                                            { game.week !== 15 ? <option value='15'>15</option> : null}
+                                            { game.week !== 16 ? <option value='16'>16</option> : null}
+                                            { game.week !== 17 ? <option value='17'>17</option> : null}
+                                            { game.week !== 18 ? <option value='18'>18</option> : null}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type='date' id={`edit-date-${index}`} defaultValue={game.date}></input>
+                                    </td>
+                                    <td>
+                                        <input type='time' id={`edit-time-${index}`} defaultValue={game.time}></input>
+                                    </td>
+                                    <td>
+                                        <select id={`edit-duration-${index}`}>
+                                            <option value={game.duration}>{game.duration}</option>
+                                            { game.duration !== "full-game" ? <option value="full-game">full-game</option> : null}
+                                            { game.duration !== "first-half" ? <option value="first-half">first-half</option> : null}
+                                            { game.duration !== "second-half" ? <option value="second-half">second-half</option> : null}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type='checkbox' defaultChecked={game.primetime ? true : false} id={`edit-primetime-${index}`}></input>
+                                    </td>
+                                    <td>
+                                        <input type='checkbox' defaultChecked={game.over ? true : false} id={`edit-over-${index}`}></input>
+                                    </td>
+                                    <td>
+                                        <input type='checkbox' defaultChecked={game.under ? true : false} id={`edit-under-${index}`}></input>
+                                    </td>
+                                    <td>
+                                        <input type='checkbox' defaultChecked={game.chalk ? true : false} id={`edit-chalk-${index}`}></input>
+                                    </td>
+                                    <td>
+                                        <input type='checkbox' defaultChecked={game.dog ? true : false} id={`edit-dog-${index}`}></input>
+                                    </td>
+                                    <td id={`edit-totalpoints-${index}`} contentEditable="true" suppressContentEditableWarning={true}>{game.totalpoints}</td>
+                                    <td>
+                                        <select id={`edit-favoredteam-${index}`}>
+                                            <option value={game.favoredteam}>{game.favoredteam}</option>
+                                            { game.favoredteam !== "home" ? <option value="home">home</option> : null}
+                                            { game.favoredteam !== "away" ? <option value="away">away</option> : null}
+                                        </select>
+                                    </td>
+                                    <td id={`edit-line-${index}`} contentEditable="true" suppressContentEditableWarning={true}>{game.line}</td>
+                                    <td><button onClick={(event) => {editGame(event, index, game.id)}}>EDIT</button></td>
+                                    <td><button onClick={(event) => {deleteGame(event, game.id)}}>DELETE</button></td>
+                                </tr>
+                            )
+                        }) : <span>No games to display</span>}
+                        </tbody>
+                    </table>
+                </div>
             </div> 
             <div id="admin-input-results">
                 <h1>INPUT GAME RESULTS</h1>
@@ -651,39 +653,40 @@ const Admin = (props) => {
                 <button type="button" onClick={deactivateWeek}>DEACTIVATE</button>
             </div>
             <div id='add-admin'>
-                <h2>EDIT USERS</h2>
-                <table>
-                    <caption>ALL USERS</caption>
-                    <thead>
-                        <tr>
-                            <th>User Id</th>
-                            <th>Username</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Venmo</th>
-                            <th>Admin Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        { users.length ? users.map((user, index) => {
-                            return (
-                                <tr key={index}>
-                                    <td>{user.id}</td>
-                                    <td>{user.username}</td>
-                                    <td>{user.firstname}</td>
-                                    <td>{user.lastname}</td>
-                                    <td>{user.email}</td>
-                                    <td>{user.venmo}</td>
-                                    <td>{user.admin ? "True" : "False"}</td>
-                                    <td><button type="button" onClick={() => {makeAdmin(user.id)}}>MAKE ADMIN</button></td>
-                                    <td><button type="button" onClick={() => {deleteUser(user.id)}}>DELETE</button></td>
-                                </tr>
-                            )
-                        })
-                        : <tr><td>No users to display</td></tr>}
-                    </tbody>
-                </table>
+                <div className="table">
+                    <table>
+                        <caption>ALL USERS</caption>
+                        <thead>
+                            <tr>
+                                <th>User Id</th>
+                                <th>Username</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                                <th>Venmo</th>
+                                <th>Admin Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            { users.length ? users.map((user, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td>{user.id}</td>
+                                        <td>{user.username}</td>
+                                        <td>{user.firstname}</td>
+                                        <td>{user.lastname}</td>
+                                        <td>{user.email}</td>
+                                        <td>{user.venmo}</td>
+                                        <td>{user.admin ? "True" : "False"}</td>
+                                        <td><button type="button" onClick={() => {makeAdmin(user.id)}}>MAKE ADMIN</button></td>
+                                        <td><button type="button" onClick={() => {deleteUser(user.id)}}>DELETE</button></td>
+                                    </tr>
+                                )
+                            })
+                            : <tr><td>No users to display</td></tr>}
+                        </tbody>
+                    </table>
+                 </div>
             </div>
         </div>
     )

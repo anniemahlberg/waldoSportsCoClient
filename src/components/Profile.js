@@ -306,17 +306,14 @@ const Profile = (props) => {
 
     return (
         <div id="profile-container">
-            <h1>PROFILE</h1>
-            <div>
-                <span className="buttons" id="season-stats" onClick={showContainers}>MY SEASON STATS</span>
-                <span className="buttons" id="stats" onClick={showContainers}>MY WEEKS STATS</span>
+            <div className="buttons-div">
+                <span className="buttons" id="season-stats" onClick={showContainers}>MY SEASON</span>
+                <span className="buttons" id="stats" onClick={showContainers}>MY WEEKS</span>
                 <span className="buttons" id="picks" onClick={showContainers}>MY PICKS</span>
-                <span className="buttons" id="edit-mypicks" onClick={showContainers}>EDIT MY PICKS</span>
-                <span className="buttons" id="edit-myinfo" onClick={showContainers}>EDIT MY INFO</span>
+                <span className="buttons" id="edit-mypicks" onClick={showContainers}>EDIT PICKS</span>
+                <span className="buttons" id="edit-myinfo" onClick={showContainers}>EDIT INFO</span>
             </div>
-            <br />
             <div id='myseasonstats'>
-                <h2>MY SEASON STATS</h2>
                 <table>
                     <caption>MY SEASON STATS</caption>
                     <thead>
@@ -340,7 +337,6 @@ const Profile = (props) => {
                 </table>
             </div>
             <div id='myweeklystats'>
-                <h2>MY WEEKLY STATS</h2>
                 <table>
                     <caption>MY WEEKS STATS</caption>
                     <thead>
@@ -364,7 +360,6 @@ const Profile = (props) => {
                 </table>
             </div>
             <div id='mypicks'>
-                <h2>MY PICKS</h2>
                 { user.username && myPicks.length ? <>
                     <table>
                         <caption>MY PICKS</caption>
@@ -400,7 +395,6 @@ const Profile = (props) => {
                         </tbody>
                     </table>
                 </> : <p>You have not made any picks yet!</p>}
-                <h2>MY PARLAYS</h2>
                 { myParlays.length ?
                 <table>
                     <caption>MY PARLAYS</caption>
@@ -446,7 +440,6 @@ const Profile = (props) => {
                 : <p>You have not made any parlays yet!</p>}
             </div>
             <div id="editmypicks">
-                <h2>EDIT MY PICKS</h2>
                 { user.username && myPicks.length ? <>
                 <table>
                     <caption>My Picks</caption>
@@ -478,7 +471,6 @@ const Profile = (props) => {
                 }
             </div>
             <div id='editmyparlays'>
-                <h2>EDIT MY PARLAYS</h2>
                 { user.username && myParlays.length ? <>
                     { myParlays.filter(parlay => parlay.parlaynumber === 1).length ? <>
                         <table>
@@ -539,30 +531,62 @@ const Profile = (props) => {
                 </> : <p>You have not made any parlays!</p> }
             </div>
             <div id="editmyinfo">
-                <h2>EDIT MY INFO</h2>
-                {me ? 
-                <table>
-                    <caption>My Info</caption>
-                    <thead>
-                        <tr>
-                            <th>Username</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Venmo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td id="me-username" contentEditable="true" suppressContentEditableWarning={true}>{me.username}</td>
-                            <td id="me-firstname" contentEditable="true" suppressContentEditableWarning={true}>{me.firstname}</td>
-                            <td id="me-lastname" contentEditable="true" suppressContentEditableWarning={true}>{me.lastname}</td>
-                            <td id="me-email" contentEditable="true" suppressContentEditableWarning={true}>{me.email}</td>
-                            <td id="me-venmo" contentEditable="true" suppressContentEditableWarning={true}>{me.venmo}</td>
-                            <td><button type="button" onClick={editMe}>EDIT</button></td>
-                        </tr>
-                    </tbody>
-                </table>
+                {me ? <>
+                <div className="computertable">
+                    <table>
+                        <caption>My Info</caption>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                                <th>Venmo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="me-username" contentEditable="true" suppressContentEditableWarning={true}>{me.username}</td>
+                                <td id="me-firstname" contentEditable="true" suppressContentEditableWarning={true}>{me.firstname}</td>
+                                <td id="me-lastname" contentEditable="true" suppressContentEditableWarning={true}>{me.lastname}</td>
+                                <td id="me-email" contentEditable="true" suppressContentEditableWarning={true}>{me.email}</td>
+                                <td id="me-venmo" contentEditable="true" suppressContentEditableWarning={true}>{me.venmo}</td>
+                                <td><button type="button" onClick={editMe}>EDIT</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div className="mobiletable">
+                    <table>
+                        <caption>My Info</caption>
+                        <tbody>
+                            <tr>
+                                <th>Username</th>
+                                <td id="me-username" contentEditable="true" suppressContentEditableWarning={true}>{me.username}</td>
+                            </tr>
+                            <tr>
+                                <th>First Name</th>
+                                <td id="me-firstname" contentEditable="true" suppressContentEditableWarning={true}>{me.firstname}</td>                      
+                            </tr>
+                            <tr>
+                                <th>Last Name</th>
+                                <td id="me-lastname" contentEditable="true" suppressContentEditableWarning={true}>{me.lastname}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td id="me-email" contentEditable="true" suppressContentEditableWarning={true}>{me.email}</td>
+                            </tr>
+                            <tr>
+                                <th>Venmo</th>
+                                <td id="me-venmo" contentEditable="true" suppressContentEditableWarning={true}>{me.venmo}</td>
+                            </tr>
+                            <tr>
+                                <td colSpan={2}><button type="button" onClick={editMe}>EDIT</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                    </>
                 : <div>No user to display</div>}
             </div>
         </div>

@@ -67,21 +67,45 @@ const App = () => {
         showAlert()
     }
 
+    function myFunction() {
+        let x = document.getElementById("myLinks");
+        
+        if (x.style.display === "block") {
+            x.style.display = "none";
+        } else {
+            x.style.display = "block";
+        }
+      }
+
     return (
         <div className='container'>
             <div className='alert'>
                 <Alert alertMessage={alertMessage} />
             </div>
-            <nav>
-                <Link to="/" onClick={() => {setUpdate(!update)}}>HOME</Link>
-                <Link to="/picks" onClick={() => {setUpdate(!update)}}>PICKS</Link>
-                <Link to='/league' onClick={() => {setUpdate(!update)}}>LEAGUE</Link>
-                { !user.username ? <Link to="/login" onClick={() => {setUpdate(!update)}}>LOGIN</Link> : null }
-                { user.username ? <Link to="/profile" onClick={() => {setUpdate(!update)}}>PROFILE</Link> : null }
-                { user.admin === "true" ? <Link to="/admin" onClick={() => {setUpdate(!update)}}>ADMIN</Link> : null }
-                { user.username ? <Link to="/" onClick={logout}>LOGOUT</Link> : null }
-            </nav>
-            <h1>Welcome to Waldo Sports Co!</h1>
+            <div className='header'>
+                <Link to="/"><img src={require("./photos/wscLogo.png")} id='logo'></img></Link>
+                <nav className='nav'>
+                    <Link className="header-link" to="/picks" onClick={() => {setUpdate(!update)}}>PICKS</Link>
+                    <Link className="header-link" to='/league' onClick={() => {setUpdate(!update)}}>LEAGUE</Link>
+                    { !user.username ? <Link className="header-link" to="/login" onClick={() => {setUpdate(!update)}}>LOGIN</Link> : null }
+                    { user.username ? <Link className="header-link" to="/profile" onClick={() => {setUpdate(!update)}}>PROFILE</Link> : null }
+                    { user.admin === "true" ? <Link className="header-link" to="/admin" onClick={() => {setUpdate(!update)}}>ADMIN</Link> : null }
+                    { user.username ? <Link className="header-link" to="/" onClick={() => {logout()}}>LOGOUT</Link> : null }
+                </nav>
+                <nav className='mobilenav' id="myLinks">
+                    <Link className="header-link" to="/picks" onClick={() => {setUpdate(!update); myFunction()}}>PICKS</Link>
+                    <br />
+                    <Link className="header-link" to='/league' onClick={() => {setUpdate(!update); myFunction()}}>LEAGUE</Link>
+                    <br />
+                    { !user.username ? <><Link className="header-link" to="/login" onClick={() => {setUpdate(!update); myFunction()}}>LOGIN</Link><br/></> : null }
+                    { user.username ? <><Link className="header-link" to="/profile" onClick={() => {setUpdate(!update); myFunction()}}>PROFILE</Link><br/></> : null }
+                    { user.admin === "true" ? <><Link className="header-link" to="/admin" onClick={() => {setUpdate(!update); myFunction()}}>ADMIN</Link><br/></> : null }
+                    { user.username ? <><Link className="header-link" to="/" onClick={() => {logout(); myFunction()}}>LOGOUT</Link><br/></> : null }
+                </nav>
+                <div>
+                    <img id="hamburger" onClick={myFunction} src={require("./photos/hamburger-removebg-preview.png")}></img>
+                </div>
+            </div>
             <Routes>
                 <Route exact path="/" element={
                     <Home />

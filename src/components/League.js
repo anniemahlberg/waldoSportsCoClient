@@ -41,8 +41,7 @@ const League = (props) => {
 
     return (
         <div id="league-container">
-            <h1>LEAGUE</h1>
-            <div>
+            <div className="buttons-div">
                 <span className="buttons" id="stats" onClick={showContainers}>SEASON STATS</span>
                 <span className="buttons" id="leaderboard" onClick={showContainers}>WEEKLY LEADERBOARD</span>
                 <span className="buttons" id="picks" onClick={showContainers}>WEEKLY PICKS</span>
@@ -69,7 +68,7 @@ const League = (props) => {
                                         <td>{userStat.parlayscorrect}-{userStat.totalparlays}</td>
                                         <td>{userStat.totalpoints}</td>
                                     </tr>)
-                        }) : <tr><td>No stats to display</td></tr>}
+                        }) : <tr><td colSpan={5}>No stats to display</td></tr>}
                     </tbody>
                 </table>
             </div>
@@ -94,7 +93,7 @@ const League = (props) => {
                                         <td>{weeklyPick.parlayscorrect}-{weeklyPick.totalparlays}</td>
                                         <td>{weeklyPick.totalpoints}</td>
                                     </tr>)
-                        }) : <tr><td>No stats to display</td></tr>}
+                        }) : <tr><td colSpan={5}>No stats to display</td></tr>}
                     </tbody>
                 </table>
             </div>
