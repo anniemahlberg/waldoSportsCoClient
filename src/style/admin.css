@@ -1,3 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;600&display=swap');
+
 #admin-input-game, #admin-input-results, #admin-deactivate, #admin-edit-game, #add-admin {
     display: none;
+}
+
+#input-game-form input, #input-game-form select, #admin-edit-game input, #admin-edit-game select, #admin-input-results select, #admin-deactivate input{
+    font-family: 'Quicksand', sans-serif;
+    margin: 5px;
+}
+
+.admin-submit {
+    padding: 5px;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.collapsible {
+    font-family: 'Quicksand', sans-serif;
 }

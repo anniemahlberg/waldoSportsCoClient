@@ -31,10 +31,11 @@ const App = () => {
             const sortedWeeklyPicks = allWeeklyPicks.sort((a,b) => b.totalpoints - a.totalpoints)
             const allPicks = await fetchAllPicks()
             const allStats = await fetchUserStats()
+            const sortedAllStats = allStats.sort((a,b) => b.totalpoints - a.totalpoints)
             const allParlays = await fetchAllParlays()
             const sortedGames = [...allGames].sort((a, b) => {
-                const adate = new Date(`${a.date} ${a.time}`)
-                const bdate = new Date(`${b.date} ${b.time}`)
+                const adate = new Date(`${a.date}T${a.time}`)
+                const bdate = new Date(`${b.date}T${b.time}`)
 
                 return adate - bdate
             })
@@ -44,7 +45,7 @@ const App = () => {
             setSortedGames(sortedGames)
             setPicks(allPicks)
             setWeeklyPicks(sortedWeeklyPicks)
-            setUserStats(allStats)
+            setUserStats(sortedAllStats)
             setParlays(allParlays)
 
             if (sessionStorage.getItem('token')) {

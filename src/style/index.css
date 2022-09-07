@@ -65,6 +65,11 @@ nav > * {
     padding: 5px;
 }
 
+.activeButton {
+    background-color: white;
+    color: black;
+}
+
 /* ALL TABLES */
 table {
     margin: 10px auto;
@@ -138,5 +143,9 @@ table td {
 
     .table {
         overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
     }
 }

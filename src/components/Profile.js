@@ -88,7 +88,7 @@ const Profile = (props) => {
             editInfoContainer.style.display = "none"
         }
     
-        if (target === "picks") {
+        if (target === "my-picks") {
             statsContainer.style.display = "none";
             picksContainer.style.display = "initial";  
             seasonStatsContainer.style.display = "none";
@@ -190,11 +190,8 @@ const Profile = (props) => {
     async function checkTime(gameid, index) {
         const game = await getGameById(gameid);
         const currentDate = new Date()
-        const comparedDate = new Date(new Date(`${game.date} ${game.time}`).toLocaleString('en-US', {
-            timeZone: 'America/Chicago'
-        }))        
+        const comparedDate = new Date(new Date(`${game.date}T${game.time}-0500`))        
         const parlay1button = document.getElementById("parlay1-button")
-        const parlay2button = document.getElementById("parlay2-button")
 
         if (index !== undefined && currentDate > comparedDate) {
             if (document.getElementById(`edit-button-${index}`)) {
@@ -205,10 +202,6 @@ const Profile = (props) => {
         
         if (index === undefined && parlay1button && currentDate > comparedDate) {
             parlay1button.setAttribute("disabled", "true")
-        }
-
-        if (index === undefined && parlay2button && currentDate > comparedDate) {
-            parlay2button.setAttribute("disabled", "true")
         }
     }
 
@@ -228,6 +221,12 @@ const Profile = (props) => {
         } else if (parlay1.length === 4) {
             onepointswon = 20
             onepointslost = -4
+        } else if (parlay1.length === 5) {
+            onepointswon = 30
+            onepointslost = -5
+        } else if (parlay1.length === 6) {
+            onepointswon = 60
+            onepointslost = -6
         }
 
         parlay1.forEach((parlay) => {
@@ -245,29 +244,6 @@ const Profile = (props) => {
             parlay1total = onepointslost
         } else {
             parlay1total = 0;
-        }
-
-        const parlay2 = myParlays.filter(parlay => parlay.parlaynumber === 2)
-        let twopointswon = 4;
-        let twopointslost = -2;
-        let twoparlayshit = 0;
-        let twotbd = false
-
-        parlay2.forEach((parlay) => {
-            if (!parlay.statsupdated) {
-                twotbd = true
-                return
-            } else if (parlay.result === "HIT") {
-                twoparlayshit++
-            }
-        })
-
-        if (twoparlayshit === parlay2.length && !twotbd) {
-            parlay2total = twopointswon
-        } else if (!twotbd) {
-            parlay2total = twopointslost
-        } else {
-            parlay2total = 0
         }
         
     }
@@ -304,12 +280,30 @@ const Profile = (props) => {
         .catch(console.error)
     }
 
+    let btnContainer = document.getElementById("profileButtons");
+
+    if (btnContainer) {
+        let btns = btnContainer.getElementsByClassName("buttons");
+    
+        for (let i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function() {
+                let current = document.getElementsByClassName("activeButton");
+    
+                if (current.length > 0) {
+                    current[0].className = current[0].className.replace(" activeButton", "");
+                }
+    
+                this.className += " activeButton";
+            });
+        }
+    }
+
     return (
         <div id="profile-container">
-            <div className="buttons-div">
+            <div className="buttons-div" id="profileButtons">
                 <span className="buttons" id="season-stats" onClick={showContainers}>MY SEASON</span>
                 <span className="buttons" id="stats" onClick={showContainers}>MY WEEKS</span>
-                <span className="buttons" id="picks" onClick={showContainers}>MY PICKS</span>
+                <span className="buttons" id="my-picks" onClick={showContainers}>MY PICKS</span>
                 <span className="buttons" id="edit-mypicks" onClick={showContainers}>EDIT PICKS</span>
                 <span className="buttons" id="edit-myinfo" onClick={showContainers}>EDIT INFO</span>
             </div>
@@ -360,7 +354,6 @@ const Profile = (props) => {
                 </table>
             </div>
             <div id='mypicks'>
-                { user.username && myPicks.length ? <>
                     <table>
                         <caption>MY PICKS</caption>
                         <thead>
@@ -384,7 +377,7 @@ const Profile = (props) => {
                                         <td key={'pointsawarded' + idx}>{pick.outcome === "tbd" ? "tbd" : pick.pointsawarded}</td>
                                     </tr>
                                     )
-                            }) : user.username ? <tr><td>You haven't made any picks yet</td></tr> : <tr><td>You must be logged in to see your picks</td></tr>}
+                            }) : user.username ? <tr><td colSpan={5}>You haven't made any picks yet</td></tr> : <tr><td>You must be logged in to see your picks</td></tr>}
                             <tr>
                                 <td></td>
                                 <td></td>
@@ -394,53 +387,38 @@ const Profile = (props) => {
                             </tr>
                         </tbody>
                     </table>
-                </> : <p>You have not made any picks yet!</p>}
-                { myParlays.length ?
                 <table>
-                    <caption>MY PARLAYS</caption>
+                    <caption>MY PARLAY</caption>
+                    <thead>
+                        <tr>
+                            <th>Pick</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         { myParlays.filter(parlay => parlay.parlaynumber === 1).length ? 
-                            <tr>
-                                <th>Parlay 1</th>
+                            <>
                                 {myParlays.map((parlay, index) => {
                                     updateParlayTotal()
                                     if (parlay.parlaynumber === 1) {
                                         return (
-                                            <React.Fragment key={index}>
+                                            <tr key={index}>
                                                 <td>{parlay.text}</td>
                                                 <td>{parlay.result}</td>
-                                            </React.Fragment>
+                                            </tr>
                                         )
                                     }
                                 })}
-                                <th>Points Awarded</th>
-                                <td>{parlay1total}</td>
-                            </tr>
-                        : null}
-                        { myParlays.filter(parlay => parlay.parlaynumber === 2).length ? 
-                            <tr>
-                                <th>Parlay 2</th>
-                                {myParlays.map((parlay, index) => {
-                                    if (parlay.parlaynumber === 2) {
-                                        updateParlayTotal()
-                                        return (
-                                            <React.Fragment key={index}>
-                                                <td>{parlay.text}</td>
-                                                <td>{parlay.result}</td>
-                                            </React.Fragment>
-                                        )
-                                    }
-                                })}
-                                <th>Points Awarded</th>
-                                <td>{parlay2total}</td>
-                            </tr>
-                        : null}
+                                <tr>
+                                    <th>Points Awarded</th>
+                                    <td>{parlay1total}</td>
+                                </tr>
+                            </>
+                        : <tr><td colSpan={2}>You have not made a parlay yet!</td></tr>}
                     </tbody>
                 </table>
-                : <p>You have not made any parlays yet!</p>}
             </div>
             <div id="editmypicks">
-                { user.username && myPicks.length ? <>
                 <table>
                     <caption>My Picks</caption>
                     <thead>
@@ -460,75 +438,38 @@ const Profile = (props) => {
                                             <input type='checkbox' defaultChecked={pick.lock ? true : false} id={`edit-lock-${idx1}`}></input>
                                         </td>
                                         <td>{pick.worth}</td>
-                                        <td><button id={`edit-button-${idx1}`} onClick={() => {editPick(idx1, pick.id, pick.worth)}}>EDIT</button></td>
-                                        <td><button id={`delete-button-${idx1}`} onClick={() => {deletePick(pick.id)}}>DELETE</button></td>
+                                        <td><button className="profile-button" id={`edit-button-${idx1}`} onClick={() => {editPick(idx1, pick.id, pick.worth)}}>EDIT</button></td>
+                                        <td><button className="profile-button" id={`delete-button-${idx1}`} onClick={() => {deletePick(pick.id)}}>DELETE</button></td>
                                     </tr>
                                     )
-                            }) : user.username ? <tr><td>You haven't made any picks yet</td></tr> : <tr><td>You must be logged in to see your picks</td></tr>}
+                            }) : user.username ? <tr><td colSpan={3}>You haven't made any picks yet</td></tr> : <tr><td colSpan={3}>You must be logged in to see your picks</td></tr>}
                     </tbody>
                 </table>
-                </> : <p>You have not makde any picks!</p>
-                }
             </div>
             <div id='editmyparlays'>
-                { user.username && myParlays.length ? <>
-                    { myParlays.filter(parlay => parlay.parlaynumber === 1).length ? <>
-                        <table>
-                            <caption>Parlay 1</caption>
-                            <thead>
-                                <tr>
-                                    <th>Pick</th>
-                                    <th>Pick</th>
-                                    <th>Pick</th>
-                                    <th>Pick</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                { user.username && myParlays.length ? myParlays.map((parlay, idx2) => {
-                                    checkTime(parlay.gameid)
-                                    if (parlay.parlaynumber === 1) {
-                                        return (
-                                                <td key={idx2}>{parlay.text}</td>
-                                            )
-                                    }
-                                    }) : user.username ? <td>You haven't made any picks yet</td> : <td>You must be logged in to see your picks</td>}
-                                </tr>
-                            </tbody>
-                        </table>
-                        <button id="parlay1-button" onClick={() => {
-                            const parlay1 = myParlays.filter(parlay => parlay.parlaynumber === 1)
-                            parlay1.forEach((parlay => deleteParlay(parlay.id)))
-                            }}>DELETE PARLAY</button>
-                    </> : null}
-                    { myParlays.filter(parlay => parlay.parlaynumber === 2).length ? <>
-                        <table>
-                            <caption>Parlay 2</caption>
-                            <thead>
-                                <tr>
-                                    <th>Pick</th>
-                                    <th>Pick</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                { user.username && myParlays.length ? myParlays.map((parlay, idx3) => {
-                                    checkTime(parlay.gameid)
-                                    if (parlay.parlaynumber === 2) {
-                                        return (
-                                                <td key={idx3}>{parlay.text}</td>
-                                            )
-                                    }
-                                    }) : user.username ? <td>You haven't made any picks yet</td> : <td>You must be logged in to see your picks</td>}
-                                </tr>
-                            </tbody>
-                        </table>
-                        <button id="parlay2-button" onClick={() => {
-                            const parlay2 = myParlays.filter(parlay => parlay.parlaynumber === 2)
-                            parlay2.forEach((parlay => deleteParlay(parlay.id)))
-                            }}>DELETE PARLAY</button>
-                    </> : null}
-                </> : <p>You have not made any parlays!</p> }
+                <table>
+                    <caption>My Parlay</caption>
+                    <tbody>
+                        { user.username && myParlays.length ? myParlays.map((parlay, idx2) => {
+                            checkTime(parlay.gameid)
+                            if (parlay.parlaynumber === 1) {
+                                return (
+                                        <tr key={idx2}>
+                                            <td>{parlay.text}</td>
+                                        </tr>
+                                    )
+                            }
+                            }) : user.username ? <tr><td>You haven't made a parlay yet</td></tr> : <tr><td>You must be logged in to see your picks</td></tr>}
+                        <tr>
+                            <td>
+                                <button className="profile-button" id="parlay1-button" onClick={() => {
+                                    const parlay1 = myParlays.filter(parlay => parlay.parlaynumber === 1)
+                                    parlay1.forEach((parlay => deleteParlay(parlay.id)))
+                                    }}>DELETE PARLAY</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div id="editmyinfo">
                 {me ? <>
@@ -551,7 +492,7 @@ const Profile = (props) => {
                                 <td id="me-lastname" contentEditable="true" suppressContentEditableWarning={true}>{me.lastname}</td>
                                 <td id="me-email" contentEditable="true" suppressContentEditableWarning={true}>{me.email}</td>
                                 <td id="me-venmo" contentEditable="true" suppressContentEditableWarning={true}>{me.venmo}</td>
-                                <td><button type="button" onClick={editMe}>EDIT</button></td>
+                                <td><button type="button" className="profile-button" onClick={editMe}>EDIT</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -581,7 +522,7 @@ const Profile = (props) => {
                                 <td id="me-venmo" contentEditable="true" suppressContentEditableWarning={true}>{me.venmo}</td>
                             </tr>
                             <tr>
-                                <td colSpan={2}><button type="button" onClick={editMe}>EDIT</button></td>
+                                <td colSpan={2}><button className="profile-button" type="button" onClick={editMe}>EDIT</button></td>
                             </tr>
                         </tbody>
                     </table>

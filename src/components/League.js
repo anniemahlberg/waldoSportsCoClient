@@ -23,7 +23,7 @@ const League = (props) => {
     
         }
     
-        if (target === "picks") {
+        if (target === "weekly-picks") {
             statsContainer.style.display = "none";
             leaderboardContainer.style.display = "none";
             picksContainer.style.display = "initial";    
@@ -39,12 +39,30 @@ const League = (props) => {
         }
     }
 
+    let btnContainer = document.getElementById("leagueButtons");
+
+    if (btnContainer) {
+        let btns = btnContainer.getElementsByClassName("buttons");
+    
+        for (let i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function() {
+                let current = document.getElementsByClassName("activeButton");
+    
+                if (current.length > 0) {
+                    current[0].className = current[0].className.replace(" activeButton", "");
+                }
+    
+                this.className += " activeButton";
+            });
+        }
+    }
+
     return (
         <div id="league-container">
-            <div className="buttons-div">
+            <div className="buttons-div" id="leagueButtons">
                 <span className="buttons" id="stats" onClick={showContainers}>SEASON STATS</span>
                 <span className="buttons" id="leaderboard" onClick={showContainers}>WEEKLY LEADERBOARD</span>
-                <span className="buttons" id="picks" onClick={showContainers}>WEEKLY PICKS</span>
+                <span className="buttons" id="weekly-picks" onClick={showContainers}>WEEKLY PICKS</span>
             </div>
             <br />
             <div id="seasonstats">
@@ -100,7 +118,6 @@ const League = (props) => {
             <div id="weeklypicks">
                 { weeklyPicks.length ? weeklyPicks.map((weeklyPick, idx) => {
                     let parlay1total = 0;
-                    let parlay2total = 0;
 
                     function updateParlayTotal(weeklyid) {
                         const parlay1 = parlays.filter(parlay => parlay.parlaynumber === 1 && parlay.weeklyid === weeklyid)
@@ -118,6 +135,12 @@ const League = (props) => {
                         } else if (parlay1.length === 4) {
                             onepointswon = 20
                             onepointslost = -4
+                        } else if (parlay1.length === 5) {
+                            onepointswon = 30
+                            onepointslost = -5
+                        } else if (parlay1.length === 6) {
+                            onepointswon = 60
+                            onepointslost = -6
                         }
                 
                         parlay1.forEach((parlay) => {
@@ -135,31 +158,7 @@ const League = (props) => {
                             parlay1total = onepointslost
                         } else {
                             parlay1total = 0;
-                        }
-                
-                        const parlay2 = parlays.filter(parlay => parlay.parlaynumber === 2 && parlay.weeklyid === weeklyid)
-                        let twopointswon = 4;
-                        let twopointslost = -2;
-                        let twoparlayshit = 0;
-                        let twotbd = false
-
-                        parlay2.forEach((parlay) => {
-                            if (!parlay.statsupdated) {
-                                twotbd = true
-                                return
-                            } else if (parlay.result === "HIT") {
-                                twoparlayshit++
-                            }
-                        })
-                
-                        if (twoparlayshit === parlay2.length && !twotbd) {
-                            parlay2total = twopointswon
-                        } else if (!twotbd) {
-                            parlay2total = twopointslost
-                        } else {
-                            parlay2total = 0
-                        }
-                        
+                        }                        
                     }
 
                     updateParlayTotal(weeklyPick.id)
@@ -201,51 +200,31 @@ const League = (props) => {
                         </> : null }
                         { parlays.filter(parlay => parlay.weeklyid === weeklyPick.id && parlay.parlaynumber == 1).length ? <>
                             <table>
-                                <caption>{weeklyPick.username}'s Parlays</caption>
-                                <tbody>
+                                <caption>{weeklyPick.username}'s Parlay</caption>
+                                <thead>
                                     <tr>
-                                        <th>Parlay 1</th>
+                                        <th>Pick</th>
+                                        <th>Result</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                         { parlays ? parlays.map((parlay, index) => {
                                                 if (parlay.weeklyid === weeklyPick.id && parlay.parlaynumber == 1) {
                                                     return (
-                                                        <React.Fragment key={index}>
+                                                        <tr key={index}>
                                                             <td>{parlay.text}</td>
                                                             <td>{parlay.result}</td>
-                                                        </React.Fragment>
+                                                        </tr>
                                                     )
-                                                } else {
-                                                    return null
                                                 }
-                                            }): <td>{weeklyPick.username} has not made any picks yet.</td>}
-                                        <th>Points Awarded</th>
-                                        <td>{parlay1total}</td>
-                                    </tr>
+                                            }): <tr><td>{weeklyPick.username} has not made a parlay yet.</td></tr>}
+                                        <tr>
+                                            <th>Points Awarded</th>
+                                            <td>{parlay1total}</td>
+                                        </tr>
                                 </tbody>
                             </table>
                         </> : null}
-                        { parlays.filter(parlay => parlay.weeklyid === weeklyPick.id && parlay.parlaynumber == 2).length ? <>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <th>Parlay 2</th>
-                                        { parlays ? parlays.map((parlay, index2) => {
-                                                if (parlay.weeklyid === weeklyPick.id && parlay.parlaynumber == 2) {
-                                                    return (
-                                                        <React.Fragment key={index2}>
-                                                            <td>{parlay.text}</td>
-                                                            <td>{parlay.result}</td>
-                                                        </React.Fragment>                                                )
-                                                } else {
-                                                    return null
-                                                }
-                                            }): <td>{weeklyPick.username} has not made any picks yet.</td>}
-                                        <th>Points Awarded</th>
-                                        <td>{parlay2total}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </> : null}
-                        <h2>TOTAL POINTS: {weeklyPick.totalpoints}</h2>
                     </div>
                     </React.Fragment>)
                 }) : <div>No picks to display</div> }

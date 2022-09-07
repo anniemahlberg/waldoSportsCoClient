@@ -1,10 +1,15 @@
 import { showAlert } from "./Alert";
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+
+import "../style/login-register.css"
 
 const API_URL = 'https://floating-stream-77094.herokuapp.com/api'
 
 const Login = (props) => {
     const { setAlertMessage, update, setUpdate } = props;
+    const navigate = useNavigate()
+
     const submitLogin = async (event) => {
         const userNameInput = document.getElementById('login-username').value;
         const password1Input = document.getElementById('login-password').value;
@@ -36,6 +41,7 @@ const Login = (props) => {
                 setUpdate(!update)
                 setAlertMessage("You have logged in!")
                 showAlert()
+                navigate('/')
             } else {
                 setAlertMessage(result.message);
                 showAlert()

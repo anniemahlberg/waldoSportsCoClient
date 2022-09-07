@@ -43,22 +43,6 @@ const Admin = (props) => {
         }).then(response => response.json())
         .catch(console.error)
 
-        await fetch(`${API_URL}/parlays/updateResults/parlay2`, {
-            method: "PATCH",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                week: resultsArr[0].week
-            })
-        }).then(response => response.json())
-        .catch(console.error)
-
-        if (!alert) {
-            alert = "Outcome(s) successfully added!"
-        }
-
         setAlertMessage(alert)
         showAlert()
         setUpdate(!update)
@@ -385,11 +369,35 @@ const Admin = (props) => {
             editContainer.style.display = "none"; 
             makeAdminContainer.style.display = "initial";
         }
-      }
+    }
+
+    let btnContainer = document.getElementById("adminButtons");
+
+    if (btnContainer) {
+        let btns = btnContainer.getElementsByClassName("buttons");
+    
+        for (let i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function() {
+                let current = document.getElementsByClassName("activeButton");
+    
+                if (current.length > 0) {
+                    current[0].className = current[0].className.replace(" activeButton", "");
+                }
+    
+                this.className += " activeButton";
+            });
+        }
+    }
+
+    let todaydate = new Date();
+    let year = todaydate.toLocaleString("default", { year: "numeric" });
+    let month = todaydate.toLocaleString("default", { month: "2-digit" });
+    let day = todaydate.toLocaleString("default", { day: "2-digit" });
+    let today = year + "-" + month + "-" + day;
 
     return (
         <div id='admin-container'> 
-            <div className="buttons-div">
+            <div className="buttons-div" id="adminButtons">
                 <span className="buttons" id="game" onClick={showContainers}>ADD</span>
                 <span className="buttons" id="edit" onClick={showContainers}>EDIT</span>
                 <span className="buttons" id="results" onClick={showContainers}>RESULTS</span>
@@ -439,7 +447,7 @@ const Admin = (props) => {
                             </select>
                             <br />
                             <label>Date:</label>
-                            <input id='input-game-date' type='date' placeholder="Date"></input>
+                            <input id='input-game-date' type='date' placeholder="Date" defaultValue={today}></input>
                             <br />
                             <label>Time:</label>
                             <input id='input-game-time' type='time' placeholder="Time"></input>
@@ -479,7 +487,7 @@ const Admin = (props) => {
                             <br />
                         </div>
                         <div className="submit-button">
-                            <button type='button' onClick={submitGame}>SUBMIT</button>
+                            <button className="admin-submit" type='button' onClick={submitGame}>SUBMIT</button>
                         </div>
                     </form>
                 </div>
@@ -584,8 +592,8 @@ const Admin = (props) => {
                                         </select>
                                     </td>
                                     <td id={`edit-line-${index}`} contentEditable="true" suppressContentEditableWarning={true}>{game.line}</td>
-                                    <td><button onClick={(event) => {editGame(event, index, game.id)}}>EDIT</button></td>
-                                    <td><button onClick={(event) => {deleteGame(event, game.id)}}>DELETE</button></td>
+                                    <td><button className="admin-submit" onClick={(event) => {editGame(event, index, game.id)}}>EDIT</button></td>
+                                    <td><button className="admin-submit" onClick={(event) => {deleteGame(event, game.id)}}>DELETE</button></td>
                                 </tr>
                             )
                         }) : <span>No games to display</span>}
@@ -609,13 +617,13 @@ const Admin = (props) => {
                                             <label>Total Points Outcome:</label>
                                             <select id={`input-results-totalpoints-${index}`}>
                                                 <option value=''>SELECT AN OUTCOME</option>
-                                                {game.over ? <option value="over">OVER {game.totalpoints}</option> : null}
-                                                {game.under ? <option value="under">UNDER {game.totalpoints}</option> : null}
+                                                {game.over ? <option value="over">O {game.totalpoints}</option> : null}
+                                                {game.under ? <option value="under">U {game.totalpoints}</option> : null}
                                                 <option value='push'>PUSH</option>
                                             </select>
+                                            <br />
                                             </>
                                         : null}
-                                        <br />
                                         { game.line && (game.chalk || game.dog) ? 
                                             <>
                                             <label>Line:</label>
@@ -631,15 +639,16 @@ const Admin = (props) => {
                                                 }
                                                     <option value='push'>PUSH</option>
                                             </select>
+                                            <br />
                                             </>
                                         : null}
-                                        <br />
                                     </div>
                                 </div>
                             )
                         }) : <div>No games to input results</div>}
+                        <br />
                         <div className="submit-button">
-                            <button type='button' onClick={submitResults}>SUBMIT</button>
+                            <button className="admin-submit" type='button' onClick={submitResults}>SUBMIT</button>
                         </div>
                     </form>
                 </div>
@@ -650,7 +659,7 @@ const Admin = (props) => {
                 <h3>Current Week Number: {games[0] ? games[0].week : <span>-</span>}</h3>
                 <label>What week number would you like to deactivate all of the games? </label>
                 <input id='weeknumber' placeholder="Week Number"></input>
-                <button type="button" onClick={deactivateWeek}>DEACTIVATE</button>
+                <button className="admin-submit" type="button" onClick={deactivateWeek}>DEACTIVATE</button>
             </div>
             <div id='add-admin'>
                 <div className="table">
@@ -678,8 +687,8 @@ const Admin = (props) => {
                                         <td>{user.email}</td>
                                         <td>{user.venmo}</td>
                                         <td>{user.admin ? "True" : "False"}</td>
-                                        <td><button type="button" onClick={() => {makeAdmin(user.id)}}>MAKE ADMIN</button></td>
-                                        <td><button type="button" onClick={() => {deleteUser(user.id)}}>DELETE</button></td>
+                                        <td><button type="button" className="admin-submit" onClick={() => {makeAdmin(user.id)}}>MAKE ADMIN</button></td>
+                                        <td><button type="button" className="admin-submit" onClick={() => {deleteUser(user.id)}}>DELETE</button></td>
                                     </tr>
                                 )
                             })

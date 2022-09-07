@@ -1,3 +1,8 @@
 #myweeklystats, #myseasonstats, #mypicks, #editmypicks, #editmyparlays, #editmyinfo {
     display: none;
 }
+
+.profile-button {
+    padding: 5px;
+    font-family: 'Quicksand', sans-serif;
+}

@@ -1,0 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;600&display=swap');
+
+#register-container input, #login-container input {
+    font-family: 'Quicksand', 'sans-serf';
+    margin: 5px;
+}

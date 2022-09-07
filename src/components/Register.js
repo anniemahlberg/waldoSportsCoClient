@@ -1,8 +1,13 @@
 import { showAlert } from "./Alert";
+import { useNavigate } from 'react-router-dom';
+
+import "../style/login-register.css"
+
 const API_URL = 'https://floating-stream-77094.herokuapp.com/api'
 
 const Register = (props) => {   
     const { setAlertMessage, setUpdate, update } = props;
+    const navigate = useNavigate()
     const postUser = async (userData) => {
         const { username, password, firstname, lastname, email, venmo } = userData;
         await fetch(`${API_URL}/users/register`, {
@@ -24,6 +29,7 @@ const Register = (props) => {
                 setUpdate(!update)
                 setAlertMessage('You have registered! Now log in!')
                 showAlert()
+                navigate('/login')
             } else {
                 setAlertMessage(result.message);
                 showAlert()
