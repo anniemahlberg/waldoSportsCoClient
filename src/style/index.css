@@ -2,14 +2,15 @@
 #alert-container {
     padding: 20px;
     background-color: black;
-    color: rgb(227, 166, 239);
+    color: #4AB5A3;
     display: none;
     width: fit-content;
     margin: auto;
     position: fixed;
-    bottom: 20px;
-    left: 0;
-    right: 0;
+    bottom: 5px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
 }
 
 body {
@@ -78,14 +79,14 @@ table {
 }
 
 table caption {
-    background-color: rgb(114, 28, 168);
+    background-color: #014F16;
     color: white;
     font-size: 30px;
     padding: 8px;
 }
 
 table th, td {
-    border-top: 1px solid rgb(114, 28, 168);
+    border-top: 1px solid #014F16;
     padding: 8px;
 }
 
@@ -100,6 +101,18 @@ table td {
 
 .mobiletable {
     display: none;
+}
+
+input[type=button] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+button[type=submit] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 @media (min-width: 320px) and (max-width: 480px) {
@@ -143,6 +156,8 @@ table td {
 
     .table {
         overflow-x: auto;
+        max-height: 600px;
+        overflow: auto;
     }
 
     table {

@@ -53,7 +53,7 @@ const Login = (props) => {
     return (
         <div id="login-container">
             <h1>LOGIN</h1>
-            <div id='login-container'>
+            <div id='login-form-container'>
                 <form id='login-form'>
                     <div className='inputs'>
                         <label>Username:</label>
@@ -63,13 +63,13 @@ const Login = (props) => {
                         <input id='login-password' type='password' placeholder="Enter Password"></input>
                         <br />
                     </div>
-                    <div className='submit-button'>
+                    <div className='submit-button' id="login-submit">
                         <button type="submit" onClick={submitLogin}>SUBMIT</button>
                     </div>
                 </form>
             </div>
             <br />
-            <Link to="/register" onClick={() => {setUpdate(!update)}}>Don't have a log in? Click here to register!</Link>
+            <Link id="register-link" to="/register" onClick={() => {setUpdate(!update)}}>Don't have a log in? Click here to register!</Link>
         </div>
     )
 }

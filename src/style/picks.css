@@ -1,7 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200&family=Quicksand:wght@300;600&display=swap');
 
-#makeparlays, #parlay1-container {
+#makeparlays, #parlay1-container, #rules-container {
     display: none;
+}
+
+#randompic {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
 }
 
 #picks-form, #parlay-form {
@@ -51,7 +60,7 @@
 }
 
 .pick-checkbox:checked + .pick-checkbox-label {
-    background-color: rgba(227, 166, 239, 0.532);
+    background-color: #4ab5a3ac;
     font-weight: 600;
 }
 
@@ -88,6 +97,70 @@
     box-shadow: 2px 2px lightgray;
 }
 
+.filter-options {
+    display: none;
+    flex-wrap: wrap;
+    color: black;
+    align-items: center;
+    background-color: #4ab5a3ac;
+}
+
+.filter-options h4 {
+    margin: 10px;
+}
+
+.filter-options label {
+    margin: 2px;
+}
+
+#rules-container {
+    justify-content: center;
+}
+
+#rules-container h2 {
+    text-align: center;
+}
+
+#howto, #pot, .points {
+    margin:  10px auto;
+}
+
+
+.points {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 15px;
+}
+
+.points h2 {
+    height: 30px;
+    width: 100%;
+}
+
+.points p {
+    width: 20%;
+}
+
+.points ul {
+    margin: 0px;
+    width: 70%;
+}
+
+#confirmation-container, #parlay-confirmation-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+#confirmation-container table, #parlay-confirmation-container table {
+    background-color: white;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.354), 0 6px 20px 0 rgba(0, 0, 0, 0.354);
+}
+
+
 @media (min-width: 320px) and (max-width: 480px) {
     .game, .parlay1game {
         min-width: 100%;
@@ -101,5 +174,21 @@
 
     .pick-checkbox-label:hover, .lock-checkbox-label:hover {
         transform: none;
+    }
+
+    #rules-container {
+        flex-wrap: wrap;
+    }
+
+    #howto, #pot, .points {
+        width: 100%;
+    }
+
+    .points ul {
+        width: 100%;
+    }
+
+    #randompic img {
+        width: 300px;
     }
 }

@@ -98,7 +98,7 @@ const Register = (props) => {
                         <input id='register-password2' type='password' placeholder="Confirm Password"></input>
                         <br />
                     </div>
-                    <div className="submit-button">
+                    <div className="submit-button" id="register-submit">
                         <button type="submit" onClick={submitRegistration}>SUBMIT</button>
                     </div>
                 </form>
