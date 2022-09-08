@@ -183,6 +183,20 @@ const Profile = (props) => {
     }
 
     async function deletePick(pickId) {
+        let locksLength = 0; 
+
+        for (let i = 0; i < myPicks.length; i++) {
+            if (myPicks[i].lock) {
+                locksLength++
+            }
+        }
+
+        if (locksLength < 4) {
+            setAlertMessage("3 of your picks must be locked, so add a new lock in order to delete this pick!")
+            showAlert()
+            return
+        }
+
         await fetch(`${API_URL}/picks/deletePick/${pickId}`, {
             method: "DELETE",
             headers: {
