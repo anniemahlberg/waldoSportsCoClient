@@ -54,6 +54,17 @@ const App = () => {
             if (sessionStorage.getItem('username')) {
                 setUser({username: sessionStorage.getItem('username'), admin: sessionStorage.getItem('admin')})
             }
+
+            if (user.username) {
+                const mypicks = allPicks.filter(pick => {
+                    const myWeeklyPick = weeklyPicks.find(weeklyPick => weeklyPick.username === user.username)
+                    if (myWeeklyPick) {
+                        setMyWeekly(myWeeklyPick);
+                        return myWeeklyPick.id === pick.weeklyid
+                    }
+                })
+                setMyPicks(mypicks)
+            }
         }    
 
         getAllInitialData();
@@ -119,6 +130,11 @@ const App = () => {
                         setUpdate={setUpdate} 
                         setAlertMessage={setAlertMessage}
                         sortedGames={sortedGames}
+                        myPicks={myPicks}
+                        setPicks={setPicks}
+                        setMyPicks={setMyPicks}
+                        user={user}
+                        weeklyPicks={weeklyPicks}
                     />
                 } />
                 <Route exact path="/login" element={

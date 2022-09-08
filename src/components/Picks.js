@@ -1,6 +1,8 @@
 import convertTime from 'convert-time';
 import { showAlert } from "./Alert";
 import '../style/picks.css'
+import { useEffect } from 'react';
+import { fetchAllPicks } from '../axios-services';
 
 const API_URL = 'https://floating-stream-77094.herokuapp.com/api'
 
@@ -13,14 +15,32 @@ function onlyOne(checkboxId, pick) {
 }
 
 const Picks = (props) => {
-    const { games, token, setAlertMessage, update, setUpdate, sortedGames } = props;
+    const { games, token, setAlertMessage, update, setUpdate, sortedGames, myPicks, setPicks, setMyPicks, user, weeklyPicks } = props;
+
+    useEffect(() => {
+        const getMyPicks = async () => {
+            const allPicks = await fetchAllPicks()
+            setPicks(allPicks)
+            if (user.username) {
+                const mypicks = allPicks.filter(pick => {
+                    const myWeeklyPick = weeklyPicks.find(weeklyPick => weeklyPick.username === user.username)
+                    if (myWeeklyPick) {
+                        return myWeeklyPick.id === pick.weeklyid
+                    }
+                })
+                setMyPicks(mypicks)
+            }
+        }
+
+        getMyPicks()
+    }, [update])
 
     const postPick = async (pickData) => {
         const { picks } = pickData
         let alert = ""
 
-        if (picks.length > 15) {
-            setAlertMessage("You can only make 20 picks!")
+        if (picks.length + myPicks.length > 20) {
+            setAlertMessage(`You can only make 20 picks! You already have made ${myPicks.length}, so you can only make ${20 - myPicks.length} more!`)
             showAlert()
             return
         }
@@ -32,6 +52,12 @@ const Picks = (props) => {
             }
         }
 
+        for (let i = 0; i < myPicks.length; i++) {
+            if (myPicks[i].lock) {
+                locksLength++
+            }
+        }
+        
         if (locksLength < 3) {
             setAlertMessage("You must lock at least 3 picks!")
             showAlert()

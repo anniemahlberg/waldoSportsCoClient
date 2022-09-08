@@ -9,7 +9,6 @@ const Profile = (props) => {
     const {myPicks, setMyPicks, myWeekly, setMyWeekly, setPicks, user, weeklyPicks, update, setUserStats, myStats, setMyStats, setParlays, myParlays, setMyParlays, token, setUpdate, setAlertMessage, users } = props;
     let total = 0;
     let parlay1total = 0;
-    let parlay2total = 0;
     const me = users.find(thisuser => thisuser.username === user.username)
 
     useEffect(() => {
@@ -134,6 +133,34 @@ const Profile = (props) => {
             newworth = 2
         } else if (!lock && worth === 5) {
             newworth = 1
+        }
+
+        let locksLength = 0;
+        for (let i = 0; i < myPicks.length; i++) {
+            if (myPicks[i].lock) {
+                locksLength++
+            }
+        }
+
+        if (newlock) {
+            locksLength++
+        } else {
+            locksLength--
+        }
+
+        if (locksLength < 3) {
+            setAlertMessage("You must have at least 3 picks locked!")
+            showAlert()
+            document.getElementById(`edit-lock-${index}`).checked = true
+            return
+        }
+
+        if (locksLength > 7) {
+            setAlertMessage("You can only lock up to 7 picks!")
+            showAlert()
+            document.getElementById(`edit-lock-${index}`).checked = false
+
+            return
         }
 
         await fetch(`${API_URL}/picks/pick/id/updatePick/${pickId}`, {
