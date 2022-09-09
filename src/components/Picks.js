@@ -639,71 +639,69 @@ const Picks = (props) => {
                 </div>
                 <form id="picks-form">
                     { sortedGames ? sortedGames.map((game, idx) => {
-                        if (checkTime(game.date, game.time) === false) {
-                            return (
-                            <div key={idx} className='game'>
-                                <div className='info'>
-                                    {game.date && game.time ? <p className="date">{new Date(`${game.date}T${game.time}`).toDateString()} at {convertTime(game.time)} CT</p> : null}
-                                    <p className="level" id={`level-${idx}`}>{game.level} {game.primetime ? <span>PRIMETIME</span> : null}</p>
+                        return (
+                        <div key={idx} className='game'>
+                            <div className='info'>
+                                {game.date && game.time ? <p className="date">{new Date(`${game.date}T${game.time}`).toDateString()} at {convertTime(game.time)} CT</p> : null}
+                                <p className="level" id={`level-${idx}`}>{game.level} {game.primetime ? <span>PRIMETIME</span> : null}</p>
+                            </div>
+                            <div className='gamestuff'>
+                                <div className="matchup">
+                                    { game.awayteam && game.hometeam ? <>
+                                        <h3 className="matchup-away">{game.awayteam.toUpperCase()}</h3>
+                                        <h3 className="matchup-home">{game.hometeam.toUpperCase()}</h3>
+                                    </>
+                                    : <h3 className="singleteam">{game.hometeam}</h3>}
                                 </div>
-                                <div className='gamestuff'>
-                                    <div className="matchup">
-                                        { game.awayteam && game.hometeam ? <>
-                                            <h3 className="matchup-away">{game.awayteam.toUpperCase()}</h3>
-                                            <h3 className="matchup-home">{game.hometeam.toUpperCase()}</h3>
-                                        </>
-                                        : <h3 className="singleteam">{game.hometeam}</h3>}
-                                    </div>
-                                    <div className="spread">
-                                        { game.awayteam && game.hometeam && game.favoredteam === 'home' ? <>
-                                            { game.dog ? <>
-                                            <input className="pick-checkbox" type='checkbox' id={`dog-${idx}`} name={`spread-${idx}`} onChange={() => onlyOne(`dog-${idx}`, `spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
-                                            <label htmlFor={`dog-${idx}`} id={`label-dog-${idx}`} className="pick-checkbox-label">
-                                                +{game.line}</label></> : null}
-                                            { game.chalk ? <>
-                                            <input className="pick-checkbox" type='checkbox' id={`chalk-${idx}`} name={`spread-${idx}`} onChange={() => onlyOne(`chalk-${idx}`, `spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
-                                            <label htmlFor={`chalk-${idx}`} id={`label-chalk-${idx}`} className="pick-checkbox-label">
-                                                -{game.line}</label></> : null}
-                                            { game.dog || game.chalk ? <>
-                                            <input className="lock-checkbox" type='checkbox' id={`spreadlock-${idx}`} name={`spreadlock-${idx}`} onChange={() => getNumberOfPicks()} disabled={checkTime(game.date, game.time) === true ? true : false }></input>                                        
-                                            <label htmlFor={`spreadlock-${idx}`} id={`label-spreadlock-${idx}`} className="lock-checkbox-label">
-                                                LOCK</label> </> : null}
-                                            </> : null}
-                                        { game.awayteam && game.hometeam && game.favoredteam === 'away' ? <>
-                                            { game.chalk ? <>
-                                            <input className="pick-checkbox" type='checkbox' id={`chalk-${idx}`} name={`spread-${idx}`} onChange={() => onlyOne(`chalk-${idx}`, `spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
-                                            <label htmlFor={`chalk-${idx}`} id={`label-chalk-${idx}`} className="pick-checkbox-label">
-                                                -{game.line}</label></> : null}
-                                            { game.dog ? <>
-                                            <input className="pick-checkbox" type='checkbox' id={`dog-${idx}`} name={`spread-${idx}`} onChange={() => onlyOne(`dog-${idx}`, `spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
-                                            <label htmlFor={`dog-${idx}`} id={`label-dog-${idx}`} className="pick-checkbox-label">
-                                                +{game.line}</label></> : null}
-                                            { game.dog || game.chalk ? <>
-                                            <input className="lock-checkbox" type='checkbox' id={`spreadlock-${idx}`} name={`spreadlock-${idx}`} onChange={() => getNumberOfPicks()} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
-                                            <label htmlFor={`spreadlock-${idx}`} id={`label-spreadlock-${idx}`} className="lock-checkbox-label">
-                                                LOCK</label> </> :null}
-                                            </> : null}
-                                    </div>
-                                    <div className="total">
-                                        { game.awayteam && game.hometeam && game.totalpoints ? <>
-                                            { game.over ? <>
-                                            <input className="pick-checkbox" type='checkbox' id={`over-${idx}`} name={`total-${idx}`} onChange={() => onlyOne(`over-${idx}`, `total-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
-                                            <label htmlFor={`over-${idx}`} id={`label-over-${idx}`} className="pick-checkbox-label">
-                                                O {game.totalpoints}</label></> : null}
-                                            { game.under ? <>
-                                            <input className="pick-checkbox" type='checkbox' id={`under-${idx}`} name={`total-${idx}`} onChange={() => onlyOne(`under-${idx}`, `total-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
-                                            <label htmlFor={`under-${idx}`} id={`label-under-${idx}`} className="pick-checkbox-label">
-                                                U {game.totalpoints}</label></> : null}
-                                            { game.over || game.under ? <>
-                                            <input className="lock-checkbox" type='checkbox' id={`totalpointslock-${idx}`} name={`totalpointslock-${idx}`} onChange={() => getNumberOfPicks()} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
-                                            <label htmlFor={`totalpointslock-${idx}`} id={`label-totalpointslock-${idx}`} className="lock-checkbox-label" >
-                                                LOCK</label> </> :null}
-                                            </> : null}
-                                    </div>
+                                <div className="spread">
+                                    { game.awayteam && game.hometeam && game.favoredteam === 'home' ? <>
+                                        { game.dog ? <>
+                                        <input className="pick-checkbox" type='checkbox' id={`dog-${idx}`} name={`spread-${idx}`} onChange={() => onlyOne(`dog-${idx}`, `spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
+                                        <label htmlFor={`dog-${idx}`} id={`label-dog-${idx}`} className="pick-checkbox-label">
+                                            +{game.line}</label></> : null}
+                                        { game.chalk ? <>
+                                        <input className="pick-checkbox" type='checkbox' id={`chalk-${idx}`} name={`spread-${idx}`} onChange={() => onlyOne(`chalk-${idx}`, `spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
+                                        <label htmlFor={`chalk-${idx}`} id={`label-chalk-${idx}`} className="pick-checkbox-label">
+                                            -{game.line}</label></> : null}
+                                        { game.dog || game.chalk ? <>
+                                        <input className="lock-checkbox" type='checkbox' id={`spreadlock-${idx}`} name={`spreadlock-${idx}`} onChange={() => getNumberOfPicks()} disabled={checkTime(game.date, game.time) === true ? true : false }></input>                                        
+                                        <label htmlFor={`spreadlock-${idx}`} id={`label-spreadlock-${idx}`} className="lock-checkbox-label">
+                                            LOCK</label> </> : null}
+                                        </> : null}
+                                    { game.awayteam && game.hometeam && game.favoredteam === 'away' ? <>
+                                        { game.chalk ? <>
+                                        <input className="pick-checkbox" type='checkbox' id={`chalk-${idx}`} name={`spread-${idx}`} onChange={() => onlyOne(`chalk-${idx}`, `spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
+                                        <label htmlFor={`chalk-${idx}`} id={`label-chalk-${idx}`} className="pick-checkbox-label">
+                                            -{game.line}</label></> : null}
+                                        { game.dog ? <>
+                                        <input className="pick-checkbox" type='checkbox' id={`dog-${idx}`} name={`spread-${idx}`} onChange={() => onlyOne(`dog-${idx}`, `spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
+                                        <label htmlFor={`dog-${idx}`} id={`label-dog-${idx}`} className="pick-checkbox-label">
+                                            +{game.line}</label></> : null}
+                                        { game.dog || game.chalk ? <>
+                                        <input className="lock-checkbox" type='checkbox' id={`spreadlock-${idx}`} name={`spreadlock-${idx}`} onChange={() => getNumberOfPicks()} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
+                                        <label htmlFor={`spreadlock-${idx}`} id={`label-spreadlock-${idx}`} className="lock-checkbox-label">
+                                            LOCK</label> </> :null}
+                                        </> : null}
+                                </div>
+                                <div className="total">
+                                    { game.awayteam && game.hometeam && game.totalpoints ? <>
+                                        { game.over ? <>
+                                        <input className="pick-checkbox" type='checkbox' id={`over-${idx}`} name={`total-${idx}`} onChange={() => onlyOne(`over-${idx}`, `total-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
+                                        <label htmlFor={`over-${idx}`} id={`label-over-${idx}`} className="pick-checkbox-label">
+                                            O {game.totalpoints}</label></> : null}
+                                        { game.under ? <>
+                                        <input className="pick-checkbox" type='checkbox' id={`under-${idx}`} name={`total-${idx}`} onChange={() => onlyOne(`under-${idx}`, `total-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
+                                        <label htmlFor={`under-${idx}`} id={`label-under-${idx}`} className="pick-checkbox-label">
+                                            U {game.totalpoints}</label></> : null}
+                                        { game.over || game.under ? <>
+                                        <input className="lock-checkbox" type='checkbox' id={`totalpointslock-${idx}`} name={`totalpointslock-${idx}`} onChange={() => getNumberOfPicks()} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
+                                        <label htmlFor={`totalpointslock-${idx}`} id={`label-totalpointslock-${idx}`} className="lock-checkbox-label" >
+                                            LOCK</label> </> :null}
+                                        </> : null}
                                 </div>
                             </div>
-                            )
-                        }
+                        </div>
+                        )
                     }) : <div>No games to display</div>}
                     <br />
                     <div className="submit-button">
@@ -714,47 +712,45 @@ const Picks = (props) => {
             <div id='parlay1-container'>
                 <form id="parlay-form">
                     { sortedGames ? sortedGames.map((game, idx) => {
-                        if (checkTime(game.date, game.time) === false) {
-                            return (
-                            <div key={idx} className='parlay1game'>
-                                <div className='info'>
-                                    {game.date && game.time ? <p className="date">{new Date(`${game.date}T${game.time}`).toDateString()} at {convertTime(game.time)} CT</p> : null}
-                                    <p className="level" id={`level-${idx}`}>{game.level} {game.primetime ? <span>PRIMETIME</span> : null}</p>
+                        return (
+                        <div key={idx} className='parlay1game'>
+                            <div className='info'>
+                                {game.date && game.time ? <p className="date">{new Date(`${game.date}T${game.time}`).toDateString()} at {convertTime(game.time)} CT</p> : null}
+                                <p className="level" id={`level-${idx}`}>{game.level} {game.primetime ? <span>PRIMETIME</span> : null}</p>
+                            </div>
+                            <div className='gamestuff'>
+                                <div className="matchup">
+                                    { game.awayteam && game.hometeam ? <>
+                                        <h3 className="matchup-away">{game.awayteam.toUpperCase()}</h3>
+                                        <h3 className="matchup-home">{game.hometeam.toUpperCase()}</h3>
+                                    </>
+                                    : <h3 className="singleteam">{game.hometeam}</h3>}
                                 </div>
-                                <div className='gamestuff'>
-                                    <div className="matchup">
-                                        { game.awayteam && game.hometeam ? <>
-                                            <h3 className="matchup-away">{game.awayteam.toUpperCase()}</h3>
-                                            <h3 className="matchup-home">{game.hometeam.toUpperCase()}</h3>
-                                        </>
-                                        : <h3 className="singleteam">{game.hometeam}</h3>}
-                                    </div>
-                                    <div className="spread">
-                                        { game.awayteam && game.hometeam && game.favoredteam === 'home' ? <>
-                                            { game.dog ? <><input className="pick-checkbox" type='checkbox' id={`parlay1-dog-${idx}`} name={`parlay1-spread-${idx}`} onChange={() => onlyOne(`parlay1-dog-${idx}`, `parlay1-spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
-                                            <label htmlFor={`parlay1-dog-${idx}`} className="pick-checkbox-label" id={`label-parlay1-dog-${idx}`}>+{game.line}</label></> : null}
-                                            { game.chalk ? <><input className="pick-checkbox" type='checkbox' id={`parlay1-chalk-${idx}`} name={`parlay1-spread-${idx}`} onChange={() => onlyOne(`parlay1-chalk-${idx}`, `parlay1-spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
-                                            <label htmlFor={`parlay1-chalk-${idx}`} className="pick-checkbox-label" id={`label-parlay1-chalk-${idx}`}>-{game.line}</label></> : null}
-                                            </> : null}
-                                        { game.awayteam && game.hometeam && game.favoredteam === 'away' ? <>
-                                            { game.chalk ? <><input className="pick-checkbox" type='checkbox' id={`parlay1-chalk-${idx}`} name={`parlay1-spread-${idx}`} onChange={() => onlyOne(`parlay1-chalk-${idx}`, `parlay1-spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
-                                            <label htmlFor={`parlay1-chalk-${idx}`} className="pick-checkbox-label" id={`label-parlay1-chalk-${idx}`}>-{game.line}</label></> : null}
-                                            { game.dog ? <><input className="pick-checkbox" type='checkbox' id={`parlay1-dog-${idx}`} name={`parlay1-spread-${idx}`} onChange={() => onlyOne(`parlay1-dog-${idx}`, `parlay1-spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
-                                            <label htmlFor={`parlay1-dog-${idx}`}className="pick-checkbox-label" id={`label-parlay1-dog-${idx}`}>+{game.line}</label></> : null}
-                                            </> : null}
-                                    </div>
-                                    <div className="total">
-                                        { game.awayteam && game.hometeam && game.totalpoints ? <>
-                                            { game.over ? <><input className="pick-checkbox" type='checkbox' id={`parlay1-over-${idx}`} name={`parlay1-total-${idx}`} onChange={() => onlyOne(`parlay1-over-${idx}`, `parlay1-total-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
-                                            <label htmlFor={`parlay1-over-${idx}`} className="pick-checkbox-label" id={`label-parlay1-over-${idx}`}>O {game.totalpoints}</label></> : null}
-                                            { game.under ? <><input className="pick-checkbox" type='checkbox' id={`parlay1-under-${idx}`} name={`parlay1-total-${idx}`} onChange={() => onlyOne(`parlay1-under-${idx}`, `parlay1-total-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
-                                            <label htmlFor={`parlay1-under-${idx}`}className="pick-checkbox-label" id={`label-parlay1-under-${idx}`}>U {game.totalpoints}</label></> : null}
-                                            </> : null}
-                                    </div>
+                                <div className="spread">
+                                    { game.awayteam && game.hometeam && game.favoredteam === 'home' ? <>
+                                        { game.dog ? <><input className="pick-checkbox" type='checkbox' id={`parlay1-dog-${idx}`} name={`parlay1-spread-${idx}`} onChange={() => onlyOne(`parlay1-dog-${idx}`, `parlay1-spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
+                                        <label htmlFor={`parlay1-dog-${idx}`} className="pick-checkbox-label" id={`label-parlay1-dog-${idx}`}>+{game.line}</label></> : null}
+                                        { game.chalk ? <><input className="pick-checkbox" type='checkbox' id={`parlay1-chalk-${idx}`} name={`parlay1-spread-${idx}`} onChange={() => onlyOne(`parlay1-chalk-${idx}`, `parlay1-spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
+                                        <label htmlFor={`parlay1-chalk-${idx}`} className="pick-checkbox-label" id={`label-parlay1-chalk-${idx}`}>-{game.line}</label></> : null}
+                                        </> : null}
+                                    { game.awayteam && game.hometeam && game.favoredteam === 'away' ? <>
+                                        { game.chalk ? <><input className="pick-checkbox" type='checkbox' id={`parlay1-chalk-${idx}`} name={`parlay1-spread-${idx}`} onChange={() => onlyOne(`parlay1-chalk-${idx}`, `parlay1-spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
+                                        <label htmlFor={`parlay1-chalk-${idx}`} className="pick-checkbox-label" id={`label-parlay1-chalk-${idx}`}>-{game.line}</label></> : null}
+                                        { game.dog ? <><input className="pick-checkbox" type='checkbox' id={`parlay1-dog-${idx}`} name={`parlay1-spread-${idx}`} onChange={() => onlyOne(`parlay1-dog-${idx}`, `parlay1-spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
+                                        <label htmlFor={`parlay1-dog-${idx}`}className="pick-checkbox-label" id={`label-parlay1-dog-${idx}`}>+{game.line}</label></> : null}
+                                        </> : null}
+                                </div>
+                                <div className="total">
+                                    { game.awayteam && game.hometeam && game.totalpoints ? <>
+                                        { game.over ? <><input className="pick-checkbox" type='checkbox' id={`parlay1-over-${idx}`} name={`parlay1-total-${idx}`} onChange={() => onlyOne(`parlay1-over-${idx}`, `parlay1-total-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
+                                        <label htmlFor={`parlay1-over-${idx}`} className="pick-checkbox-label" id={`label-parlay1-over-${idx}`}>O {game.totalpoints}</label></> : null}
+                                        { game.under ? <><input className="pick-checkbox" type='checkbox' id={`parlay1-under-${idx}`} name={`parlay1-total-${idx}`} onChange={() => onlyOne(`parlay1-under-${idx}`, `parlay1-total-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
+                                        <label htmlFor={`parlay1-under-${idx}`}className="pick-checkbox-label" id={`label-parlay1-under-${idx}`}>U {game.totalpoints}</label></> : null}
+                                        </> : null}
                                 </div>
                             </div>
-                            )
-                        }
+                        </div>
+                        )
                     }) : <div>No games to display</div>}
                     <br />
                     <div className="submit-button">

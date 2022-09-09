@@ -61,11 +61,25 @@
 
 .pick-checkbox-label:hover, .lock-checkbox-label:hover {
     transform: scale(1.2);
+    cursor: pointer;
 }
 
 .pick-checkbox:checked + .pick-checkbox-label {
     background-color: #4ab5a3ac;
     font-weight: 600;
+}
+
+.pick-checkbox:disabled + .pick-checkbox-label {
+    background-color: darkgray;
+}
+
+.pick-checkbox:disabled:hover + .pick-checkbox-label {
+    transform: none;
+    cursor: auto;
+}
+
+.lock-checkbox:disabled:hover + .lock-checkbox-label {
+    transform: none
 }
 
 .lock-checkbox:checked + .lock-checkbox-label {
