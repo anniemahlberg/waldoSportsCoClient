@@ -81,9 +81,9 @@ const League = (props) => {
                         { userStats.length ? userStats.map((userStat, idx) => {
                             return (<tr key={idx} className="userStat">
                                         <td>{userStat.username}</td>
-                                        <td>{userStat.betscorrect}-{userStat.totalbets}</td>
-                                        <td>{userStat.lockscorrect}-{userStat.totallocks}</td>
-                                        <td>{userStat.parlayscorrect}-{userStat.totalparlays}</td>
+                                        <td>{userStat.betscorrect}/{userStat.totalbets}</td>
+                                        <td>{userStat.lockscorrect}/{userStat.totallocks}</td>
+                                        <td>{userStat.parlayscorrect}/{userStat.totalparlays}</td>
                                         <td>{userStat.totalpoints}</td>
                                     </tr>)
                         }) : <tr><td colSpan={5}>No stats to display</td></tr>}
@@ -106,9 +106,9 @@ const League = (props) => {
                         { weeklyPicks.length ? weeklyPicks.map((weeklyPick, idx) => {
                             return (<tr key={idx} className="weeklyPick">
                                         <td>{weeklyPick.username}</td>
-                                        <td>{weeklyPick.betscorrect}-{weeklyPick.totalbets}</td>
-                                        <td>{weeklyPick.lockscorrect}-{weeklyPick.totallocks}</td>
-                                        <td>{weeklyPick.parlayscorrect}-{weeklyPick.totalparlays}</td>
+                                        <td>{weeklyPick.betscorrect}/{weeklyPick.totalbets}</td>
+                                        <td>{weeklyPick.lockscorrect}/{weeklyPick.totallocks}</td>
+                                        <td>{weeklyPick.parlayscorrect}/{weeklyPick.totalparlays}</td>
                                         <td>{weeklyPick.totalpoints}</td>
                                     </tr>)
                         }) : <tr><td colSpan={5}>No stats to display</td></tr>}

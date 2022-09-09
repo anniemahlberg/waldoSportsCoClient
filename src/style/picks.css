@@ -20,6 +20,10 @@
     margin: 15px;
 }
 
+#picks-form {
+    margin-top: 5px;
+}
+
 .game, .parlay1game {
     margin-right: 10px;
     margin-top: 15px;
@@ -158,6 +162,19 @@
 #confirmation-container table, #parlay-confirmation-container table {
     background-color: white;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.354), 0 6px 20px 0 rgba(0, 0, 0, 0.354);
+}
+
+#totals {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: sticky;
+    top: 0px;
+    background-color: #4ab5a3;
+}
+
+#totals p {
+    margin: 10px;
 }
 
 

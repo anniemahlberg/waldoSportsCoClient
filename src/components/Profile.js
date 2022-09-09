@@ -362,9 +362,9 @@ const Profile = (props) => {
                     <tbody>
                         { user.username && myStats ? 
                             <tr>
-                                <td>{myStats.betscorrect}-{myStats.totalbets}</td>
-                                <td>{myStats.lockscorrect}-{myStats.totallocks}</td>
-                                <td>{myStats.parlayscorrect}-{myStats.totalparlays}</td>
+                                <td>{myStats.betscorrect}/{myStats.totalbets}</td>
+                                <td>{myStats.lockscorrect}/{myStats.totallocks}</td>
+                                <td>{myStats.parlayscorrect}/{myStats.totalparlays}</td>
                                 <td>{myStats.totalpoints}</td>
                             </tr>
                         : <tr><td>No stats to display</td></tr>}
@@ -385,9 +385,9 @@ const Profile = (props) => {
                     <tbody>
                         { user.username && myWeekly ? 
                                 <tr>
-                                    <td>{myWeekly.betscorrect}-{myWeekly.totalbets}</td>
-                                    <td>{myWeekly.lockscorrect}-{myWeekly.totallocks}</td>
-                                    <td>{myWeekly.parlayscorrect}-{myWeekly.totalparlays}</td>
+                                    <td>{myWeekly.betscorrect}/{myWeekly.totalbets}</td>
+                                    <td>{myWeekly.lockscorrect}/{myWeekly.totallocks}</td>
+                                    <td>{myWeekly.parlayscorrect}/{myWeekly.totalparlays}</td>
                                     <td>{myWeekly.totalpoints}</td>
                                 </tr>
                         : user.username ? <tr><td>You do not have any stats yet to show</td></tr> : <tr><td>You must be logged in to see your stats</td></tr>}
