@@ -236,9 +236,11 @@ const Picks = (props) => {
         const { picks } = data
         let confirmationContainer = document.getElementById("confirm-picks");
         let confirmationHTML = "";
+        let total = 0;
 
         for (let i = 0; i < picks.length; i++) {
             let pick = picks[i];
+            total += pick.worth
 
             let pickHTML = 
             `<tr>
@@ -251,7 +253,13 @@ const Picks = (props) => {
             confirmationHTML += pickHTML
         }
 
-        confirmationContainer.innerHTML += confirmationHTML;
+        confirmationContainer.innerHTML += confirmationHTML += 
+            `<tr>
+                <td></td>
+                <td></td>
+                <th>Potential</th>
+                <td>${total}</td>
+            </tr>`
     }
 
     function confirmEditPick() {
@@ -521,7 +529,6 @@ const Picks = (props) => {
     }
 
     let randomPicture = randomPic()
-    
     function showPic() {
         randomPic()
         document.getElementById("randompic").style.display = "initial";
@@ -774,7 +781,7 @@ const Picks = (props) => {
                         <tr>
                             <td><input type="button" value="BACK TO PICKS" onClick={confirmEditPick}></input></td>
                             <td><input type="button" onClick={showPic} value="?"></input></td>
-                            <td><input type="button" value="SUMBIT PICKS" id="submit-button" onClick={(e) => submitPick(e)}></input></td>
+                            <td><input type="button" value="SUBMIT PICKS" id="submit-button" onClick={(e) => submitPick(e)}></input></td>
                         </tr>
                     </tfoot>
                 </table>
@@ -792,8 +799,6 @@ const Picks = (props) => {
                     <tfoot>
                         <tr>
                             <td><input type="button" value="BACK TO PARLAY" onClick={confirmEditParlay}></input></td>
-                        </tr>
-                        <tr>
                             <td><input type="button" value="SUBMIT PARLAY" id="submit-parlay-button" onClick={(e) => submitParlay1(e)}></input></td>
                         </tr>
                     </tfoot>

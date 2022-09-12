@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.c0dbdb98.css",
-    "main.js": "/static/js/main.76d24b19.js",
+    "main.js": "/static/js/main.4ea991b3.js",
     "static/media/wscLogo.png": "/static/media/wscLogo.a79f363f8a2d703fc1c4.png",
     "static/media/hamburger-removebg-preview.png": "/static/media/hamburger-removebg-preview.1f4174c5aa70dda71974.png",
     "index.html": "/index.html",
     "main.c0dbdb98.css.map": "/static/css/main.c0dbdb98.css.map",
-    "main.76d24b19.js.map": "/static/js/main.76d24b19.js.map"
+    "main.4ea991b3.js.map": "/static/js/main.4ea991b3.js.map"
   },
   "entrypoints": [
     "static/css/main.c0dbdb98.css",
-    "static/js/main.76d24b19.js"
+    "static/js/main.4ea991b3.js"
   ]
 }

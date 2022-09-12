@@ -616,10 +616,14 @@ const Admin = (props) => {
                                             <>
                                             <label>Total Points Outcome:</label>
                                             <select id={`input-results-totalpoints-${index}`}>
-                                                <option value=''>SELECT AN OUTCOME</option>
-                                                {game.over ? <option value="over">O {game.totalpoints}</option> : null}
-                                                {game.under ? <option value="under">U {game.totalpoints}</option> : null}
-                                                <option value='push'>PUSH</option>
+                                                {game.totalpointsoutcome === "tbd" ? 
+                                                <>
+                                                    <option value=''>SELECT AN OUTCOME</option> 
+                                                    {game.over ? <option value="over">O {game.totalpoints}</option> : null}
+                                                    {game.under ? <option value="under">U {game.totalpoints}</option> : null}
+                                                    <option value='push'>PUSH</option>
+                                                </>  
+                                                : <option value=''>{game.totalpointsoutcome} {game.totalpoints}</option>}
                                             </select>
                                             <br />
                                             </>
@@ -628,16 +632,28 @@ const Admin = (props) => {
                                             <>
                                             <label>Line:</label>
                                             <select id={`input-results-line-${index}`}>
+                                                {game.lineoutcome === "tbd" ? 
+                                                <>
                                                     <option value=''>SELECT AN OUTCOME</option>
-                                                { game.favoredteam === 'home' ? <>
-                                                    {game.chalk ? <option value="chalk">{game.hometeam} -{game.line}</option> :null}
-                                                    {game.dog ? <option value="dog">{game.awayteam} +{game.line}</option> :null}                             
-                                                </> : <>
-                                                    {game.chalk ? <option value="chalk">{game.awayteam} -{game.line}</option> :null}
-                                                    {game.dog ? <option value="dog">{game.hometeam} +{game.line}</option> :null}
-                                                </>
-                                                }
+                                                    { game.favoredteam === 'home' ? <>
+                                                        {game.chalk ? <option value="chalk">{game.hometeam} -{game.line}</option> :null}
+                                                        {game.dog ? <option value="dog">{game.awayteam} +{game.line}</option> :null}                             
+                                                    </> : <>
+                                                        {game.chalk ? <option value="chalk">{game.awayteam} -{game.line}</option> :null}
+                                                        {game.dog ? <option value="dog">{game.hometeam} +{game.line}</option> :null}
+                                                    </>
+                                                    }
                                                     <option value='push'>PUSH</option>
+                                                </> : game.favoredteam === 'home' && game.lineoutcome === "chalk" ?
+                                                        <option value="">{game.hometeam} -{game.line}</option>
+                                                    : game.favoredteam === "home" && game.lineoutcome === "dog" ?
+                                                        <option value="">{game.awayteam} +{game.line}</option> 
+                                                    : game.favoredteam === 'away' && game.lineoutcome === "chalk" ?
+                                                        <option value="">{game.awayteam} -{game.line}</option>
+                                                    : game.favoredteam === 'away' && game.lineoutcome === "dog" ?
+                                                        <option value="">{game.hometeam} +{game.line}</option>
+                                                    : null
+                                                }
                                             </select>
                                             <br />
                                             </>
