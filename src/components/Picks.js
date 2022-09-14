@@ -569,7 +569,7 @@ const Picks = (props) => {
                 <div id="howto">
                     <h2><span style={{color: "#4ab5a3ac"}}>--- </span>HOW TO PLAY<span style={{color: "#4ab5a3ac"}}> ---</span></h2>
                     <ul>
-                        <li>Venmo @WaldoSportsCo $20 to play</li>
+                        <li>Venmo @WaldoSportsCo $10 to play</li>
                         <li>Place a maximum of 20 bets for the week</li>
                         <li>Each correct bet is worth +1 point. Each incorrect bet is -1.</li>
                         <li>You need to “Lock” at least 3 bets. These are the bets you are most confident in and are worth extra points. You can lock a maximum of 7 bets.</li>

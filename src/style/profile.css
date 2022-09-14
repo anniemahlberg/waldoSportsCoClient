@@ -1,8 +1,13 @@
-#myweeklystats, #myseasonstats, #mypicks, #editmypicks, #editmyparlays, #editmyinfo {
+#myweeklystats, #myseasonstats, #editmypicks, #editmyparlays, #editmyinfo {
     display: none;
 }
 
 .profile-button {
     padding: 5px;
     font-family: 'Quicksand', sans-serif;
+}
+
+#my-picks {
+    background-color: white;
+    color: black;
 }

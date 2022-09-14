@@ -68,6 +68,11 @@ const Profile = (props) => {
         let editPicksContainer = document.getElementById("editmypicks");
         let editParlaysContainer = document.getElementById("editmyparlays");
         let editInfoContainer = document.getElementById("editmyinfo")
+        let seasonStatsButton = document.getElementById("season-stats")
+        let statsButton = document.getElementById("stats")
+        let picksButton = document.getElementById("my-picks")
+        let editPicksButton = document.getElementById('edit-mypicks')
+        let editInfoButton = document.getElementById("edit-myinfo")
 
         if (target === "season-stats") {
             statsContainer.style.display = "none";
@@ -76,6 +81,16 @@ const Profile = (props) => {
             editPicksContainer.style.display = "none";
             editParlaysContainer.style.display = "none";
             editInfoContainer.style.display = "none"
+            seasonStatsButton.style.backgroundColor = "white"
+            seasonStatsButton.style.color = "black"
+            statsButton.style.backgroundColor = "black"
+            statsButton.style.color = "white"
+            picksButton.style.backgroundColor = "black"
+            picksButton.style.color = "white"
+            editInfoButton.style.backgroundColor = "black"
+            editInfoButton.style.color = "white"
+            editPicksButton.style.backgroundColor = "black"
+            editPicksButton.style.color = "white"
         }
 
         if (target === "stats") {
@@ -85,6 +100,16 @@ const Profile = (props) => {
             editPicksContainer.style.display = "none";
             editParlaysContainer.style.display = "none";
             editInfoContainer.style.display = "none"
+            seasonStatsButton.style.backgroundColor = "black"
+            seasonStatsButton.style.color = "white"
+            statsButton.style.backgroundColor = "white"
+            statsButton.style.color = "black"
+            picksButton.style.backgroundColor = "black"
+            picksButton.style.color = "white"
+            editInfoButton.style.backgroundColor = "black"
+            editInfoButton.style.color = "white"
+            editPicksButton.style.backgroundColor = "black"
+            editPicksButton.style.color = "white"
         }
     
         if (target === "my-picks") {
@@ -94,6 +119,16 @@ const Profile = (props) => {
             editPicksContainer.style.display = "none";    
             editParlaysContainer.style.display = "none";
             editInfoContainer.style.display = "none"
+            seasonStatsButton.style.backgroundColor = "black"
+            seasonStatsButton.style.color = "white"
+            statsButton.style.backgroundColor = "black"
+            statsButton.style.color = "white"
+            picksButton.style.backgroundColor = "white"
+            picksButton.style.color = "black"
+            editInfoButton.style.backgroundColor = "black"
+            editInfoButton.style.color = "white"
+            editPicksButton.style.backgroundColor = "black"
+            editPicksButton.style.color = "white"
         }
 
         if (target === "edit-mypicks") {
@@ -103,6 +138,16 @@ const Profile = (props) => {
             editPicksContainer.style.display = "initial";  
             editParlaysContainer.style.display = "initial";
             editInfoContainer.style.display = "none"
+            seasonStatsButton.style.backgroundColor = "black"
+            seasonStatsButton.style.color = "white"
+            statsButton.style.backgroundColor = "black"
+            statsButton.style.color = "white"
+            picksButton.style.backgroundColor = "black"
+            picksButton.style.color = "white"
+            editInfoButton.style.backgroundColor = "black"
+            editInfoButton.style.color = "white"
+            editPicksButton.style.backgroundColor = "white"
+            editPicksButton.style.color = "black"
         }
 
         if (target === "edit-myinfo") {
@@ -112,6 +157,16 @@ const Profile = (props) => {
             editPicksContainer.style.display = "none";  
             editParlaysContainer.style.display = "none";
             editInfoContainer.style.display = "initial"
+            seasonStatsButton.style.backgroundColor = "black"
+            seasonStatsButton.style.color = "white"
+            statsButton.style.backgroundColor = "black"
+            statsButton.style.color = "white"
+            picksButton.style.backgroundColor = "black"
+            picksButton.style.color = "white"
+            editInfoButton.style.backgroundColor = "white"
+            editInfoButton.style.color = "black"
+            editPicksButton.style.backgroundColor = "black"
+            editPicksButton.style.color = "white"
         }
     }
 
@@ -319,24 +374,6 @@ const Profile = (props) => {
             }
         })
         .catch(console.error)
-    }
-
-    let btnContainer = document.getElementById("profileButtons");
-
-    if (btnContainer) {
-        let btns = btnContainer.getElementsByClassName("buttons");
-    
-        for (let i = 0; i < btns.length; i++) {
-            btns[i].addEventListener("click", function() {
-                let current = document.getElementsByClassName("activeButton");
-    
-                if (current.length > 0) {
-                    current[0].className = current[0].className.replace(" activeButton", "");
-                }
-    
-                this.className += " activeButton";
-            });
-        }
     }
 
     return (
