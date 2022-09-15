@@ -4,7 +4,7 @@ import "../style/admin.css";
 const API_URL = 'https://floating-stream-77094.herokuapp.com/api'
 
 const Admin = (props) => {
-    const { token, games, setAlertMessage, setUpdate, update, users } = props;
+    const { token, games, setAlertMessage, setUpdate, update, users, currentPot } = props;
 
     const postResults = async (resultsArr) => {
         let alert = "";
@@ -300,7 +300,7 @@ const Admin = (props) => {
         .catch(console.error)
     }
 
-    async function deleteUser(userid) {
+    async function deleteUser(userid) {                 
         await fetch(`${API_URL}/users/${userid}`, {
             method: "DELETE",
             headers: {
@@ -309,9 +309,58 @@ const Admin = (props) => {
             }
         }).then(response => response.json())
         .then(result => {
-            console.log(result)
             if (!result.name) {
                 setAlertMessage(result.message)
+                showAlert()
+                setUpdate(!update)
+            } else {
+                setAlertMessage(result.message);
+                showAlert()
+            }
+        })
+        .catch(console.error)
+    }
+
+    async function addPotAmount() {
+        const week = document.getElementById("pot-week").value
+        const amount = document.getElementById("pot-amount").value
+
+        await fetch(`${API_URL}/pot/add`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({week, amount})
+        }).then(response => response.json())
+        .then(result => {
+            if (!result.name) {
+                setAlertMessage(result.message)
+                showAlert()
+                setUpdate(!update)
+            } else {
+                setAlertMessage(result.message);
+                showAlert()
+            }
+        })
+        .catch(console.error)
+    }
+
+    async function editPotAmount() {
+        const week = document.getElementById("edit-pot-week").value
+        const amount = document.getElementById("edit-pot-amount").value
+
+        await fetch(`${API_URL}/pot/week/${week}`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({amount})
+        }).then(response => response.json())
+        .then(result => {
+            if (!result.name) {
+                setAlertMessage(`You have edited the pot amount to: $${amount}`)
                 showAlert()
                 setUpdate(!update)
             } else {
@@ -401,7 +450,7 @@ const Admin = (props) => {
                 <span className="buttons" id="game" onClick={showContainers}>ADD</span>
                 <span className="buttons" id="edit" onClick={showContainers}>EDIT</span>
                 <span className="buttons" id="results" onClick={showContainers}>RESULTS</span>
-                <span className="buttons" id="deactivate" onClick={showContainers}>NEW WEEK</span>
+                <span className="buttons" id="deactivate" onClick={showContainers}>WEEK INFO</span>
                 <span className="buttons" id="makeadmin" onClick={showContainers}>USERS</span>
             </div>  
             <div id="admin-input-game">
@@ -670,9 +719,22 @@ const Admin = (props) => {
                 </div>
             </div>
             <div id="admin-deactivate">
+                <h3>Current Week Number: {games[0] ? games[0].week : <span>-</span>}</h3>
+                <h3>Current Week's Pot: ${currentPot ? currentPot : <span>0</span>}</h3>
+                <h2>ADD POT AMOUNT</h2>
+                <label htmlFor="pot-week">Week:</label>
+                <input id='pot-week' placeholder="Week Number"></input><br />
+                <label htmlFor="pot-amount">Pot Amount: $</label>
+                <input id="pot-amount" placeholder="Pot Amount"></input>
+                <button className='admin-submit' type='button' onClick={addPotAmount}>ADD POT AMOUNT</button>
+                <h2>EDIT POT AMOUNT</h2>
+                <label>Current Week:</label>
+                <input id='edit-pot-week' placeholder="Week Number"></input><br />
+                <label>NEW Pot Amount: $</label>
+                <input id="edit-pot-amount" placeholder={currentPot ? currentPot : 0}></input>
+                <button className='admin-submit' type='button' onClick={editPotAmount}>EDIT POT AMOUNT</button>
                 <h2>START NEW WEEK</h2>
                 <p>In order to start a new week, you will want to deactivate all of the games from the current/previous week.</p>
-                <h3>Current Week Number: {games[0] ? games[0].week : <span>-</span>}</h3>
                 <label>What week number would you like to deactivate all of the games? </label>
                 <input id='weeknumber' placeholder="Week Number"></input>
                 <button className="admin-submit" type="button" onClick={deactivateWeek}>DEACTIVATE</button>

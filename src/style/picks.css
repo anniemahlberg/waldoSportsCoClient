@@ -65,7 +65,7 @@
 }
 
 .pick-checkbox:checked + .pick-checkbox-label {
-    background-color: #4ab5a3ac;
+    background-color: #f9d25ece;
     font-weight: 600;
 }
 
@@ -120,7 +120,7 @@
     flex-wrap: wrap;
     color: black;
     align-items: center;
-    background-color: #4ab5a3ac;
+    background-color: #014f1667;
 }
 
 .filter-options h4 {
@@ -184,7 +184,7 @@
     justify-content: center;
     position: sticky;
     top: 0px;
-    background-color: #4ab5a3;
+    background-color: #829486;
 }
 
 #totals p {

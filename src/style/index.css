@@ -2,7 +2,7 @@
 #alert-container {
     padding: 20px;
     background-color: black;
-    color: #4AB5A3;
+    color: #f9d25ece;
     display: none;
     width: fit-content;
     margin: auto;
@@ -28,12 +28,31 @@ body {
     text-decoration: none;
 }
 
+.header-sec-link {
+    color: black;
+    text-decoration: none;
+    background-color: #014f1667;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 nav > * {
     padding: 10px;
 }
 
 #logo {
     width: 300px;
+}
+
+#playlink:hover {
+    cursor: pointer;
+}
+
+#liolink, #pick6link {
+    display: none;
 }
 
 /* ALL NAVIGATION BARS */
@@ -64,6 +83,10 @@ nav > * {
     margin: 10px;
     border: solid white 1px;
     padding: 5px;
+}
+
+.buttons:hover, .activeButton:hover {
+    cursor: pointer;
 }
 
 .activeButton {
@@ -144,6 +167,15 @@ button[type=submit] {
         right: 0;
         top: 5px;
         width: 80px;
+    }
+
+    .header-sec-link {
+        background-color: #014f1667;
+    }
+
+    #mobile-liolink, #mobile-pick6link {
+        display: none;
+        padding: 0;
     }
 
     .computertable {

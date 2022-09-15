@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { Register, Login, Picks, Alert, League, Profile, Admin, Home } from './components';
-import { fetchAllGames, fetchAllWeeklyPicks, fetchAllPicks, fetchUserStats, fetchAllParlays, fetchAllUsers } from "./axios-services";
+import { Register, Login, Picks, Alert, League, Profile, Admin, Home, Pick6 } from './components';
+import { fetchAllGames, fetchAllWeeklyPicks, fetchAllPicks, fetchUserStats, fetchAllParlays, fetchAllUsers, fetchCurrentPot, fetchAllPots } from "./axios-services";
 import { showAlert } from './components/Alert';
 import "./style/index.css";
 
@@ -23,6 +23,8 @@ const App = () => {
     const [users, setUsers] = useState([])
     const [alertMessage, setAlertMessage] = useState([]);
     const [update, setUpdate] = useState(false);
+    const [currentPot, setCurrentPot] = useState("");
+    const [allPots, setAllPots] = useState('');
 
     useEffect(() => {
         const getAllInitialData = async () => {
@@ -40,6 +42,21 @@ const App = () => {
                 return adate - bdate
             })
             const allUsers = await fetchAllUsers()
+            const allPots = await fetchAllPots()
+
+            if (sortedGames[0]) {
+                const currentPot = await fetchCurrentPot(sortedGames[0].week)
+                if (currentPot) {
+                    setCurrentPot(currentPot.amount)
+                }
+            }
+
+            if (allPots) {
+                let totalPot = 0;
+                allPots.forEach((pot) => totalPot += pot.amount)
+                setAllPots(totalPot)
+            }
+
             setUsers(allUsers)
             setGames(allGames)
             setSortedGames(sortedGames)
@@ -81,13 +98,41 @@ const App = () => {
 
     function myFunction() {
         let x = document.getElementById("myLinks");
+        let lio = document.getElementById("mobile-liolink")
         
         if (x.style.display === "block") {
             x.style.display = "none";
+            lio.style.display = "none"
         } else {
             x.style.display = "block";
         }
       }
+
+    function showGamesNav() {
+        let lio = document.getElementById("liolink")
+        let pick6 = document.getElementById("pick6link")
+        
+        if (lio.style.display === "block") {
+            lio.style.display = "none"
+            pick6.style.display = "none"
+        } else {
+            lio.style.display = "block"
+            pick6.style.display = "block"
+        }
+    }
+
+    function showGamesMobileNav() {
+        let lio = document.getElementById("mobile-liolink")
+        let pick6 = document.getElementById("mobile-pick6link")
+        
+        if (lio.style.display === "block") {
+            lio.style.display = "none"
+            pick6.style.display = "none"
+        } else {
+            lio.style.display = "block"
+            pick6.style.display = "block"
+        }
+    }
 
     return (
         <div className='container'>
@@ -97,7 +142,9 @@ const App = () => {
             <div className='header'>
                 <Link to="/"><img src={require("./photos/wscLogo.png")} id='logo'></img></Link>
                 <nav className='nav'>
-                    <Link className="header-link" to="/picks" onClick={() => {setUpdate(!update)}}>PICKS</Link>
+                    <span className="header-link" id="playlink" onClick={showGamesNav}>PLAY</span>
+                    <Link className="header-sec-link" to="/picks" id="liolink" onClick={() => {setUpdate(!update); showGamesNav()}}>LOCK IT UP</Link>
+                    <Link className='header-sec-link' to='/pick6' id='pick6link' onClick={() => {setUpdate(!update); showGamesNav()}}>PICK 6</Link>
                     <Link className="header-link" to='/league' onClick={() => {setUpdate(!update)}}>LEAGUE</Link>
                     { !user.username ? <Link className="header-link" to="/login" onClick={() => {setUpdate(!update)}}>LOGIN</Link> : null }
                     { user.username ? <Link className="header-link" to="/profile" onClick={() => {setUpdate(!update)}}>PROFILE</Link> : null }
@@ -105,8 +152,10 @@ const App = () => {
                     { user.username ? <Link className="header-link" to="/" onClick={() => {logout()}}>LOGOUT</Link> : null }
                 </nav>
                 <nav className='mobilenav' id="myLinks">
-                    <Link className="header-link" to="/picks" onClick={() => {setUpdate(!update); myFunction()}}>PICKS</Link>
+                    <span className="header-link" id="playlink" onClick={showGamesMobileNav}>PLAY</span>
                     <br />
+                    <Link className="header-sec-link" to="/picks" id="mobile-liolink" onClick={() => {setUpdate(!update); showGamesMobileNav(); myFunction()}}>LOCK IT UP</Link>
+                    <Link className='header-sec-link' to='/pick6' id='mobile-pick6link' onClick={() => {setUpdate(!update); showGamesMobileNav(); myFunction()}}>PICK 6</Link>
                     <Link className="header-link" to='/league' onClick={() => {setUpdate(!update); myFunction()}}>LEAGUE</Link>
                     <br />
                     { !user.username ? <><Link className="header-link" to="/login" onClick={() => {setUpdate(!update); myFunction()}}>LOGIN</Link><br/></> : null }
@@ -124,6 +173,21 @@ const App = () => {
                 } />
                 <Route exact path="/picks" element={
                     <Picks 
+                        games={games} 
+                        token={token} 
+                        update={update} 
+                        setUpdate={setUpdate} 
+                        setAlertMessage={setAlertMessage}
+                        sortedGames={sortedGames}
+                        myPicks={myPicks}
+                        setPicks={setPicks}
+                        setMyPicks={setMyPicks}
+                        user={user}
+                        weeklyPicks={weeklyPicks}
+                    />
+                } />
+                <Route exact path="/pick6" element={
+                    <Pick6 
                         games={games} 
                         token={token} 
                         update={update} 
@@ -161,6 +225,7 @@ const App = () => {
                         setAlertMessage={setAlertMessage} 
                         games={games} 
                         users={users}
+                        currentPot={currentPot}
                     />
                 </>} />
                 <Route exact path="/league" element={<>
@@ -173,6 +238,8 @@ const App = () => {
                         setWeeklyPicks={setWeeklyPicks} 
                         userStats={userStats}
                         parlays={parlays}
+                        currentPot={currentPot}
+                        allPots={allPots}
                     />
                 </>} />
                 <Route exact path="/profile" element={<>

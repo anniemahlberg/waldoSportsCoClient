@@ -62,3 +62,21 @@ export async function getGameById(gameId) {
         throw err
     }
 }
+
+export async function fetchCurrentPot(week) {
+    try {
+        const { data } = await axios.get(`https://floating-stream-77094.herokuapp.com/api/pot/week/${week}`)
+        return data.potAmount
+    } catch (err) {
+        throw err
+    }
+}
+
+export async function fetchAllPots() {
+    try {
+        const { data } = await axios.get(`https://floating-stream-77094.herokuapp.com/api/pot`)
+        return data.potAmounts
+    } catch (err) {
+        throw err
+    }
+}

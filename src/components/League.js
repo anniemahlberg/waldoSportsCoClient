@@ -2,7 +2,13 @@ import "../style/league.css"
 import React from "react"
 
 const League = (props) => {
-    const { weeklyPicks, picks, userStats, parlays } = props;
+    const { weeklyPicks, picks, userStats, parlays, currentPot, allPots} = props;
+    let weeklyPot = 0;
+    if (currentPot) {
+        weeklyPot = (0.93 * currentPot).toFixed(2)
+    }
+
+    let seasonPot = (0.07 * allPots).toFixed(2)
 
     function showContainers(event) {
         let target = event.target.id
@@ -64,8 +70,8 @@ const League = (props) => {
                 <span className="buttons" id="leaderboard" onClick={showContainers}>WEEKLY LEADERBOARD</span>
                 <span className="buttons" id="weekly-picks" onClick={showContainers}>WEEKLY PICKS</span>
             </div>
-            <br />
             <div id="seasonstats">
+                <p id="seasonpot">This Season's Pot: ${seasonPot}</p>
                 <table>
                     <caption>Season Stats</caption>
                     <thead>
@@ -91,6 +97,7 @@ const League = (props) => {
                 </table>
             </div>
             <div id="weeklyleaderboard">
+                <p id="weeklypot">This Week's Pot: ${isNaN(weeklyPot) ? 0 : weeklyPot}</p>
                 <table>
                     <caption>Weekly Leaderboard</caption>
                     <thead>

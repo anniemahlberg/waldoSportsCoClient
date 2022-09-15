@@ -547,15 +547,20 @@ const Picks = (props) => {
         getNumberOfPicks()
     }
 
+    let prevLocks = 0;
+    myPicks.forEach((pick) => {
+        if (pick.lock) {
+            prevLocks++
+        }
+    })
     
     function getNumberOfPicks() {
-        const picks = document.querySelectorAll("input[type=checkbox][class='pick-checkbox']:checked").length
-        const locks = document.querySelectorAll("input[type=checkbox][class='lock-checkbox']:checked").length
+        const picks = myPicks.length + document.querySelectorAll("input[type=checkbox][class='pick-checkbox']:checked").length
+        const locks = prevLocks + document.querySelectorAll("input[type=checkbox][class='lock-checkbox']:checked").length
         document.getElementById("numofpicks").innerHTML = picks
         document.getElementById("numoflocks").innerHTML = locks
         
     }
-
 
     return (
         <div className='games'>
@@ -641,8 +646,8 @@ const Picks = (props) => {
             </div>
             <div id="makepicks">
                 <div id="totals">
-                    <p>Number of Picks: <span id="numofpicks">0</span></p>
-                    <p>Number of Locks: <span id="numoflocks">0</span></p>
+                    <p>Number of Picks: <span id="numofpicks">{myPicks ? myPicks.length : 0}</span></p>
+                    <p>Number of Locks: <span id="numoflocks">{myPicks ? prevLocks : 0}</span></p>
                 </div>
                 <form id="picks-form">
                     { sortedGames ? sortedGames.map((game, idx) => {
