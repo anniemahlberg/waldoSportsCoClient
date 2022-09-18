@@ -1,13 +1,26 @@
-#myweeklystats, #myseasonstats, #editmypicks, #editmyparlays, #editmyinfo {
-    display: none;
-}
-
 .profile-button {
     padding: 5px;
     font-family: 'Quicksand', sans-serif;
 }
 
-#my-picks {
+#mypicks {
+    display: flex;
+}
+
+#editmypicks, #mystats {
+    display: none;
+}
+
+#mypicks, #editmypicks, #mystats {
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#profile-myinfo, #lio-mypicks {
     background-color: white;
     color: black;
+}
+
+.profile-table {
+    margin: 10px;
 }

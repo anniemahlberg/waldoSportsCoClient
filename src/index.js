@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { Register, Login, Picks, Alert, League, Profile, Admin, Home, Pick6 } from './components';
+import { Register, Login, Picks, Alert, LIOProfile, Admin, Home, Pick6, LIOLeague, MyInfo, P6Profile, P6League } from './components';
 import { fetchAllGames, fetchAllWeeklyPicks, fetchAllPicks, fetchUserStats, fetchAllParlays, fetchAllUsers, fetchCurrentPot, fetchAllPots } from "./axios-services";
 import { showAlert } from './components/Alert';
 import "./style/index.css";
@@ -121,6 +121,35 @@ const App = () => {
         }
     }
 
+    function showLeagueNav() {
+        let lio = document.getElementById("leagueliolink")
+        let pick6 = document.getElementById("leaguepick6link")
+        
+        if (lio.style.display === "block") {
+            lio.style.display = "none"
+            pick6.style.display = "none"
+        } else {
+            lio.style.display = "block"
+            pick6.style.display = "block"
+        }
+    }
+
+    function showProfileNav() {
+        let lio = document.getElementById("profileliolink")
+        let pick6 = document.getElementById("profilepick6link")
+        let info = document.getElementById("profileinfolink")
+        
+        if (lio.style.display === "block") {
+            lio.style.display = "none"
+            pick6.style.display = "none"
+            info.style.display = "none"
+        } else {
+            lio.style.display = "block"
+            pick6.style.display = "block"
+            info.style.display = "block"
+        }
+    }
+
     function showGamesMobileNav() {
         let lio = document.getElementById("mobile-liolink")
         let pick6 = document.getElementById("mobile-pick6link")
@@ -131,6 +160,35 @@ const App = () => {
         } else {
             lio.style.display = "block"
             pick6.style.display = "block"
+        }
+    }
+
+    function showLeagueMobileNav() {
+        let lio = document.getElementById("mobile-leagueliolink")
+        let pick6 = document.getElementById("mobile-leaguepick6link")
+        
+        if (lio.style.display === "block") {
+            lio.style.display = "none"
+            pick6.style.display = "none"
+        } else {
+            lio.style.display = "block"
+            pick6.style.display = "block"
+        }
+    }
+
+    function showProfileMobileNav() {
+        let lio = document.getElementById("mobile-profileliolink")
+        let pick6 = document.getElementById("mobile-profilepick6link")
+        let info = document.getElementById("mobile-profileinfolink")
+        
+        if (lio.style.display === "block") {
+            lio.style.display = "none"
+            pick6.style.display = "none"
+            info.style.display = "none"
+        } else {
+            lio.style.display = "block"
+            pick6.style.display = "block"
+            info.style.display = "block"
         }
     }
 
@@ -145,9 +203,16 @@ const App = () => {
                     <span className="header-link" id="playlink" onClick={showGamesNav}>PLAY</span>
                     <Link className="header-sec-link" to="/picks" id="liolink" onClick={() => {setUpdate(!update); showGamesNav()}}>LOCK IT UP</Link>
                     <Link className='header-sec-link' to='/pick6' id='pick6link' onClick={() => {setUpdate(!update); showGamesNav()}}>PICK 6</Link>
-                    <Link className="header-link" to='/league' onClick={() => {setUpdate(!update)}}>LEAGUE</Link>
+                    <span className="header-link" id="leaguelink" onClick={showLeagueNav}>LEAGUE</span>
+                    <Link className="header-sec-link" to="/leaguelio" id="leagueliolink" onClick={() => {setUpdate(!update); showLeagueNav()}}>LOCK IT UP</Link>
+                    <Link className='header-sec-link' to='/leaguepick6' id='leaguepick6link' onClick={() => {setUpdate(!update); showLeagueNav()}}>PICK 6</Link>
                     { !user.username ? <Link className="header-link" to="/login" onClick={() => {setUpdate(!update)}}>LOGIN</Link> : null }
-                    { user.username ? <Link className="header-link" to="/profile" onClick={() => {setUpdate(!update)}}>PROFILE</Link> : null }
+                    { user.username ? <>
+                        <span className="header-link" id="profilelink" onClick={showProfileNav}>PROFILE</span>
+                        <Link className="header-sec-link" to="/profileinfo" id="profileinfolink" onClick={() => {setUpdate(!update); showProfileNav()}}>MY INFO</Link>
+                        <Link className="header-sec-link" to="/profilelio" id="profileliolink" onClick={() => {setUpdate(!update); showProfileNav()}}>LOCK IT UP</Link>
+                        <Link className='header-sec-link' to='/profilepick6' id='profilepick6link' onClick={() => {setUpdate(!update); showProfileNav()}}>PICK 6</Link>
+                    </>: null }
                     { user.admin === "true" ? <Link className="header-link" to="/admin" onClick={() => {setUpdate(!update)}}>ADMIN</Link> : null }
                     { user.username ? <Link className="header-link" to="/" onClick={() => {logout()}}>LOGOUT</Link> : null }
                 </nav>
@@ -156,10 +221,17 @@ const App = () => {
                     <br />
                     <Link className="header-sec-link" to="/picks" id="mobile-liolink" onClick={() => {setUpdate(!update); showGamesMobileNav(); myFunction()}}>LOCK IT UP</Link>
                     <Link className='header-sec-link' to='/pick6' id='mobile-pick6link' onClick={() => {setUpdate(!update); showGamesMobileNav(); myFunction()}}>PICK 6</Link>
-                    <Link className="header-link" to='/league' onClick={() => {setUpdate(!update); myFunction()}}>LEAGUE</Link>
+                    <span className="header-link" to='/league' onClick={showLeagueMobileNav}>LEAGUE</span>
                     <br />
+                    <Link className="header-sec-link" to="/leaguelio" id="mobile-leagueliolink" onClick={() => {setUpdate(!update); showLeagueMobileNav(); myFunction()}}>LOCK IT UP</Link>
+                    <Link className='header-sec-link' to='/leaguepick6' id='mobile-leaguepick6link' onClick={() => {setUpdate(!update); showLeagueMobileNav(); myFunction()}}>PICK 6</Link>
+                    { user.username ? <>
+                        <span className="header-link" to="/profile" onClick={showProfileMobileNav}>PROFILE</span><br />
+                        <Link className="header-sec-link" to="/profileinfo" id="mobile-profileinfolink" onClick={() => {setUpdate(!update); showProfileMobileNav(); myFunction()}}>MY INFO</Link>
+                        <Link className="header-sec-link" to="/profilelio" id="mobile-profileliolink" onClick={() => {setUpdate(!update); showProfileMobileNav(); myFunction()}}>LOCK IT UP</Link>
+                        <Link className='header-sec-link' to='/profilepick6' id='mobile-profilepick6link' onClick={() => {setUpdate(!update); showProfileMobileNav(); myFunction()}}>PICK 6</Link>
+                    </> : null }
                     { !user.username ? <><Link className="header-link" to="/login" onClick={() => {setUpdate(!update); myFunction()}}>LOGIN</Link><br/></> : null }
-                    { user.username ? <><Link className="header-link" to="/profile" onClick={() => {setUpdate(!update); myFunction()}}>PROFILE</Link><br/></> : null }
                     { user.admin === "true" ? <><Link className="header-link" to="/admin" onClick={() => {setUpdate(!update); myFunction()}}>ADMIN</Link><br/></> : null }
                     { user.username ? <><Link className="header-link" to="/" onClick={() => {logout(); myFunction()}}>LOGOUT</Link><br/></> : null }
                 </nav>
@@ -228,8 +300,8 @@ const App = () => {
                         currentPot={currentPot}
                     />
                 </>} />
-                <Route exact path="/league" element={<>
-                    <League 
+                <Route exact path="/leaguelio" element={<>
+                    <LIOLeague 
                         update={update} 
                         setUpdate={setUpdate} 
                         weeklyPicks={weeklyPicks} 
@@ -242,8 +314,8 @@ const App = () => {
                         allPots={allPots}
                     />
                 </>} />
-                <Route exact path="/profile" element={<>
-                    <Profile 
+                <Route exact path="/profilelio" element={<>
+                    <LIOProfile 
                         update={update} 
                         setUpdate={setUpdate} 
                         myPicks={myPicks} 
@@ -262,6 +334,32 @@ const App = () => {
                         setMyParlays={setMyParlays}
                         token={token}
                         users={users}
+                    />
+                </>} />
+                <Route exact path="/profileinfo" element={<>
+                    <MyInfo 
+                        update={update} 
+                        setUpdate={setUpdate} 
+                        user={user} 
+                        setAlertMessage={setAlertMessage} 
+                        token={token}
+                        users={users}
+                    />
+                </>} />
+                <Route exact path="/profilepick6" element={<>
+                    <P6Profile 
+                        update={update} 
+                        setUpdate={setUpdate} 
+                        setAlertMessage={setAlertMessage} 
+                        token={token}
+                    />
+                </>} />
+                <Route exact path="/leaguepick6" element={<>
+                    <P6League 
+                        update={update} 
+                        setUpdate={setUpdate} 
+                        setAlertMessage={setAlertMessage} 
+                        token={token}
                     />
                 </>} />
             </Routes>

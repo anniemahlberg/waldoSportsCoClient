@@ -10,24 +10,40 @@ const Pick6 = (props) => {
         let picksContainer = document.getElementById('pick6-games');
         let rulesButton = document.getElementById('p6rules')
         let picksButton = document.getElementById('pick6')
+        let mineContainer = document.getElementById("pick6-mine")
+        let leagueContainer = document.getElementById("pick6-league")
+        let mineButton = document.getElementById("p6mine")
+        let leagueButton = document.getElementById("p6league")
 
 
         if (target === "pick6") {
             picksContainer.style.display = "initial";
             rulesContainer.style.display = "none";
+            mineContainer.style.display = "none";
+            leagueContainer.style.display = "none";
             picksButton.style.backgroundColor = "white";
             picksButton.style.color = "black";
             rulesButton.style.backgroundColor = "black"
             rulesButton.style.color = "white";
+            mineButton.style.backgroundColor = "black"
+            mineButton.style.color = "white";
+            leagueButton.style.backgroundColor = "black"
+            leagueButton.style.color = "white";
         }
 
         if (target === "p6rules") {
             picksContainer.style.display = "none";
             rulesContainer.style.display = "initial";
+            mineContainer.style.display = "none";
+            leagueContainer.style.display = "none";
             picksButton.style.backgroundColor = "black";
             picksButton.style.color = "white";
             rulesButton.style.backgroundColor = "white"
             rulesButton.style.color = "black";
+            mineButton.style.backgroundColor = "black"
+            mineButton.style.color = "white";
+            leagueButton.style.backgroundColor = "black"
+            leagueButton.style.color = "white";
         }
     }
 

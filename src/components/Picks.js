@@ -770,7 +770,7 @@ const Picks = (props) => {
                     </div>
                 </form>
             </div>
-            <div  className="table" id="confirmation-container">
+            <div  className="confirmation-table" id="confirmation-container">
                 <table>
                     <caption>CONFIRM PICKS</caption>
                     <thead>
@@ -785,13 +785,14 @@ const Picks = (props) => {
                     <tfoot>
                         <tr>
                             <td><input type="button" value="BACK TO PICKS" onClick={confirmEditPick}></input></td>
+                            <td></td>
+                            <td><input type="button" value="SUBMIT" id="submit-button" onClick={(e) => submitPick(e)}></input></td>
                             <td><input type="button" onClick={showPic} value="?"></input></td>
-                            <td><input type="button" value="SUBMIT PICKS" id="submit-button" onClick={(e) => submitPick(e)}></input></td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
-            <div  className="table" id="parlay-confirmation-container">
+            <div  className="parlay-table" id="parlay-confirmation-container">
                 <table>
                     <caption>CONFIRM PARLAY</caption>
                     <thead>

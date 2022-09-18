@@ -721,13 +721,13 @@ const Admin = (props) => {
             <div id="admin-deactivate">
                 <h3>Current Week Number: {games[0] ? games[0].week : <span>-</span>}</h3>
                 <h3>Current Week's Pot: ${currentPot ? currentPot : <span>0</span>}</h3>
-                <h2>ADD POT AMOUNT</h2>
+                <h2>START NEW POT AMOUNT</h2>
                 <label htmlFor="pot-week">Week:</label>
                 <input id='pot-week' placeholder="Week Number"></input><br />
                 <label htmlFor="pot-amount">Pot Amount: $</label>
                 <input id="pot-amount" placeholder="Pot Amount"></input>
                 <button className='admin-submit' type='button' onClick={addPotAmount}>ADD POT AMOUNT</button>
-                <h2>EDIT POT AMOUNT</h2>
+                <h2>EDIT CURRENT POT AMOUNT</h2>
                 <label>Current Week:</label>
                 <input id='edit-pot-week' placeholder="Week Number"></input><br />
                 <label>NEW Pot Amount: $</label>
