@@ -59,13 +59,21 @@ const Admin = (props) => {
             if (game.totalpoints && (game.over || game.under)) {
                 let totalpoints = document.getElementById(`input-results-totalpoints-${index}`)
                 outcome.totalpointsoutcome = totalpoints.value
-                outcome.totalpointsoutcometext = `${game.awayteam} vs. ${game.hometeam} ${totalpoints.options[totalpoints.selectedIndex].text}`
+                if (totalpoints.options[totalpoints.selectedIndex]) {
+                    outcome.totalpointsoutcometext = `${game.awayteam} vs. ${game.hometeam} ${totalpoints.options[totalpoints.selectedIndex].text}`
+                } else {
+                    outcome.totalpointsoutcometext = "PUSH"
+                }
             }
 
             if (game.line && (game.chalk || game.dog)) {
                 let line = document.getElementById(`input-results-line-${index}`)
                 outcome.lineoutcome = line.value
-                outcome.lineoutcometext = line.options[line.selectedIndex].text
+                if (line.options[line.selectedIndex]) {
+                    outcome.lineoutcometext = line.options[line.selectedIndex].text
+                } else {
+                    outcome.lineoutcometext = "PUSH"
+                }
             }
 
             outcomesArr.push(outcome)
@@ -489,10 +497,15 @@ const Admin = (props) => {
                             <label>Level:</label>
                             <select id='input-game-level'>
                                 <option value="NFL">NFL</option>
-                                <option value="NCAA">NCAA</option>
+                                <option value="NCAA FOOTBALL">NCAA FOOTBALL</option>
                                 <option value="MLB">MLB</option>
                                 <option value="NBA">NBA</option>
                                 <option value="NHL">NHL</option>
+                                <option value="NCAA MENS BBALL">NCAA MENS BBALL</option>
+                                <option value="NCAA WOMENS BBALL">NCAA WOMENS BBALL</option>
+                                <option value="MLS">MLS</option>
+                                <option value="FIFA WORLD CUP">FIFA WORLD CUP</option>
+                                <option value="PREMIER LEAGUE">PREMIER LEAGUE</option>
                             </select>
                             <br />
                             <label>Date:</label>
@@ -574,10 +587,14 @@ const Admin = (props) => {
                                         <select id={`edit-level-${index}`}>
                                             <option value={game.level}>{game.level}</option>
                                             { game.level !== "NFL" ? <option value="NFL">NFL</option> : null}
-                                            { game.level !== "NCAA" ? <option value="NCAA">NCAA</option> : null}
+                                            { game.level !== "NCAA FOOTBALL" ? <option value="NCAA FOOTBALL">NCAA FOOTBALL</option> : null}
                                             { game.level !== "MLB" ? <option value="MLB">MLB</option> : null}
                                             { game.level !== "NBA" ? <option value="NBA">NBA</option> : null}
-                                            { game.level !== "NHL" ? <option value="NHL">NHL</option> : null}
+                                            { game.level !== "MLS" ? <option value="MLS">MLS</option> : null}
+                                            { game.level !== "NCAA MENS BBALL" ? <option value="NCAA MENS BBALL">NCAA MENS BBALL</option> : null}
+                                            { game.level !== "NCAA WOMENS BBALL" ? <option value="NCAA WOMENS BBALL">NCAA WOMENS BBALL</option> : null}
+                                            { game.level !== "FIFA WORLD CUP" ? <option value="FIFA WORLD CUP">FIFA WORLD CUP</option> : null}
+                                            { game.level !== "PREMIER LEAGUE" ? <option value="PREMIER LEAGUE">PREMIER LEAGUE</option> : null}
                                         </select>
                                     </td>
                                     <td>

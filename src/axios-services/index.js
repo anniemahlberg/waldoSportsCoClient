@@ -80,3 +80,12 @@ export async function fetchAllPots() {
         throw err
     }
 }
+
+export async function fetchAllPosts() {
+    try {
+        const { data } = await axios.get(`https://floating-stream-77094.herokuapp.com/api/posts`)
+        return data.posts
+    } catch (err) {
+        throw err
+    }
+}

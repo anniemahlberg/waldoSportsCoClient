@@ -1,7 +1,6 @@
 import convertTime from 'convert-time';
 import { showAlert } from "./Alert";
 import '../style/picks.css'
-import { useEffect } from 'react';
 import { fetchAllPicks } from '../axios-services';
 
 const API_URL = 'https://floating-stream-77094.herokuapp.com/api'
@@ -9,10 +8,14 @@ const API_URL = 'https://floating-stream-77094.herokuapp.com/api'
 const Picks = (props) => {
     const { token, setAlertMessage, update, setUpdate, sortedGames, myPicks, setPicks, setMyPicks, user, weeklyPicks } = props;
 
-    useEffect(() => {
+    const postPick = async (pickData) => {
+        const { picks } = pickData
+        let alert = ""
+        
+        const allPicks = await fetchAllPicks()
+        setPicks(allPicks)
+
         const getMyPicks = async () => {
-            const allPicks = await fetchAllPicks()
-            setPicks(allPicks)
             if (user.username) {
                 const mypicks = allPicks.filter(pick => {
                     const myWeeklyPick = weeklyPicks.find(weeklyPick => weeklyPick.username === user.username)
@@ -20,18 +23,13 @@ const Picks = (props) => {
                         return myWeeklyPick.id === pick.weeklyid
                     }
                 })
-                setMyPicks(mypicks)
+                return mypicks;
             }
         }
 
-        getMyPicks()
-    }, [update])
+        const myPicksVar = await getMyPicks()
 
-    const postPick = async (pickData) => {
-        const { picks } = pickData
-        let alert = ""
-
-        if (picks.length + myPicks.length > 20) {
+        if (picks.length + myPicksVar.length > 20) {
             setAlertMessage(`You can only make 20 picks!`)
             showAlert()
             return
@@ -44,8 +42,8 @@ const Picks = (props) => {
             }
         }
 
-        for (let i = 0; i < myPicks.length; i++) {
-            if (myPicks[i].lock) {
+        for (let i = 0; i < myPicksVar.length; i++) {
+            if (myPicksVar[i].lock) {
                 locksLength++
             }
         }
@@ -466,7 +464,7 @@ const Picks = (props) => {
 
     function checkTime(date, time) {
         const currentDate = new Date()
-        const comparedDate = new Date(new Date(`${date}T${time}-0500`))
+        const comparedDate = new Date(new Date(`${date}T${time}-0600`))
 
         if (currentDate > comparedDate) {
             return true
@@ -499,7 +497,10 @@ const Picks = (props) => {
 
         if (document.getElementById(id).checked && id !== "ALL") {
             for (let i = 0; i < game.length; i++) {
-                if (!game[i].innerHTML.toLowerCase().includes(input)) {
+                if (input == "soccer" && (game[i].innerHTML.toLowerCase().includes("mls") || game[i].innerHTML.toLowerCase().includes("fifa") || game[i].innerHTML.toLowerCase().includes("premier"))) {
+                    game[i].style.display = "initial"
+                    parlay1game[i].style.display = "initial"
+                } else if (!game[i].innerHTML.toLowerCase().includes(input)) {
                     game[i].style.display = "none"
                     parlay1game[i].style.display = "none"
                 } else {
@@ -521,10 +522,12 @@ const Picks = (props) => {
             'https://i.ibb.co/KmVz12h/IMG-0533.jpg',
             'https://i.ibb.co/pwWQwtj/65100601234-C3-FB3-D89-069-E-4-F6-D-A05-D-467-E19815-E67.jpg',
             'https://i.ibb.co/T259v46/66337169993-C2004769-7756-4-E71-912-D-656-D661-DCB95.jpg',
-            'https://i.ibb.co/qmtgN6j/66337172944-7240-F41-C-4-D1-E-44-DE-B43-C-52945834-B979.jpg'
+            'https://i.ibb.co/qmtgN6j/66337172944-7240-F41-C-4-D1-E-44-DE-B43-C-52945834-B979.jpg',
+            'https://i.ibb.co/H7VRrsr/68435358926-411-F7-A04-DC5-C-4-ED8-9-B62-531-AFFE3-D01-C.jpg',
+            'https://i.ibb.co/kSW4J59/IMG-5047.jpg'
         ]
 
-        let randomNumber = Math.floor(Math.random() * 4)
+        let randomNumber = Math.floor(Math.random() * 6)
         return randomPics[randomNumber]     
     }
 
@@ -554,8 +557,31 @@ const Picks = (props) => {
         }
     })
     
-    function getNumberOfPicks() {
-        const picks = myPicks.length + document.querySelectorAll("input[type=checkbox][class='pick-checkbox']:checked").length
+    async function getNumberOfPicks() {
+        const allPicks = await fetchAllPicks()
+        setPicks(allPicks)
+        let prevLocks = 0;
+
+        const getMyPicks = async () => {
+            if (user.username) {
+                const mypicks = allPicks.filter(pick => {
+                    const myWeeklyPick = weeklyPicks.find(weeklyPick => weeklyPick.username === user.username)
+                    if (myWeeklyPick) {
+                        return myWeeklyPick.id === pick.weeklyid
+                    }
+                })
+                return mypicks;
+            }
+        }
+
+        const myPicksVar = await getMyPicks()
+        myPicksVar.forEach((pick) => {
+            if (pick.lock) {
+                prevLocks++
+            }
+        })
+
+        const picks = myPicksVar.length + document.querySelectorAll("input[type=checkbox][class='pick-checkbox']:checked").length
         const locks = prevLocks + document.querySelectorAll("input[type=checkbox][class='lock-checkbox']:checked").length
         document.getElementById("numofpicks").innerHTML = picks
         document.getElementById("numoflocks").innerHTML = locks
@@ -625,6 +651,8 @@ const Picks = (props) => {
                 <label htmlFor="NBA">NBA</label>
                 <input className="filter-checkbox" type="radio" name="filter-radio" id="NHL" value="NHL" onChange={(e) => filterPicks(e)}></input>
                 <label htmlFor="NHL">NHL</label>
+                <input className="filter-checkbox" type="radio" name="filter-radio" id="SOCCER" value="SOCCER" onChange={(e) => filterPicks(e)}></input>
+                <label htmlFor="SOCCER">SOCCER</label>
                 <h4>PRIMETIME</h4>
                 <input className="filter-checkbox" type="radio" name="filter-radio" id="PRIMETIME" value="PRIMETIME" onChange={(e) => filterPicks(e)}></input>
                 <label htmlFor="PRIMETIME">PRIMETIME</label>

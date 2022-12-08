@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { Register, Login, Picks, Alert, LIOProfile, Admin, Home, Pick6, LIOLeague, MyInfo, P6Profile, P6League } from './components';
-import { fetchAllGames, fetchAllWeeklyPicks, fetchAllPicks, fetchUserStats, fetchAllParlays, fetchAllUsers, fetchCurrentPot, fetchAllPots } from "./axios-services";
+import { fetchAllGames, fetchAllWeeklyPicks, fetchAllPicks, fetchUserStats, fetchAllParlays, fetchAllUsers, fetchCurrentPot, fetchAllPots, fetchAllPosts } from "./axios-services";
 import { showAlert } from './components/Alert';
 import "./style/index.css";
 
@@ -25,6 +25,7 @@ const App = () => {
     const [update, setUpdate] = useState(false);
     const [currentPot, setCurrentPot] = useState("");
     const [allPots, setAllPots] = useState('');
+    const [allPosts, setAllPosts] = useState([]);
 
     useEffect(() => {
         const getAllInitialData = async () => {
@@ -43,6 +44,7 @@ const App = () => {
             })
             const allUsers = await fetchAllUsers()
             const allPots = await fetchAllPots()
+            const allPosts = await fetchAllPosts()
 
             if (sortedGames[0]) {
                 const currentPot = await fetchCurrentPot(sortedGames[0].week)
@@ -64,6 +66,7 @@ const App = () => {
             setWeeklyPicks(sortedWeeklyPicks)
             setUserStats(sortedAllStats)
             setParlays(allParlays)
+            setAllPosts(allPosts)
 
             if (sessionStorage.getItem('token')) {
                 setToken(sessionStorage.getItem('token'))
@@ -241,7 +244,14 @@ const App = () => {
             </div>
             <Routes>
                 <Route exact path="/" element={
-                    <Home />
+                    <Home
+                        allPosts={allPosts}
+                        user={user}
+                        token={token}
+                        setAlertMessage={setAlertMessage}
+                        setUpdate={setUpdate}
+                        update={update}
+                    />
                 } />
                 <Route exact path="/picks" element={
                     <Picks 
@@ -256,6 +266,7 @@ const App = () => {
                         setMyPicks={setMyPicks}
                         user={user}
                         weeklyPicks={weeklyPicks}
+                        picks={picks}
                     />
                 } />
                 <Route exact path="/pick6" element={
