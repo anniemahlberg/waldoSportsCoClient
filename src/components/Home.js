@@ -2,12 +2,13 @@ import "../style/home.css"
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 import { showAlert } from "./Alert";
+import { fetchAllUsers } from "../axios-services";
 const API_URL = 'https://floating-stream-77094.herokuapp.com/api'
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
 const Home = (props) => {
-    const { allPosts, user, token, setAlertMessage, setUpdate, update, users } = props
+    const { users, allPosts, user, token, setAlertMessage, setUpdate, update } = props
     let returnedObj = {
         chosenQuote: null,
         chosenAuthor: null
@@ -147,24 +148,23 @@ const Home = (props) => {
             <div id="messageBoardSection">
                 <div id="posts">
                     <div>
-                        { allPosts ? allPosts.map((post, idx) => {
+                        { allPosts && users ? allPosts.map((post, idx) => {
                             let thisUser = users.find((thisuser) => thisuser.username === post.username)
                             const numberOfCrowns = thisUser.wins
-                            const crownSpan = document.getElementById(`crownImages-${post.username}`);
-                            let crownHTML = ""
+                            const numberOfCrownsArray = []
 
                             for (let i = 0; i < numberOfCrowns; i++) {
-                                crownHTML += "<img className='crownimg' src='https://i.ibb.co/84QXZfm/132-1325417-black-and-white-crown-emoji-fairytale-icon-hd-removebg-preview.png' width='20px'></img>"
-                            }
-
-                            if (crownSpan) {
-                                crownSpan.innerHTML = crownHTML;
+                                numberOfCrownsArray.push("x")
                             }
 
                             return (
-                                <div key={idx} id="individualPost" style={thisUser.currentwinner ? {backgroundColor: "#f9d25ece"} : null}>
+                                <div key={idx} id="individualPost" style={thisUser && thisUser.currentwinner ? {backgroundColor: "#f9d25ece"} : null}>
                                     <p>{post.username}
-                                        <span id={`crownImages-${post.username}`}></span>
+                                        {numberOfCrowns > 0 ? numberOfCrownsArray.map((index) => {
+                                            return (
+                                                <span key={index} id={`crownImages-${post.username}`}><img className='crownimg' src='https://i.ibb.co/84QXZfm/132-1325417-black-and-white-crown-emoji-fairytale-icon-hd-removebg-preview.png' width='20px'></img></span>
+                                            )
+                                        }) : null}
                                         <span id="timeposted">{timeAgo.format(new Date(post.time))}</span>
                                     </p>
                                     <p>{post.message}</p>
@@ -172,12 +172,13 @@ const Home = (props) => {
                                     {post.username === user.username ? <button id="deletePostButton" onClick={(event) => deleteMessage(event, post.id)}>DELETE</button> : null}
                                 </div>
                             )
+
                         }) : <div>No games to display</div>}
                     </div>
                 </div>
                 <div id="typeMessage">
                         <input id="messageInput" placeholder="Type Message Here..."></input>
-                        <input type='submit' id="sendMessage" value='SEND' onClick={collectMessageData}></input>
+                        <input type='submit' id="sendMessage" value='SEND' className="admin-submit" onClick={collectMessageData}></input>
                 </div>
             </div>
         </div>

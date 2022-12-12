@@ -59,6 +59,7 @@ const App = () => {
                 setAllPots(totalPot)
             }
 
+            setAllPosts(allPosts)
             setUsers(allUsers)
             setGames(allGames)
             setSortedGames(sortedGames)
@@ -66,7 +67,6 @@ const App = () => {
             setWeeklyPicks(sortedWeeklyPicks)
             setUserStats(sortedAllStats)
             setParlays(allParlays)
-            setAllPosts(allPosts)
 
             if (sessionStorage.getItem('token')) {
                 setToken(sessionStorage.getItem('token'))
