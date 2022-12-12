@@ -308,6 +308,29 @@ const Admin = (props) => {
         .catch(console.error)
     }
 
+    async function makeWinner() {
+        const winnerUserId = document.getElementById(`winner`).value
+
+        await fetch(`${API_URL}/users/makeWinner/${winnerUserId}`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        }).then(response => response.json())
+        .then(result => {
+            if (!result.name) {
+                setAlertMessage(`You have set this week's winner!`)
+                showAlert()
+                setUpdate(!update)
+            } else {
+                setAlertMessage(result.message);
+                showAlert()
+            }
+        })
+        .catch(console.error)
+    }
+
     async function deleteUser(userid) {                 
         await fetch(`${API_URL}/users/${userid}`, {
             method: "DELETE",
@@ -750,6 +773,16 @@ const Admin = (props) => {
                 <label>NEW Pot Amount: $</label>
                 <input id="edit-pot-amount" placeholder={currentPot ? currentPot : 0}></input>
                 <button className='admin-submit' type='button' onClick={editPotAmount}>EDIT POT AMOUNT</button>
+                <h2>DECLARE THIS WEEK'S WINNER</h2>
+                <select name="winner" id="winner">
+                    <option>SELECT A WINNER</option>
+                    {users.length ? users.map((user, index) => {
+                        return (
+                            <option value={user.id} key={index}>{user.username}</option>
+                        )
+                    }) : <option>No users to display</option>}
+                </select>
+                <button className='admin-submit' type="button" onClick={makeWinner}>MAKE WINNER</button>
                 <h2>START NEW WEEK</h2>
                 <p>In order to start a new week, you will want to deactivate all of the games from the current/previous week.</p>
                 <label>What week number would you like to deactivate all of the games? </label>

@@ -82,6 +82,7 @@ const LIOLeague = (props) => {
                                 <th>Lock Record</th>
                                 <th>Parlay Record</th>
                                 <th>Season Total Points</th>
+                                <th>Wins</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -92,6 +93,7 @@ const LIOLeague = (props) => {
                                             <td>{userStat.lockscorrect}/{userStat.totallocks}</td>
                                             <td>{userStat.parlayscorrect}/{userStat.totalparlays}</td>
                                             <td>{userStat.totalpoints}</td>
+                                            <td>{userStat.wins}</td>
                                         </tr>)
                             }) : <tr><td colSpan={5}>No stats to display</td></tr>}
                         </tbody>

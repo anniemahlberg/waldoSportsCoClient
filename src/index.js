@@ -251,6 +251,7 @@ const App = () => {
                         setAlertMessage={setAlertMessage}
                         setUpdate={setUpdate}
                         update={update}
+                        users={users}
                     />
                 } />
                 <Route exact path="/picks" element={

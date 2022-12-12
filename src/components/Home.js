@@ -7,7 +7,7 @@ TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
 const Home = (props) => {
-    const { allPosts, user, token, setAlertMessage, setUpdate, update } = props
+    const { allPosts, user, token, setAlertMessage, setUpdate, update, users } = props
     let returnedObj = {
         chosenQuote: null,
         chosenAuthor: null
@@ -135,7 +135,6 @@ const Home = (props) => {
     }
 
     randomQuote()
-    console.log(allPosts)
 
     return (
         <div id="home">
@@ -149,15 +148,31 @@ const Home = (props) => {
                 <div id="posts">
                     <div>
                         { allPosts ? allPosts.map((post, idx) => {
-                                    return (
-                                        <div key={idx} id="individualPost">
-                                            <p>{post.username} <span id="timeposted">{timeAgo.format(new Date(post.time))}</span></p>
-                                            <p>{post.message}</p>
-                                            <button id="likeButton" onClick={(event) => likeMessage(event, post.id)} disabled={(post.names && post.names.includes(user.username)) || post.username === user.username ? true : false }><img id="likeimg" src="https://i.ibb.co/mB7Vw5p/286-2863936-png-file-svg-youtube-like-button-white-transparent-removebg-preview.png"></img> {post.likes} likes</button>
-                                            {post.username === user.username ? <button id="deletePostButton" onClick={(event) => deleteMessage(event, post.id)}>DELETE</button> : null}
-                                        </div>
-                                    )
-                                }) : <div>No games to display</div>}
+                            let thisUser = users.find((thisuser) => thisuser.username === post.username)
+                            const numberOfCrowns = thisUser.wins
+                            const crownSpan = document.getElementById(`crownImages-${post.username}`);
+                            let crownHTML = ""
+
+                            for (let i = 0; i < numberOfCrowns; i++) {
+                                crownHTML += "<img className='crownimg' src='https://i.ibb.co/84QXZfm/132-1325417-black-and-white-crown-emoji-fairytale-icon-hd-removebg-preview.png' width='20px'></img>"
+                            }
+
+                            if (crownSpan) {
+                                crownSpan.innerHTML = crownHTML;
+                            }
+
+                            return (
+                                <div key={idx} id="individualPost" style={thisUser.currentwinner ? {backgroundColor: "#f9d25ece"} : null}>
+                                    <p>{post.username}
+                                        <span id={`crownImages-${post.username}`}></span>
+                                        <span id="timeposted">{timeAgo.format(new Date(post.time))}</span>
+                                    </p>
+                                    <p>{post.message}</p>
+                                    <button id="likeButton" onClick={(event) => likeMessage(event, post.id)} disabled={(post.names && post.names.includes(user.username)) || post.username === user.username ? true : false }><img id="likeimg" src="https://i.ibb.co/mB7Vw5p/286-2863936-png-file-svg-youtube-like-button-white-transparent-removebg-preview.png"></img> {post.likes} likes</button>
+                                    {post.username === user.username ? <button id="deletePostButton" onClick={(event) => deleteMessage(event, post.id)}>DELETE</button> : null}
+                                </div>
+                            )
+                        }) : <div>No games to display</div>}
                     </div>
                 </div>
                 <div id="typeMessage">

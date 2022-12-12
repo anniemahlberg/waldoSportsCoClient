@@ -421,6 +421,7 @@ const LIOProfile = (props) => {
                                     <th>Lock Record</th>
                                     <th>Parlay Record</th>
                                     <th>Total Points</th>
+                                    <th>Wins</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -430,6 +431,7 @@ const LIOProfile = (props) => {
                                         <td>{myStats.lockscorrect}/{myStats.totallocks}</td>
                                         <td>{myStats.parlayscorrect}/{myStats.totalparlays}</td>
                                         <td>{myStats.totalpoints}</td>
+                                        <td>{myStats.wins}</td>
                                     </tr>
                                 : <tr><td>No stats to display</td></tr>}
                             </tbody>
