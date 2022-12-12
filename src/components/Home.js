@@ -135,6 +135,18 @@ const Home = (props) => {
         returnedObj.chosenAuthor = authors[randomNumber]
     }
 
+
+    function getCharacterCount() {
+        let characterCount = document.getElementById("messageInput").value.length;
+        document.getElementById("characterCount").innerHTML = characterCount
+
+        if (characterCount > 250) {
+            document.getElementById("characterCount").style.color = "red"
+        } else {
+            document.getElementById("characterCount").style.color = "black"
+        }
+    }
+
     randomQuote()
 
     return (
@@ -177,7 +189,8 @@ const Home = (props) => {
                     </div>
                 </div>
                 <div id="typeMessage">
-                        <input id="messageInput" placeholder="Type Message Here..."></input>
+                        <input id="messageInput" placeholder="Type Message Here..." onChange={getCharacterCount}></input>
+                        <span><span id="characterCount"></span>/250</span>
                         <input type='submit' id="sendMessage" value='SEND' className="admin-submit" onClick={collectMessageData}></input>
                 </div>
             </div>
