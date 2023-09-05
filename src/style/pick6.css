@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200&family=Quicksand:wght@300;600&display=swap');
+
 #pick6-rules {
     display: none
 }
@@ -5,4 +7,199 @@
 #pick6 {
     background-color: white;
     color: black;
+}
+
+#pick6-form {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 15px;
+    margin-top: 5px;
+}
+
+.picksixgame {
+    margin-right: 10px;
+    margin-top: 15px;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    min-width: 20%;
+}
+
+.info, .gamestuff {
+    width: 100%;
+}
+
+.gamestuff {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#picks {
+    background-color: white;
+    color: black;
+}
+
+.pick-checkbox-label {
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 2px;
+    box-shadow: 2px 2px lightgray;
+}
+
+.lock-checkbox-label {
+    text-align: center;
+}
+
+.pick-checkbox-label:hover, .lock-checkbox-label:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.pick-checkbox:checked + .pick-checkbox-label {
+    background-color: #f9d25ece;
+    font-weight: 600;
+}
+
+.pick-checkbox:disabled + .pick-checkbox-label {
+    background-color: darkgray;
+}
+
+.pick-checkbox:disabled:hover + .pick-checkbox-label {
+    transform: none;
+    cursor: auto;
+}
+
+.lock-checkbox:disabled:hover + .lock-checkbox-label {
+    transform: none
+}
+
+.lock-checkbox:checked + .lock-checkbox-label {
+    font-weight: 600;
+}
+
+.picksixgame input[type=checkbox] {
+    display: none;
+}
+
+.spread, .total {
+    display: flex;
+    flex-direction: column;
+    margin: 2px;
+}
+
+.date, .level {
+    margin: 2px;
+    min-width: fit-content;
+}
+
+.submit-button {
+    width: 100%;
+}
+
+.matchup {
+    font-family: 'Oswald', sans-serif;
+}
+
+.submit-button input {
+    padding: 10px;
+    font-family: 'Quicksand', sans-serif;    
+    box-shadow: 2px 2px lightgray;
+}
+
+.filter-options {
+    display: none;
+    flex-wrap: wrap;
+    color: black;
+    align-items: center;
+    background-color: #014f1667;
+}
+
+.filter-options h4 {
+    margin: 10px;
+}
+
+.filter-options label {
+    margin: 2px;
+}
+
+#rules-container {
+    justify-content: center;
+}
+
+#rules-container h2 {
+    text-align: center;
+}
+
+#howto, #pot, .points {
+    margin:  10px auto;
+}
+
+
+.points {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 15px;
+}
+
+.points h2 {
+    height: 30px;
+    width: 100%;
+}
+
+.points p {
+    width: 20%;
+}
+
+.points ul {
+    margin: 0px;
+    width: 70%;
+}
+
+#confirmation-container, #parlay-confirmation-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+#confirmation-container table, #parlay-confirmation-container table {
+    background-color: white;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.354), 0 6px 20px 0 rgba(0, 0, 0, 0.354);
+}
+
+
+@media (min-width: 320px) and (max-width: 480px) {
+    .game, .parlay1game {
+        min-width: 100%;
+        margin: 10px auto;
+        justify-content: center;
+    }
+
+    .info {
+        display: flex;
+    }
+
+    .pick-checkbox-label:hover, .lock-checkbox-label:hover {
+        transform: none;
+    }
+
+    #rules-container {
+        flex-wrap: wrap;
+    }
+
+    #howto, #pot, .points {
+        width: 100%;
+    }
+
+    .points ul {
+        width: 100%;
+    }
+
+    #randompic img {
+        width: 300px;
+    }
 }

@@ -464,7 +464,7 @@ const Picks = (props) => {
 
     function checkTime(date, time) {
         const currentDate = new Date()
-        const comparedDate = new Date(new Date(`${date}T${time}-0600`))
+        const comparedDate = new Date(new Date(`${date}T${time}-0500`))
 
         if (currentDate > comparedDate) {
             return true
@@ -653,6 +653,8 @@ const Picks = (props) => {
                 <label htmlFor="NHL">NHL</label>
                 <input className="filter-checkbox" type="radio" name="filter-radio" id="SOCCER" value="SOCCER" onChange={(e) => filterPicks(e)}></input>
                 <label htmlFor="SOCCER">SOCCER</label>
+                <input className="filter-checkbox" type="radio" name="filter-radio" id="MMA" value="MMA" onChange={(e) => filterPicks(e)}></input>
+                <label htmlFor="MMA">MMA</label>
                 <h4>PRIMETIME</h4>
                 <input className="filter-checkbox" type="radio" name="filter-radio" id="PRIMETIME" value="PRIMETIME" onChange={(e) => filterPicks(e)}></input>
                 <label htmlFor="PRIMETIME">PRIMETIME</label>
@@ -698,11 +700,11 @@ const Picks = (props) => {
                                         { game.dog ? <>
                                         <input className="pick-checkbox" type='checkbox' id={`dog-${idx}`} name={`spread-${idx}`} onChange={() => onlyOne(`dog-${idx}`, `spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
                                         <label htmlFor={`dog-${idx}`} id={`label-dog-${idx}`} className="pick-checkbox-label">
-                                            +{game.line}</label></> : null}
+                                            {game.line === "ML" || game.line === "PK" ? game.line : `+${game.line}`}</label></> : null}
                                         { game.chalk ? <>
                                         <input className="pick-checkbox" type='checkbox' id={`chalk-${idx}`} name={`spread-${idx}`} onChange={() => onlyOne(`chalk-${idx}`, `spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
                                         <label htmlFor={`chalk-${idx}`} id={`label-chalk-${idx}`} className="pick-checkbox-label">
-                                            -{game.line}</label></> : null}
+                                            {game.line === "ML" || game.line === "PK" ? game.line : `-${game.line}`}</label></> : null}
                                         { game.dog || game.chalk ? <>
                                         <input className="lock-checkbox" type='checkbox' id={`spreadlock-${idx}`} name={`spreadlock-${idx}`} onChange={() => getNumberOfPicks()} disabled={checkTime(game.date, game.time) === true ? true : false }></input>                                        
                                         <label htmlFor={`spreadlock-${idx}`} id={`label-spreadlock-${idx}`} className="lock-checkbox-label">
@@ -712,11 +714,11 @@ const Picks = (props) => {
                                         { game.chalk ? <>
                                         <input className="pick-checkbox" type='checkbox' id={`chalk-${idx}`} name={`spread-${idx}`} onChange={() => onlyOne(`chalk-${idx}`, `spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
                                         <label htmlFor={`chalk-${idx}`} id={`label-chalk-${idx}`} className="pick-checkbox-label">
-                                            -{game.line}</label></> : null}
+                                            {game.line === "ML" || game.line === "PK" ? game.line : `-${game.line}`}</label></> : null}
                                         { game.dog ? <>
                                         <input className="pick-checkbox" type='checkbox' id={`dog-${idx}`} name={`spread-${idx}`} onChange={() => onlyOne(`dog-${idx}`, `spread-${idx}`)} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
                                         <label htmlFor={`dog-${idx}`} id={`label-dog-${idx}`} className="pick-checkbox-label">
-                                            +{game.line}</label></> : null}
+                                            {game.line === "ML" || game.line === "PK" ? game.line : `+${game.line}`}</label></> : null}
                                         { game.dog || game.chalk ? <>
                                         <input className="lock-checkbox" type='checkbox' id={`spreadlock-${idx}`} name={`spreadlock-${idx}`} onChange={() => getNumberOfPicks()} disabled={checkTime(game.date, game.time) === true ? true : false }></input>
                                         <label htmlFor={`spreadlock-${idx}`} id={`label-spreadlock-${idx}`} className="lock-checkbox-label">

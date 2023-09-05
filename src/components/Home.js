@@ -171,15 +171,15 @@ const Home = (props) => {
 
                             return (
                                 <div key={idx} id="individualPost" style={thisUser && thisUser.currentwinner ? {backgroundColor: "#f9d25ece"} : null}>
-                                    <p>{post.username}
-                                        {numberOfCrowns > 0 ? numberOfCrownsArray.map((index) => {
+                                    <p key={`p1${idx}`}>{post.username}
+                                        {numberOfCrowns > 0 ? numberOfCrownsArray.map(() => {
                                             return (
-                                                <span key={index} id={`crownImages-${post.username}`}><img className='crownimg' src='https://i.ibb.co/84QXZfm/132-1325417-black-and-white-crown-emoji-fairytale-icon-hd-removebg-preview.png' width='20px'></img></span>
+                                                <span id={`crownImages-${post.username}`}><img className='crownimg' src='https://i.ibb.co/84QXZfm/132-1325417-black-and-white-crown-emoji-fairytale-icon-hd-removebg-preview.png' width='20px'></img></span>
                                             )
                                         }) : null}
                                         <span id="timeposted">{timeAgo.format(new Date(post.time))}</span>
                                     </p>
-                                    <p>{post.message}</p>
+                                    <p key={`p2${idx}`}>{post.message}</p>
                                     <button id="likeButton" onClick={(event) => likeMessage(event, post.id)} disabled={(post.names && post.names.includes(user.username)) || post.username === user.username ? true : false }><img id="likeimg" src="https://i.ibb.co/mB7Vw5p/286-2863936-png-file-svg-youtube-like-button-white-transparent-removebg-preview.png"></img> {post.likes} likes</button>
                                     {post.username === user.username ? <button id="deletePostButton" onClick={(event) => deleteMessage(event, post.id)}>DELETE</button> : null}
                                 </div>

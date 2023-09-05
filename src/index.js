@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { Register, Login, Picks, Alert, LIOProfile, Admin, Home, Pick6, LIOLeague, MyInfo, P6Profile, P6League } from './components';
-import { fetchAllGames, fetchAllWeeklyPicks, fetchAllPicks, fetchUserStats, fetchAllParlays, fetchAllUsers, fetchCurrentPot, fetchAllPots, fetchAllPosts } from "./axios-services";
+import { fetchAllGames, fetchAllWeeklyPicks, fetchAllPicks, fetchUserStats, fetchAllParlays, fetchAllUsers, fetchCurrentPot, fetchAllPots, fetchAllPosts, fetchAllPicksixPicks } from "./axios-services";
 import { showAlert } from './components/Alert';
 import "./style/index.css";
 
@@ -13,6 +13,8 @@ const App = () => {
     const [picks, setPicks] = useState([]);
     const [myPicks, setMyPicks] = useState([]);
     const [parlays, setParlays] = useState([]);
+    const [picksixPicks, setPicksixPicks] = useState([]);
+    const [myPicksixPicks, setMyPicksixPicks] = useState([]);
     const [myParlays, setMyParlays] = useState([]);
     const [myWeekly, setMyWeekly] = useState([]);
     const [weeklyPicks, setWeeklyPicks] = useState([])
@@ -45,6 +47,7 @@ const App = () => {
             const allUsers = await fetchAllUsers()
             const allPots = await fetchAllPots()
             const allPosts = await fetchAllPosts()
+            const allPicksixPicks = await fetchAllPicksixPicks()
 
             if (sortedGames[0]) {
                 const currentPot = await fetchCurrentPot(sortedGames[0].week)
@@ -67,6 +70,7 @@ const App = () => {
             setWeeklyPicks(sortedWeeklyPicks)
             setUserStats(sortedAllStats)
             setParlays(allParlays)
+            setPicksixPicks(allPicksixPicks)
 
             if (sessionStorage.getItem('token')) {
                 setToken(sessionStorage.getItem('token'))
@@ -324,6 +328,7 @@ const App = () => {
                         parlays={parlays}
                         currentPot={currentPot}
                         allPots={allPots}
+                        games={games}
                     />
                 </>} />
                 <Route exact path="/profilelio" element={<>
@@ -362,16 +367,33 @@ const App = () => {
                     <P6Profile 
                         update={update} 
                         setUpdate={setUpdate} 
+                        setMyWeekly={setMyWeekly} 
+                        myWeekly={myWeekly} 
+                        weeklyPicks={weeklyPicks} 
+                        user={user} 
                         setAlertMessage={setAlertMessage} 
+                        setUserStats={setUserStats} 
+                        myStats={myStats} 
+                        setMyStats={setMyStats}
+                        picksixPicks={picksixPicks}
+                        setPicksixPicks={setPicksixPicks}
+                        setMyPicksixPicks={setMyPicksixPicks}
+                        myPicksixPicks={myPicksixPicks}
                         token={token}
+                        users={users}
                     />
                 </>} />
                 <Route exact path="/leaguepick6" element={<>
                     <P6League 
                         update={update} 
                         setUpdate={setUpdate} 
-                        setAlertMessage={setAlertMessage} 
-                        token={token}
+                        weeklyPicks={weeklyPicks} 
+                        setWeeklyPicks={setWeeklyPicks} 
+                        userStats={userStats}
+                        picksixPicks={picksixPicks}
+                        currentPot={currentPot}
+                        allPots={allPots}
+                        games={games}
                     />
                 </>} />
             </Routes>

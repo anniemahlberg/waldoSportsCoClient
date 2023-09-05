@@ -43,6 +43,18 @@ const Admin = (props) => {
         }).then(response => response.json())
         .catch(console.error)
 
+        await fetch(`${API_URL}/picksix/updateResults/pick1`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                week: resultsArr[0].week
+            })
+        }).then(response => response.json())
+        .catch(console.error)
+
         setAlertMessage(alert)
         showAlert()
         setUpdate(!update)
@@ -509,6 +521,18 @@ const Admin = (props) => {
                                 <option value='16'>16</option>
                                 <option value='17'>17</option>
                                 <option value='18'>18</option>
+                                <option value='19'>19</option>
+                                <option value='20'>20</option>
+                                <option value='21'>21</option>
+                                <option value='22'>22</option>
+                                <option value='23'>23</option>
+                                <option value='24'>24</option>
+                                <option value='25'>25</option>
+                                <option value='26'>26</option>
+                                <option value='27'>27</option>
+                                <option value='28'>28</option>
+                                <option value='29'>29</option>
+                                <option value='30'>30</option>
                             </select>
                             <br />
                             <label>Away Team:</label>
@@ -529,6 +553,7 @@ const Admin = (props) => {
                                 <option value="MLS">MLS</option>
                                 <option value="FIFA WORLD CUP">FIFA WORLD CUP</option>
                                 <option value="PREMIER LEAGUE">PREMIER LEAGUE</option>
+                                <option value="MMA">MMA</option>
                             </select>
                             <br />
                             <label>Date:</label>
@@ -618,6 +643,7 @@ const Admin = (props) => {
                                             { game.level !== "NCAA WOMENS BBALL" ? <option value="NCAA WOMENS BBALL">NCAA WOMENS BBALL</option> : null}
                                             { game.level !== "FIFA WORLD CUP" ? <option value="FIFA WORLD CUP">FIFA WORLD CUP</option> : null}
                                             { game.level !== "PREMIER LEAGUE" ? <option value="PREMIER LEAGUE">PREMIER LEAGUE</option> : null}
+                                            { game.level !== "MMA" ? <option value="MMA">MMA</option> : null}
                                         </select>
                                     </td>
                                     <td>
@@ -641,6 +667,18 @@ const Admin = (props) => {
                                             { game.week !== 16 ? <option value='16'>16</option> : null}
                                             { game.week !== 17 ? <option value='17'>17</option> : null}
                                             { game.week !== 18 ? <option value='18'>18</option> : null}
+                                            { game.week !== 19 ? <option value='19'>19</option> : null}
+                                            { game.week !== 20 ? <option value='20'>20</option> : null}
+                                            { game.week !== 21 ? <option value='21'>21</option> : null}
+                                            { game.week !== 22 ? <option value='22'>22</option> : null}
+                                            { game.week !== 23 ? <option value='23'>23</option> : null}
+                                            { game.week !== 24 ? <option value='24'>24</option> : null}
+                                            { game.week !== 25 ? <option value='25'>25</option> : null}
+                                            { game.week !== 26 ? <option value='26'>26</option> : null}
+                                            { game.week !== 27 ? <option value='27'>27</option> : null}
+                                            { game.week !== 28 ? <option value='28'>28</option> : null}
+                                            { game.week !== 29 ? <option value='29'>29</option> : null}
+                                            { game.week !== 30 ? <option value='30'>30</option> : null}
                                         </select>
                                     </td>
                                     <td>

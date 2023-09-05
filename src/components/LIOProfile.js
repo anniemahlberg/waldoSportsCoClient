@@ -221,7 +221,7 @@ const LIOProfile = (props) => {
     async function checkTime(gameid, index) {
         const game = await getGameById(gameid);
         const currentDate = new Date()
-        const comparedDate = new Date(new Date(`${game.date}T${game.time}-0600`))        
+        const comparedDate = new Date(new Date(`${game.date}T${game.time}-0500`))        
         const parlay1button = document.getElementById("parlay1-button")
 
         if (index !== undefined && currentDate > comparedDate) {

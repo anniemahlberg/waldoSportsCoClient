@@ -71,27 +71,25 @@
     font-family: 'Quicksand', 'sans-serif';
 }
 
-@media (min-width: 320px) and (max-width: 480px) {
-    #quoteSection {
-        margin: 5px auto;
-        padding: 5px;
-    }
-    
-    #quote {
-        font-size: 20px;
-    }
+#quoteSection {
+    margin: 5px auto;
+    padding: 5px;
+}
 
-    #author {
-        font-size: 12px;
-    }
+#quote {
+    font-size: 20px;
+}
 
-    #messageBoardSection {
-        width: 90%;
-        padding: 5px;
-        margin: 5px auto;
-    }
+#author {
+    font-size: 12px;
+}
 
-    #likeButton, #sendMessage, #deletePostButton {
-        color: black;
-    }
+#messageBoardSection {
+    width: 90%;
+    padding: 5px;
+    margin: 5px auto;
+}
+
+#likeButton, #sendMessage, #deletePostButton {
+    color: black;
 }

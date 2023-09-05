@@ -36,6 +36,15 @@ export async function fetchAllParlays() {
     }
 }
 
+export async function fetchAllPicksixPicks() {
+    try {
+        const { data } = await axios.get("https://floating-stream-77094.herokuapp.com/api/picksix")
+        return data.picksixPicks;
+    } catch (err) {
+        throw err;
+    }
+}
+
 export async function fetchAllWeeklyPicks() {
     try {
         const { data } = await axios.get("https://floating-stream-77094.herokuapp.com/api/picks/weeklyPicks")

@@ -2,7 +2,7 @@ import "../style/league.css"
 import React from "react"
 
 const LIOLeague = (props) => {
-    const { weeklyPicks, picks, userStats, parlays, currentPot, allPots} = props;
+    const { weeklyPicks, picks, userStats, parlays, currentPot, allPots, games} = props;
     let weeklyPot = 0;
     if (currentPot) {
         weeklyPot = (0.93 * currentPot).toFixed(2)
@@ -60,6 +60,18 @@ const LIOLeague = (props) => {
     
                 this.className += " activeButton";
             });
+        }
+    }
+
+    function checkTime(gameidx) {
+        let game = games.find(game => game.id === gameidx)
+        const currentDate = new Date()
+        const comparedDate = new Date(new Date(`${game.date}T${game.time}-0500`))
+
+        if (currentDate > comparedDate) {
+            return true
+        } else {
+            return false
         }
     }
 
@@ -195,7 +207,7 @@ const LIOLeague = (props) => {
                                     </thead>
                                     <tbody>
                                         { picks ? picks.map((pick, index) => {
-                                            if (pick.weeklyid === weeklyPick.id) {
+                                            if (pick.weeklyid === weeklyPick.id  && checkTime(pick.gameid)) {
                                                 return (
                                                     <tr key={index}>
                                                         <td key={'pick' + index}>{pick.text}</td>
@@ -225,7 +237,7 @@ const LIOLeague = (props) => {
                                     </thead>
                                     <tbody>
                                             { parlays ? parlays.map((parlay, index) => {
-                                                    if (parlay.weeklyid === weeklyPick.id && parlay.parlaynumber == 1) {
+                                                    if (parlay.weeklyid === weeklyPick.id && parlay.parlaynumber == 1 && checkTime(parlay.gameid)) {
                                                         return (
                                                             <tr key={index}>
                                                                 <td>{parlay.text}</td>
