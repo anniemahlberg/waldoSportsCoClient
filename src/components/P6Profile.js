@@ -44,45 +44,34 @@ const P6Profile = (props) => {
         let target = event.target.id
         let picksContainer = document.getElementById("mypicks");
         let editContainer = document.getElementById("editmypicks");
-        let statsContainer = document.getElementById("mystats");
         let picksButton = document.getElementById("lio-mypicks")
         let editButton = document.getElementById("lio-editpicks")
-        let statsButton = document.getElementById("lio-stats")
 
         if (target === "lio-mypicks") {
             editContainer.style.display = "none";
-            statsContainer.style.display = "none";  
             picksContainer.style.display = "flex";  
             picksButton.style.backgroundColor = "white"
             picksButton.style.color = "black"
             editButton.style.backgroundColor = "black"
             editButton.style.color = "white"
-            statsButton.style.backgroundColor = "black"
-            statsButton.style.color = "white"
         }
 
         if (target === "lio-editpicks") {
             editContainer.style.display = "flex";
-            statsContainer.style.display = "none";  
             picksContainer.style.display = "none";  
             picksButton.style.backgroundColor = "black"
             picksButton.style.color = "white"
             editButton.style.backgroundColor = "white"
             editButton.style.color = "black"
-            statsButton.style.backgroundColor = "black"
-            statsButton.style.color = "white"
         }
     
         if (target === "lio-stats") {
             editContainer.style.display = "none";
-            statsContainer.style.display = "flex";
             picksContainer.style.display = "none";  
             picksButton.style.backgroundColor = "black"
             picksButton.style.color = "white"
             editButton.style.backgroundColor = "black"
             editButton.style.color = "white"
-            statsButton.style.backgroundColor = "white"
-            statsButton.style.color = "black"
         }
     }
 
@@ -123,7 +112,6 @@ const P6Profile = (props) => {
     return (
         <div id="profile-container">
             <div className="buttons-div" id="profileButtons">
-                <span className="buttons" id="lio-stats" onClick={showContainers}>MY STATS</span>
                 <span className="buttons" id="lio-mypicks" onClick={showContainers}>MY PICKS</span>
                 <span className="buttons" id="lio-editpicks" onClick={showContainers}>EDIT MY PICKS</span>
             </div>
@@ -178,56 +166,6 @@ const P6Profile = (props) => {
                                             }}>DELETE PARLAY</button>
                                     </td>
                                 </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div id='mystats'>
-                    <div className="table">
-                        <table className="profile-table">
-                            <caption>SEASON STATS</caption>
-                            <thead>
-                                <tr>
-                                    <th>Bet Record</th>
-                                    <th>Lock Record</th>
-                                    <th>Parlay Record</th>
-                                    <th>Total Points</th>
-                                    <th>Wins</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                { user.username && myStats ? 
-                                    <tr>
-                                        <td>{myStats.betscorrect}/{myStats.totalbets}</td>
-                                        <td>{myStats.lockscorrect}/{myStats.totallocks}</td>
-                                        <td>{myStats.parlayscorrect}/{myStats.totalparlays}</td>
-                                        <td>{myStats.totalpoints}</td>
-                                        <td>{myStats.wins}</td>
-                                    </tr>
-                                : <tr><td>No stats to display</td></tr>}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div className="table">
-                        <table className="profile-table">
-                            <caption>WEEKLY STATS</caption>
-                            <thead>
-                                <tr>
-                                    <th>Bet Record</th>
-                                    <th>Lock Record</th>
-                                    <th>Parlay Record</th>
-                                    <th>Total Points</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                { user.username && myWeekly ? 
-                                        <tr>
-                                            <td>{myWeekly.betscorrect}/{myWeekly.totalbets}</td>
-                                            <td>{myWeekly.lockscorrect}/{myWeekly.totallocks}</td>
-                                            <td>{myWeekly.parlayscorrect}/{myWeekly.totalparlays}</td>
-                                            <td>{myWeekly.totalpoints}</td>
-                                        </tr>
-                                : user.username ? <tr><td>You do not have any stats yet to show</td></tr> : <tr><td>You must be logged in to see your stats</td></tr>}
                             </tbody>
                         </table>
                     </div>

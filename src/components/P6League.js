@@ -10,22 +10,6 @@ const P6League = (props) => {
 
     let seasonPot = (0.07 * allPots).toFixed(2)
 
-    function showContainers(event) {
-        let target = event.target.id
-        let statsContainer = document.getElementById("seasonstats");
-        let picksContainer = document.getElementById("weeklypicks");
-
-        if (target === "stats") {
-            statsContainer.style.display = "initial";
-            picksContainer.style.display = "none";    
-        }
-    
-        if (target === "weekly-picks") {
-            statsContainer.style.display = "none";
-            picksContainer.style.display = "initial";    
-        }
-    }
-
     function collapsible(index) {
         const content = document.getElementById(`picksixcontent-${index}`)
         if (content && content.style.display === "initial") {
@@ -68,40 +52,9 @@ const P6League = (props) => {
     return (
         <div id="league-container">
             <div className="buttons-div" id="leagueButtons">
-                <span className="buttons" id="stats" onClick={showContainers}>SEASON LEADERBOARD</span>
-                <span className="buttons" id="weekly-picks" onClick={showContainers}>PICKS</span>
+                <span className="buttons" id="weekly-picks">PICKS</span>
             </div>
-            <div id="seasonstats">
-                <p id="seasonpot">This Season's Pot: ${seasonPot}</p>
-                <div className="table">
-                    <table>
-                        <caption>SEASON LEADERBOARD</caption>
-                        <thead>
-                            <tr>
-                                <th>Username</th>
-                                <th>Bet Record</th>
-                                <th>Lock Record</th>
-                                <th>Parlay Record</th>
-                                <th>Season Total Points</th>
-                                <th>Wins</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            { userStats.length ? userStats.map((userStat, idx) => {
-                                return (<tr key={idx} className="userStat">
-                                            <td>{userStat.username}</td>
-                                            <td>{userStat.betscorrect}/{userStat.totalbets}</td>
-                                            <td>{userStat.lockscorrect}/{userStat.totallocks}</td>
-                                            <td>{userStat.parlayscorrect}/{userStat.totalparlays}</td>
-                                            <td>{userStat.totalpoints}</td>
-                                            <td>{userStat.wins}</td>
-                                        </tr>)
-                            }) : <tr><td colSpan={5}>No stats to display</td></tr>}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div id="weeklypicks">
+            <div id="weeklypicks6">
                 { weeklyPicks.length ? weeklyPicks.map((weeklyPick, idx) => {
 
                     return (

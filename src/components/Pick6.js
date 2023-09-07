@@ -269,40 +269,17 @@ const Pick6 = (props) => {
                 <div id="howto">
                     <h2><span style={{color: "#4ab5a3ac"}}>--- </span>HOW TO PLAY<span style={{color: "#4ab5a3ac"}}> ---</span></h2>
                     <ul>
-                        <li>Venmo @WaldoSportsCo $10 to play</li>
-                        <li>Place a maximum of 20 bets for the week</li>
-                        <li>Each correct bet is worth +1 point. Each incorrect bet is -1.</li>
-                        <li>You need to “Lock” at least 3 bets. These are the bets you are most confident in and are worth extra points. You can lock a maximum of 7 bets.</li>
-                        <li>Each correctly chosen locked pick is worth +5 points. Each incorrect locked pick is worth -5 points.</li>
-                        <li>We have some featured matchups designated as “Primetime”. Each primetime game is worth &#xb1; 2 points.</li>
-                        <li>If you lock a primetime game, that game is worth &#xb1; 7 points.</li>
-                        <li>You can also create an optional parlay for bonus points. Just click on the parlay tab and make a 2 to 6 game parlay.</li>
+                        <li>Venmo @WaldoSportsCo $1 to play</li>
+                        <li>Pick a 6 leg parlay</li>
+                        <li>If all 6 of your bets hit, you win!!</li>
                     </ul>
                 </div>
                 <div id="pot">
                     <h2><span style={{color: "#4ab5a3ac"}}>--- </span>POT<span style={{color: "#4ab5a3ac"}}> ---</span></h2>
                     <ul>
-                        <li>Weekly points winner takes the pot.</li>
-                        <li>7% of the weekly pot goes to the season pot for the highest scoring bettor from weeks 1-18</li>
-                        <li>Must play at least 14 weeks to qualify for season pot.</li>
-                    </ul>
-                </div>
-                <div className="points">
-                    <h2><span style={{color: "#4ab5a3ac"}}>--- </span>POINTS<span style={{color: "#4ab5a3ac"}}> ---</span></h2>
-                    <p>PICKS</p>
-                    <ul>
-                        <li>Standard Bet: &#xb1; 1 point</li>
-                        <li>Primetime Bet: &#xb1; 2 points</li>
-                        <li>Lock Bet: &#xb1; 5 points</li>
-                        <li>Primetime Lock Bets: &#xb1; 7 points</li>
-                    </ul>
-                    <p>PARLAYS</p>
-                    <ul>
-                        <li>2 game parlay: +4/-2</li>
-                        <li>3 game parlay: +10/-3</li>
-                        <li>4 game parlay: +20/-4</li>
-                        <li>5 game parlay: +30/-5</li>
-                        <li>6 game parlay: +60/-6</li>
+                        <li>The payout is $50 - fronted by WSCO</li>
+                        <li>After $50 is accrued, the jackpot starts to increase $1 with each bet</li>
+                        <li>If someone wins, pot starts over at $50.</li>
                     </ul>
                 </div>
             </div>
